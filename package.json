@@ -1,0 +1,61 @@
+{
+  "name": "@windbase/source",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nx dev",
+    "build": "nx build",
+    "start": "nx start",
+    "test": "nx test"
+  },
+  "private": true,
+  "dependencies": {
+    "next": "14.2.3",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@eslint/compat": "^1.1.1",
+    "@eslint/js": "^9.8.0",
+    "@nx/devkit": "20.0.0",
+    "@nx/eslint": "20.0.0",
+    "@nx/eslint-plugin": "20.0.0",
+    "@nx/jest": "20.0.0",
+    "@nx/js": "20.0.0",
+    "@nx/next": "20.0.0",
+    "@nx/playwright": "20.0.0",
+    "@nx/workspace": "20.0.0",
+    "@playwright/test": "^1.36.0",
+    "@swc-node/register": "~1.9.1",
+    "@swc/core": "~1.5.7",
+    "@swc/helpers": "~0.5.11",
+    "@types/jest": "^29.5.12",
+    "@types/node": "18.16.9",
+    "@types/react": "18.3.1",
+    "@types/react-dom": "18.3.0",
+    "autoprefixer": "10.4.13",
+    "babel-jest": "^29.7.0",
+    "eslint": "^9.8.0",
+    "eslint-config-next": "14.2.3",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-import": "2.31.0",
+    "eslint-plugin-jsx-a11y": "6.7.1",
+    "eslint-plugin-playwright": "^1.6.2",
+    "eslint-plugin-react": "7.35.0",
+    "eslint-plugin-react-hooks": "4.6.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "nx": "20.0.0",
+    "postcss": "8.4.38",
+    "prettier": "^2.6.2",
+    "tailwindcss": "3.4.3",
+    "ts-jest": "^29.1.0",
+    "ts-node": "10.9.1",
+    "tslib": "^2.3.0",
+    "typescript": "~5.5.2",
+    "typescript-eslint": "^8.0.0"
+  },
+  "nx": {
+    "includedScripts": []
+  }
+}

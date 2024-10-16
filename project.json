@@ -1,0 +1,10 @@
+{
+  "name": "windbase",
+  "$schema": "node_modules/nx/schemas/project-schema.json",
+  "includedScripts": [],
+  "sourceRoot": ".",
+  "projectType": "application",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project windbase --web",
+  "targets": {}
+}
