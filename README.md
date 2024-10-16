@@ -18,3 +18,9 @@ Windbase is an open-source, web-based visual builder for Tailwind CSS built with
 - 🎨 Properties Panel: Customize component properties, styles, and content.
 - 🔄 Real-Time Preview: Instantly see changes as you build your interface.
 - 💾 Code Export: Generate and export clean React component code.
+
+## Community
+
+- **Discord**: [Join the Windbase Discord community](https://discord.gg/6VG7NxGkwT)
+- **GitHub Discussions**: [Participate in Windbase GitHub Discussions](https://github.com/orgs/windbase/discussions)
+- **Telegram**: [Join the Windbase Telegram group](https://t.me/+AI9kyFvdFDcwOTJl)
