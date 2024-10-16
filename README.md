@@ -7,7 +7,7 @@
   <strong>Open-source, web-based visual builder for Tailwind CSS</strong>
 </p>
 
-<p align="center"><a href="https://discord.gg/6VG7NxGkwT">Join Discord</a> · <a href="https://t.me/+AI9kyFvdFDcwOTJl">Telegram</a> · <a href="https://docs.windbase.dev">Documentation</a>
+<p align="center"><a href="https://discord.gg/6VG7NxGkwT">Join Discord</a> · <a href="https://t.me/+JBLc1OijAhQ1YTI1">Telegram</a> · <a href="https://docs.windbase.dev">Documentation</a>
 </p>
 
 > **Note:** Windbase is currently under development and not yet ready for use.
