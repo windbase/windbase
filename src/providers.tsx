@@ -14,6 +14,7 @@ function Providers({ children }: Props) {
     <ThemeProvider
       attribute="class"
       defaultTheme="dark"
+      forcedTheme="dark"
       disableTransitionOnChange
     >
       <Toaster position="bottom-center" />
