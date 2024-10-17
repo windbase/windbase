@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="668px" height="668px" viewBox="0 0 668 668" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>logo</title>
+    <defs>
+        <linearGradient x1="75.6526611%" y1="12.7907889%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#7FDFFF" offset="0%"></stop>
+            <stop stop-color="#6C82FF" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="windbase" transform="translate(-178, -178)" fill="url(#linearGradient-1)">
+            <path d="M512,178 C696.463106,178 846,327.536894 846,512 C846,696.463106 696.463106,846 512,846 C327.536894,846 178,696.463106 178,512 C178,327.536894 327.536894,178 512,178 Z M512,318 C404.856759,318 318,404.856759 318,512 C318,619.143241 404.856759,706 512,706 C619.143241,706 706,619.143241 706,512 C706,404.856759 619.143241,318 512,318 Z" id="logo"></path>
+        </g>
+    </g>
+</svg>
