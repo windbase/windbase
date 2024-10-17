@@ -26,7 +26,23 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
-const renderBlocks = (blocks: Block[], sectionIndex: number, level = 1) => {
+type RenderBlocksProps = {
+  blocks: Block[];
+  sectionIndex: number;
+  level: number;
+};
+const RenderBlocks = ({ blocks, sectionIndex, level }: RenderBlocksProps) => {
+  if (blocks.length === 0) {
+    return (
+      <div className="flex items-center gap-2 p-2 rounded-xl w-full">
+        <ChevronRight size={18} className={`opacity-0`} />
+        <div className="h-12 flex items-center justify-center border rounded-lg border-dashed w-full">
+          <p>Drop here</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       {blocks.map((block) => (
@@ -66,7 +82,7 @@ function SortableItem({
   return (
     <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
       <div
-        className="flex items-center gap-2 p-2 rounded-xl cursor-pointer"
+        className="flex items-center gap-2 p-2 rounded-xl cursor-default"
         onClick={() => block.type === 'div' && toggleBlockVisibility(block.id)}
       >
         <ChevronRight
@@ -83,7 +99,13 @@ function SortableItem({
         <p className="text-sm font-medium">{block.type}</p>
       </div>
       {expandedBlocks[block.id] && block.blocks && (
-        <div>{renderBlocks(block.blocks, sectionIndex, level + 1)}</div>
+        <>
+          <RenderBlocks
+            blocks={block.blocks}
+            sectionIndex={sectionIndex}
+            level={level + 1}
+          />
+        </>
       )}
     </div>
   );
@@ -160,7 +182,7 @@ function LeftPanel() {
                   )}
                 >
                   {sections.map((section, index) => (
-                    <div key={index}>
+                    <div key={index} className="select-none">
                       <div
                         className="flex items-center gap-2 p-2 rounded-xl cursor-pointer"
                         onClick={() => toggleBlockVisibility(section.id)}
@@ -175,7 +197,13 @@ function LeftPanel() {
                         <p className="text-sm font-medium">{section.name}</p>
                       </div>
                       {expandedBlocks[section.id] && (
-                        <div>{renderBlocks(section.blocks, index)}</div>
+                        <>
+                          <RenderBlocks
+                            blocks={section.blocks}
+                            sectionIndex={index}
+                            level={1}
+                          />
+                        </>
                       )}
                     </div>
                   ))}

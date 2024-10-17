@@ -5,14 +5,11 @@ import Header from '@/components/header';
 import LeftPanel from '@/components/left-panel';
 import RightPanel from '@/components/right-panel';
 import { Block } from '@/lib/block';
-import { generateID } from '@/lib/id';
 import { useCanvasStore } from '@/store/canvas';
 
 import React from 'react';
 
 import { DndContext } from '@dnd-kit/core';
-
-let count = 1;
 
 function Layout() {
   const { insertBlock } = useCanvasStore();
@@ -25,10 +22,6 @@ function Layout() {
           const [_, sectionIndex] = droppedOver.split('-');
 
           const data = e.active.data.current as { block: Block };
-
-          const id = generateID(++count, 4);
-
-          data.block.id = id;
 
           insertBlock(data.block as Block, parseInt(sectionIndex));
         }

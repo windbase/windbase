@@ -11,7 +11,6 @@ type CanvasState = {
 
 type CanvasActions = {
   addSection: () => void;
-  addBlock: (block: Block, sectionIndex?: number) => void;
   insertBlock: (block: Block, sectionIndex: number) => void;
   moveBlock: (
     activeId: string,
@@ -24,21 +23,26 @@ type CanvasActions = {
 
 export type CanvasStore = CanvasState & CanvasActions;
 
+let count = 0;
+
+const firstId = generateID(++count);
+const firstSection: Section = {
+  id: firstId,
+  name: 'default',
+  blocks: [],
+};
+
 export const useCanvasStore = create<CanvasStore>((set) => ({
-  sections: [
-    {
-      id: 'default',
-      name: 'default',
-      blocks: [],
-    },
-  ],
+  sections: [firstSection],
 
   expandedBlocks: {},
 
   insertBlock: (block, sectionIndex) => {
     set((state) => {
+      const newBlock = { ...block, id: generateID(++count) };
+
       const section = state.sections[sectionIndex];
-      section.blocks.push(block);
+      section.blocks.push(newBlock);
 
       return {
         sections: [...state.sections],
@@ -48,22 +52,13 @@ export const useCanvasStore = create<CanvasStore>((set) => ({
 
   addSection: () => {
     set((state) => {
+      const id = generateID(++count);
+
       state.sections.push({
-        id: generateID(state.sections.length),
+        id,
         name: `Section ${state.sections.length + 1}`,
         blocks: [],
       });
-
-      return {
-        sections: [...state.sections],
-      };
-    });
-  },
-
-  addBlock: (block, sectionIndex = 0) => {
-    set((state) => {
-      const section = state.sections[sectionIndex];
-      section.blocks.push(block);
 
       return {
         sections: [...state.sections],

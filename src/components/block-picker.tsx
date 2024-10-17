@@ -12,8 +12,6 @@ import React from 'react';
 import { blocksMap } from './blocks';
 
 function BlockPicker({ children }: { children: React.ReactNode }) {
-  const addBlock = useCanvasStore((s) => s.addBlock);
-
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
