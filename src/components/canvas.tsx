@@ -8,11 +8,11 @@ import React from 'react';
 
 import { useDroppable } from '@dnd-kit/core';
 
-type SectionProps = {
+type BlockProps = {
   id: string;
   blocks: Block[];
 };
-function Section({ id, blocks }: SectionProps) {
+function BlockComponent({ id, blocks }: BlockProps) {
   const { isOver, setNodeRef } = useDroppable({
     id,
   });
@@ -38,14 +38,14 @@ function Section({ id, blocks }: SectionProps) {
 }
 
 function CanvasArea() {
-  const { sections, addSection } = useCanvasStore();
+  const { blocks, addBlock } = useCanvasStore();
 
   return (
     <div className="h-full flex flex-col gap-4 overflow-auto p-10">
       <div className="w-full">
-        {sections.map((section, sectionIndex) => (
-          <div key={sectionIndex}>
-            <Section id={`section-${sectionIndex}`} blocks={section.blocks} />
+        {blocks.map((block, blockIndex) => (
+          <div key={blockIndex}>
+            <BlockComponent id={block.id} blocks={block.blocks || []} />
           </div>
         ))}
       </div>
@@ -53,10 +53,16 @@ function CanvasArea() {
       <button
         className="border rounded border-neutral-700 border-dashed h-20 flex gap-2 items-center justify-center"
         onClick={() => {
-          addSection();
+          addBlock({
+            id: `block-${blocks.length}`,
+            type: 'div',
+            allowNested: true,
+            category: ['div'],
+            blocks: [],
+          });
         }}
       >
-        <PlusIcon size={20} /> Add Section
+        <PlusIcon size={20} /> Add Block
       </button>
     </div>
   );

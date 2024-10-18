@@ -3,49 +3,49 @@ import { Block } from '@/lib/block';
 export const blocksMap: Record<string, Partial<Block>> = {
   div: {
     type: 'div',
-    isEditable: false,
+    allowNested: false,
     category: ['common'],
   },
   h1: {
     type: 'h1',
-    isEditable: true,
+    allowNested: true,
     category: ['text'],
   },
   h2: {
     type: 'h2',
-    isEditable: true,
+    allowNested: true,
     category: ['text'],
   },
   h3: {
     type: 'h3',
-    isEditable: true,
+    allowNested: true,
     category: ['text'],
   },
   p: {
     type: 'p',
-    isEditable: true,
+    allowNested: true,
     category: ['text'],
   },
   img: {
     type: 'img',
-    isEditable: false,
+    allowNested: false,
     category: ['image'],
   },
   button: {
     type: 'button',
-    isEditable: true,
+    allowNested: true,
     variant: 'primary',
     size: 'md',
     category: ['button'],
   },
   spacer: {
     type: 'spacer',
-    isEditable: false,
+    allowNested: false,
     category: ['spacer'],
   },
   divider: {
     type: 'divider',
-    isEditable: false,
+    allowNested: false,
     className: 'border-t border-neutral-200 my-4',
     category: ['common'],
   },

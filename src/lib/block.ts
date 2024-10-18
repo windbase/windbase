@@ -1,7 +1,8 @@
 interface BaseBlock {
   id: string;
   type: string;
-  isEditable: boolean;
+  textContent?: string;
+  allowNested: boolean;
   className?: string;
   category: (
     | 'text'
@@ -11,6 +12,7 @@ interface BaseBlock {
     | 'spacer'
     | 'common'
     | 'div'
+    | 'section'
   )[];
   blocks?: Block[];
 }
@@ -42,7 +44,6 @@ interface ButtonBlock extends BaseBlock {
 
 interface SpacerBlock extends BaseBlock {
   type: 'spacer';
-  isEditable: false;
   size: number;
 }
 
@@ -50,11 +51,15 @@ interface DividerBlock extends BaseBlock {
   type: 'divider';
   style?: 'solid' | 'dashed' | 'dotted';
   color?: string;
-  isEditable: false;
+  allowNested: false;
 }
 
 interface DivBlock extends BaseBlock {
   type: 'div';
+}
+
+interface SectionBlock extends BaseBlock {
+  type: 'section';
 }
 
 export type Block =
@@ -64,4 +69,5 @@ export type Block =
   | SpacerBlock
   | DividerBlock
   | LinkBlock
-  | DivBlock;
+  | DivBlock
+  | SectionBlock;

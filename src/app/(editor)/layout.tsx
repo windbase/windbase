@@ -18,12 +18,9 @@ function Layout() {
     <DndContext
       onDragEnd={(e) => {
         const droppedOver = e.over?.id.toString();
-        if (droppedOver?.startsWith('section')) {
-          const [_, sectionIndex] = droppedOver.split('-');
-
+        if (droppedOver) {
           const data = e.active.data.current as { block: Block };
-
-          insertBlock(data.block as Block, parseInt(sectionIndex));
+          insertBlock(data.block as Block, droppedOver);
         }
       }}
     >

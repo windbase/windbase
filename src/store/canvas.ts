@@ -1,67 +1,79 @@
 import { Block } from '@/lib/block';
 import { generateID } from '@/lib/id';
-import { Section } from '@/types';
 
 import { create } from 'zustand';
 
 type CanvasState = {
-  sections: Section[];
+  blocks: Block[];
   expandedBlocks: { [key: string]: boolean };
+  activeDragSectionIndex: number | null;
 };
 
 type CanvasActions = {
-  addSection: () => void;
-  insertBlock: (block: Block, sectionIndex: number) => void;
-  moveBlock: (
-    activeId: string,
-    overId: string,
-    sourceSectionIndex: number,
-    destinationSectionIndex: number,
-  ) => void;
+  addBlock: (block: Block) => void;
+  insertBlock: (block: Block, parentId: string) => void;
+  setBlocks: (blocks: Block[]) => void;
+  moveBlock: (activeId: string, overId: string) => void;
   toggleBlockVisibility: (blockId: string) => void;
+  setActiveDragSectionIndex: (index: number | null) => void;
 };
 
 export type CanvasStore = CanvasState & CanvasActions;
 
 let count = 0;
 
-const firstId = generateID(++count);
-const firstSection: Section = {
-  id: firstId,
-  name: 'default',
+const firstBlock: Block = {
+  id: 'default',
+  type: 'section',
+  allowNested: true,
+  category: ['section'],
   blocks: [],
 };
 
 export const useCanvasStore = create<CanvasStore>((set) => ({
-  sections: [firstSection],
-
+  blocks: [firstBlock],
   expandedBlocks: {},
+  activeDragSectionIndex: null,
 
-  insertBlock: (block, sectionIndex) => {
+  setBlocks: (blocks) => set({ blocks }),
+
+  setActiveDragSectionIndex: (index) => set({ activeDragSectionIndex: index }),
+
+  insertBlock: (block, parentId) => {
     set((state) => {
       const newBlock = { ...block, id: generateID(++count) };
 
-      const section = state.sections[sectionIndex];
-      section.blocks.push(newBlock);
+      const findBlock = (blocks: Block[], id: string): Block | null => {
+        for (const block of blocks) {
+          if (block.id === id) return block;
+          if (block.blocks) {
+            const result = findBlock(block.blocks, id);
+            if (result) return result;
+          }
+        }
+        return null;
+      };
+
+      const parentBlock = findBlock(state.blocks, parentId);
+      if (parentBlock && parentBlock.allowNested) {
+        parentBlock.blocks = parentBlock.blocks || [];
+        parentBlock.blocks.push(newBlock);
+      } else {
+      }
 
       return {
-        sections: [...state.sections],
+        blocks: [...state.blocks],
       };
     });
   },
 
-  addSection: () => {
+  addBlock: (block) => {
     set((state) => {
-      const id = generateID(++count);
-
-      state.sections.push({
-        id,
-        name: `Section ${state.sections.length + 1}`,
-        blocks: [],
-      });
+      const newBlock = { ...block, id: generateID(++count) };
+      state.blocks.push(newBlock);
 
       return {
-        sections: [...state.sections],
+        blocks: [...state.blocks],
       };
     });
   },
@@ -75,7 +87,7 @@ export const useCanvasStore = create<CanvasStore>((set) => ({
     }));
   },
 
-  moveBlock: (activeId, overId, sourceSectionIndex, destinationSectionIndex) =>
+  moveBlock: (activeId, overId) =>
     set((state) => {
       const findBlock = (
         blocks: Block[],
@@ -93,20 +105,31 @@ export const useCanvasStore = create<CanvasStore>((set) => ({
         return null;
       };
 
-      const sourceSection = state.sections[sourceSectionIndex];
-      const destinationSection = state.sections[destinationSectionIndex];
+      const activeBlockInfo = findBlock(state.blocks, activeId);
 
-      const activeBlockInfo = findBlock(sourceSection.blocks, activeId);
-      const overBlockInfo = findBlock(destinationSection.blocks, overId);
-
-      if (activeBlockInfo && overBlockInfo) {
+      if (activeBlockInfo) {
         const [activeParent, activeIndex] = activeBlockInfo;
-        const [overParent, overIndex] = overBlockInfo;
-
         const [movedBlock] = activeParent.splice(activeIndex, 1);
-        overParent.splice(overIndex, 0, movedBlock);
+
+        if (overId === '') {
+          state.blocks.push(movedBlock);
+        } else {
+          const overBlockInfo = findBlock(state.blocks, overId);
+          if (overBlockInfo) {
+            const [overParent, overIndex] = overBlockInfo;
+            if (
+              overParent[overIndex].type === 'div' ||
+              overParent[overIndex].type === 'section'
+            ) {
+              overParent[overIndex].blocks = overParent[overIndex].blocks || [];
+              overParent[overIndex].blocks.push(movedBlock);
+            } else {
+              overParent.splice(overIndex, 0, movedBlock);
+            }
+          }
+        }
       }
 
-      return { sections: [...state.sections] };
+      return { blocks: [...state.blocks] };
     }),
 }));
