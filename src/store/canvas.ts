@@ -7,6 +7,7 @@ type CanvasState = {
   blocks: Block[];
   expandedBlocks: { [key: string]: boolean };
   activeDragSectionIndex: number | null;
+  selectedBlock: Block | null;
 };
 
 type CanvasActions = {
@@ -16,6 +17,12 @@ type CanvasActions = {
   moveBlock: (activeId: string, overId: string) => void;
   toggleBlockVisibility: (blockId: string) => void;
   setActiveDragSectionIndex: (index: number | null) => void;
+  setSelectedBlock: (block: Block | null) => void;
+  setBlockProperty: (
+    id: string,
+    key: 'textContent' | 'className',
+    value: any,
+  ) => void;
 };
 
 export type CanvasStore = CanvasState & CanvasActions;
@@ -31,11 +38,37 @@ const firstBlock: Block = {
 };
 
 export const useCanvasStore = create<CanvasStore>((set) => ({
-  blocks: [firstBlock],
   expandedBlocks: {},
+  blocks: [firstBlock],
+  selectedBlock: null,
   activeDragSectionIndex: null,
 
   setBlocks: (blocks) => set({ blocks }),
+  setSelectedBlock: (block) => set({ selectedBlock: block }),
+
+  setBlockProperty: (id, key, value) => {
+    set((state) => {
+      const findBlock = (blocks: Block[], id: string): Block | null => {
+        for (const block of blocks) {
+          if (block.id === id) return block;
+          if (block.blocks) {
+            const result = findBlock(block.blocks, id);
+            if (result) return result;
+          }
+        }
+        return null;
+      };
+
+      const block = findBlock(state.blocks, id);
+      if (block) {
+        block[key] = value;
+      }
+
+      return {
+        blocks: [...state.blocks],
+      };
+    });
+  },
 
   setActiveDragSectionIndex: (index) => set({ activeDragSectionIndex: index }),
 

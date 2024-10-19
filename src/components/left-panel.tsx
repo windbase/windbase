@@ -15,7 +15,7 @@ import {
   RowsIcon,
   TypeIcon,
 } from 'lucide-react';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   ControlledTreeEnvironment,
   Tree,
@@ -24,10 +24,23 @@ import {
 } from 'react-complex-tree';
 
 const LeftPanel = () => {
-  const { blocks, setBlocks } = useCanvasStore();
+  const { blocks, setBlocks, setSelectedBlock } = useCanvasStore();
   const [focusedItem, setFocusedItem] = useState<TreeItemIndex>();
   const [expandedItems, setExpandedItems] = useState<TreeItemIndex[]>([]);
-  const [selectedItems, setSelectedItems] = useState([]);
+  const [selectedItems, setSelectedItems] = useState<TreeItemIndex[]>([
+    'default',
+  ]);
+
+  useEffect(() => {
+    const item = selectedItems[0];
+    if (item) {
+      const flatten = blocks.map((block) => getChildren(block).concat(block));
+      const block = flatten.flat().find((block) => block.id === item);
+      if (block) {
+        setSelectedBlock(block);
+      }
+    }
+  }, [selectedItems]);
 
   function getChildren(block: Block) {
     const flatten = block.blocks?.flatMap((block) => {
@@ -216,10 +229,11 @@ const LeftPanel = () => {
                       <ChevronRight size={18} />
                     )}
                   </span>
-                ) : (
-                  <ChevronDown size={18} className="opacity-0" />
-                )
+                ) : null
               }
+              onSelectItems={(items) => {
+                setSelectedItems(items);
+              }}
               renderItem={({
                 title,
                 arrow,
@@ -229,27 +243,39 @@ const LeftPanel = () => {
                 item,
               }) => (
                 <li
+                  // style={{
+                  //   margin: 0,
+                  //   display: 'flex',
+                  //   flexDirection: 'column',
+                  //   alignItems: 'flex-start',
+                  // }}
+                  // {...context.itemContainerWithChildrenProps}
                   style={{
-                    margin: 0,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'flex-start',
+                    marginLeft: `${depth * 20}px`,
                   }}
-                  {...context.itemContainerWithChildrenProps}
                 >
                   <div
-                    className="flex items-center gap-2 p-2 rounded-xl cursor-pointer"
+                    className={`flex items-center gap-2 p-2 rounded-xl cursor-pointer w-full ${
+                      context.isSelected ? 'bg-primary text-white' : ''
+                    }`}
                     {...context.itemContainerWithoutChildrenProps}
                     {...context.interactiveElementProps}
-                    style={{
-                      marginLeft: `${depth * 20}px`,
-                    }}
                   >
                     {arrow}
                     {item.isFolder ? (
-                      <RowsIcon size={18} className="text-primary" />
+                      <RowsIcon
+                        size={18}
+                        className={
+                          context.isSelected ? 'text-white' : 'text-primary'
+                        }
+                      />
                     ) : (
-                      <TypeIcon size={18} className="text-primary" />
+                      <TypeIcon
+                        size={18}
+                        className={
+                          context.isSelected ? 'text-white' : 'text-primary'
+                        }
+                      />
                     )}
                     {title}
                   </div>
