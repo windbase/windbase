@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512px" height="512px" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>windbase</title>
+    <defs>
+        <linearGradient x1="95.2263888%" y1="9.76360994%" x2="50%" y2="99.4236233%" id="linearGradient-1">
+            <stop stop-color="#181818" offset="0%"></stop>
+            <stop stop-color="#121212" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="48.0642914%" y1="100%" x2="70.3361365%" y2="2.17083002%" id="linearGradient-2">
+            <stop stop-color="#FF609E" offset="0%"></stop>
+            <stop stop-color="#F14646" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="windbase" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="Rectangle" fill="url(#linearGradient-1)" x="0" y="0" width="512" height="512"></rect>
+        <path d="M256,99 C342.708706,99 413,169.291294 413,256 C413,342.708706 342.708706,413 256,413 C169.291294,413 99,342.708706 99,256 C99,169.291294 169.291294,99 256,99 Z M256,166.607656 C206.629971,166.607656 166.607656,206.629971 166.607656,256 C166.607656,305.370029 206.629971,345.392344 256,345.392344 C305.370029,345.392344 345.392344,305.370029 345.392344,256 C345.392344,206.629971 305.370029,166.607656 256,166.607656 Z" id="Combined-Shape" fill="url(#linearGradient-2)"></path>
+    </g>
+</svg>

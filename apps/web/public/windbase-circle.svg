@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="314px" height="314px" viewBox="0 0 314 314" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>windbase-cricle</title>
+    <defs>
+        <linearGradient x1="48.0642914%" y1="100%" x2="70.3361365%" y2="2.17083002%" id="linearGradient-1">
+            <stop stop-color="#7C60FF" offset="0%"></stop>
+            <stop stop-color="#46E4F1" offset="99.9207823%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="windbase" transform="translate(-99, -99)" fill="url(#linearGradient-1)">
+            <path d="M256,99 C342.708706,99 413,169.291294 413,256 C413,342.708706 342.708706,413 256,413 C169.291294,413 99,342.708706 99,256 C99,169.291294 169.291294,99 256,99 Z M256,166.607656 C206.629971,166.607656 166.607656,206.629971 166.607656,256 C166.607656,305.370029 206.629971,345.392344 256,345.392344 C305.370029,345.392344 345.392344,305.370029 345.392344,256 C345.392344,206.629971 305.370029,166.607656 256,166.607656 Z" id="windbase-cricle"></path>
+        </g>
+    </g>
+</svg>
