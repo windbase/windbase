@@ -52,8 +52,9 @@ function AppLayout({ children }: { children: React.ReactNode }) {
 				</div>
 			</div>
 			<div className="flex-1 flex">
-				<div className="w-72"></div>
+				<div className="w-60 h-full border-r"></div>
 				<div className="flex-1">{children}</div>
+				<div className="w-72 h-full border-l"></div>
 			</div>
 		</div>
 	);
