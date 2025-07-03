@@ -1,5 +1,7 @@
+import VisualBuilder from '@/components/VisualBuilder';
+
 function Page() {
-	return <div></div>;
+	return <VisualBuilder />;
 }
 
 export default Page;

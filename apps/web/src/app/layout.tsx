@@ -1,5 +1,4 @@
-import AppLayout from '@/components/layout';
-import { ThemeProvider } from '@/components/providers';
+import { ThemeProvider } from '@/components/ThemeProvider';
 
 import './global.css';
 
@@ -15,11 +14,9 @@ export default function RootLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<html lang="en">
+		<html lang="en" suppressHydrationWarning>
 			<body>
-				<ThemeProvider>
-					<AppLayout>{children}</AppLayout>
-				</ThemeProvider>
+				<ThemeProvider>{children}</ThemeProvider>
 			</body>
 		</html>
 	);
