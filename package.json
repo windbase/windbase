@@ -1,29 +1,29 @@
 {
-  "name": "@windbase/source",
-  "version": "0.0.0",
-  "license": "MIT",
-  "scripts": {},
-  "private": true,
-  "devDependencies": {
-    "@biomejs/biome": "^2.0.6",
-    "@nx/js": "21.2.1",
-    "@nx/next": "21.2.1",
-    "@swc-node/register": "~1.9.1",
-    "@swc/cli": "~0.6.0",
-    "@swc/core": "~1.5.7",
-    "@swc/helpers": "~0.5.11",
-    "@types/react": "19.0.0",
-    "@types/react-dom": "19.0.0",
-    "autoprefixer": "10.4.13",
-    "nx": "21.2.1",
-    "postcss": "8.4.38",
-    "tailwindcss": "3.4.3",
-    "tslib": "^2.3.0",
-    "typescript": "~5.8.2"
-  },
-  "dependencies": {
-    "next": "~15.2.4",
-    "react": "19.0.0",
-    "react-dom": "19.0.0"
-  }
+	"name": "@windbase/source",
+	"version": "0.0.0",
+	"license": "MIT",
+	"scripts": {},
+	"private": true,
+	"devDependencies": {
+		"@biomejs/biome": "^2.0.6",
+		"@nx/js": "21.2.1",
+		"@nx/next": "21.2.1",
+		"@swc-node/register": "~1.9.1",
+		"@swc/cli": "~0.6.0",
+		"@swc/core": "~1.5.7",
+		"@swc/helpers": "~0.5.11",
+		"@types/react": "19.0.0",
+		"@types/react-dom": "19.0.0",
+		"autoprefixer": "10.4.13",
+		"nx": "21.2.1",
+		"postcss": "8.4.38",
+		"tailwindcss": "3.4.3",
+		"tslib": "^2.3.0",
+		"typescript": "~5.8.2"
+	},
+	"dependencies": {
+		"next": "~15.2.4",
+		"react": "19.0.0",
+		"react-dom": "19.0.0"
+	}
 }

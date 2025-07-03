@@ -1,12 +1,12 @@
-import AppLayout from "@/components/layout";
-import Providers from "@/components/providers";
+import AppLayout from '@/components/layout';
+import { ThemeProvider } from '@/components/providers';
 
-import "./global.css";
+import './global.css';
 
 export const metadata = {
-	title: "Windbase - Tailwind CSS Interface Builder",
+	title: 'Windbase - Tailwind CSS Interface Builder',
 	description:
-		"Visualize, Design, and Export Tailwind CSS Interfaces Seamlessly",
+		'Visualize, Design, and Export Tailwind CSS Interfaces Seamlessly',
 };
 
 export default function RootLayout({
@@ -17,9 +17,9 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body>
-				<Providers>
+				<ThemeProvider>
 					<AppLayout>{children}</AppLayout>
-				</Providers>
+				</ThemeProvider>
 			</body>
 		</html>
 	);

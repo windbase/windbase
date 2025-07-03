@@ -1,9 +1,11 @@
-"use client";
+'use client';
 
-import { HeroUIProvider } from "@heroui/react";
+import { ThemeProvider as NextThemesProvider } from 'next-themes';
+import type * as React from 'react';
 
-function Providers({ children }: { children: React.ReactNode }) {
-	return <HeroUIProvider disableRipple>{children}</HeroUIProvider>;
+export function ThemeProvider({
+	children,
+	...props
+}: React.ComponentProps<typeof NextThemesProvider>) {
+	return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
 }
-
-export default Providers;
