@@ -27,6 +27,7 @@ function ElementLayers() {
 		moveElement,
 		hoverElement,
 		getParentIds,
+		deleteElement,
 	} = useBuilder();
 	const [focusedItem, setFocusedItem] = useState<TreeItemIndex>();
 	const [expandedItems, setExpandedItems] = useState<TreeItemIndex[]>(['root']);
@@ -223,7 +224,13 @@ function ElementLayers() {
 								{title}
 								<div className="ml-auto hidden group-hover:flex items-center gap-1">
 									<Eye size={16} />
-									<Trash size={16} />
+									<Trash
+										size={16}
+										onClick={(e) => {
+											e.stopPropagation();
+											deleteElement(item.index.toString());
+										}}
+									/>
 								</div>
 							</div>
 							{children}
