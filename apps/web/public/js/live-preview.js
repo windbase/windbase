@@ -202,6 +202,14 @@ function renderElement(element) {
 		element.tag === 'br' ||
 		element.tag === 'hr'
 	) {
+		// Build attributes string
+		let attributesString = '';
+		if (element.attributes) {
+			for (const [key, value] of Object.entries(element.attributes)) {
+				attributesString += ` ${key}="${value}"`;
+			}
+		}
+
 		return (
 			'<' +
 			element.tag +
@@ -211,7 +219,9 @@ function renderElement(element) {
 			style +
 			'" data-element-id="' +
 			element.id +
-			'" />'
+			'"' +
+			attributesString +
+			' />'
 		);
 	}
 
@@ -226,6 +236,34 @@ function renderElement(element) {
 			? 'false'
 			: element.isContentEditable || false;
 
+	// Build attributes string for regular elements
+	let attributesString = '';
+	if (element.attributes) {
+		for (const [key, value] of Object.entries(element.attributes)) {
+			attributesString += ` ${key}="${value}"`;
+		}
+	}
+
+	// Special handling for SVG elements
+	if (element.tag === 'svg') {
+		// For SVG, we need to ensure proper namespace and attributes
+		const svgAttributes = element.attributes || {};
+
+		// Add default SVG attributes if not present
+		if (!svgAttributes.xmlns) {
+			attributesString += ' xmlns="http://www.w3.org/2000/svg"';
+		}
+
+		// Ensure SVG has proper display properties
+		if (!classNames.includes('block') && !classNames.includes('inline')) {
+			// Add inline-block display if no display class is present
+			const displayStyle = style
+				? `${style} display: inline-block;`
+				: 'display: inline-block;';
+			style = displayStyle;
+		}
+	}
+
 	return (
 		'<' +
 		element.tag +
@@ -237,7 +275,9 @@ function renderElement(element) {
 		element.id +
 		'" contenteditable="' +
 		contenteditable +
-		'">' +
+		'"' +
+		attributesString +
+		'>' +
 		content +
 		childrenHTML +
 		'</' +
@@ -301,9 +341,33 @@ function updateElementAttributes(elementId, attributes) {
 		'[data-element-id="' + elementId + '"]'
 	);
 	if (element) {
+		// Clear existing attributes first (except for built-in ones)
+		const preservedAttributes = [
+			'data-element-id',
+			'contenteditable',
+			'style',
+			'class',
+		];
+		const currentAttributes = [...element.attributes];
+
+		currentAttributes.forEach((attr) => {
+			if (!preservedAttributes.includes(attr.name)) {
+				element.removeAttribute(attr.name);
+			}
+		});
+
+		// Add new attributes
 		Object.entries(attributes).forEach(([key, value]) => {
 			element.setAttribute(key, value);
 		});
+
+		// Special handling for SVG elements
+		if (element.tagName.toLowerCase() === 'svg') {
+			// Ensure SVG has proper namespace
+			if (!element.hasAttribute('xmlns')) {
+				element.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+			}
+		}
 	}
 }
 
