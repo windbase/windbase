@@ -42,7 +42,7 @@ function ElementProperties() {
 						</Button>
 					</CollapsibleTrigger>
 				</div>
-				<CollapsibleContent>
+				<CollapsibleContent className="px-2 mt-2">
 					<Textarea
 						key={selectedElement?.id}
 						placeholder="Content"
@@ -73,14 +73,14 @@ function ElementProperties() {
 					</CollapsibleTrigger>
 				</div>
 
-				<CollapsibleContent>
-					<h1 className="uppercase text-xs font-medium text-muted-foreground px-2 mt-2">
+				<CollapsibleContent className="px-2 mt-2">
+					<h1 className="uppercase text-xs font-medium text-muted-foreground">
 						Classes
 					</h1>
-					<p className="text-xs text-muted-foreground px-2 mb-2 mt-0.5">
+					<p className="text-xs text-muted-foreground mb-2 mt-0.5">
 						Add or remove classes to the element.
 					</p>
-					<div className="flex flex-wrap gap-1 mt-2 px-2">
+					<div className="flex flex-wrap gap-1 mt-2">
 						{classes.map((className) => (
 							<div
 								key={className}
@@ -105,7 +105,7 @@ function ElementProperties() {
 						)}
 					</div>
 
-					<div className="flex items-center gap-2 p-2">
+					<div className="flex items-center gap-2 mt-2">
 						<Input
 							placeholder="Add class"
 							ref={classInputRef}
