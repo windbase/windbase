@@ -18,6 +18,7 @@ export interface BuilderElement {
 	inputAttributes?: AttributeInput[];
 	children: BuilderElement[];
 	parent?: string;
+	attributes?: Record<string, string>;
 }
 
 interface BuilderState {
