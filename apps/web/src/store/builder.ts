@@ -43,6 +43,48 @@ interface BuilderActions {
 	setSidebarView: (view: 'default' | 'layers') => void;
 }
 
+// Helper function to find element by ID recursively
+const findElementById = (
+	elements: BuilderElement[],
+	id: string
+): BuilderElement | null => {
+	for (const element of elements) {
+		if (element.id === id) {
+			return element;
+		}
+		if (element.children.length > 0) {
+			const found = findElementById(element.children, id);
+			if (found) return found;
+		}
+	}
+	return null;
+};
+
+// Helper function to remove element by ID recursively
+const removeElementById = (
+	elements: BuilderElement[],
+	id: string
+): BuilderElement[] => {
+	return elements
+		.filter((element) => element.id !== id)
+		.map((element) => ({
+			...element,
+			children: removeElementById(element.children, id),
+		}));
+};
+
+// Helper function to update element parent references
+const updateParentReferences = (
+	elements: BuilderElement[],
+	parentId?: string
+): BuilderElement[] => {
+	return elements.map((element) => ({
+		...element,
+		parent: parentId,
+		children: updateParentReferences(element.children, element.id),
+	}));
+};
+
 export const useBuilder = create<BuilderState & BuilderActions>((set, get) => ({
 	sidebarView: 'default',
 	elements: [],
@@ -55,46 +97,153 @@ export const useBuilder = create<BuilderState & BuilderActions>((set, get) => ({
 
 	// Actions
 	selectElement: (id) => {
-		//  TODO: Implement
+		set({ selectedElement: id });
 	},
 	hoverElement: (id) => {
-		//  TODO: Implement
+		set({ hoveredElement: id });
 	},
-	addElement: (element) => {
+	addElement: (element, parentId) => {
 		const newElement: BuilderElement = {
 			...element,
 			id: crypto.randomUUID(),
+			parent: parentId,
 		};
-		set((state) => ({
-			elements: [...state.elements, newElement],
-		}));
+
+		set((state) => {
+			if (parentId) {
+				// Add to specific parent
+				const addToParent = (elements: BuilderElement[]): BuilderElement[] => {
+					return elements.map((el) => {
+						if (el.id === parentId) {
+							return {
+								...el,
+								children: [...el.children, newElement],
+							};
+						}
+						if (el.children.length > 0) {
+							return {
+								...el,
+								children: addToParent(el.children),
+							};
+						}
+						return el;
+					});
+				};
+				return {
+					elements: addToParent(state.elements),
+				};
+			} else {
+				// Add to root level
+				return {
+					elements: [...state.elements, newElement],
+				};
+			}
+		});
 	},
 	updateElement: (id, updates) => {
-		//  TODO: Implement
+		set((state) => {
+			const updateInElements = (
+				elements: BuilderElement[]
+			): BuilderElement[] => {
+				return elements.map((element) => {
+					if (element.id === id) {
+						return { ...element, ...updates };
+					}
+					if (element.children.length > 0) {
+						return {
+							...element,
+							children: updateInElements(element.children),
+						};
+					}
+					return element;
+				});
+			};
+			return {
+				elements: updateInElements(state.elements),
+			};
+		});
 	},
 	deleteElement: (id) => {
-		//  TODO: Implement
+		set((state) => ({
+			elements: removeElementById(state.elements, id),
+			selectedElement:
+				state.selectedElement === id ? null : state.selectedElement,
+		}));
 	},
 	moveElement: (elementId, newParentId, position) => {
-		//  TODO: Implement
+		set((state) => {
+			// Find the element to move
+			const elementToMove = findElementById(state.elements, elementId);
+			if (!elementToMove) return state;
+
+			// Remove element from current position
+			let newElements = removeElementById(state.elements, elementId);
+
+			// Add element to new position
+			const movedElement = { ...elementToMove, parent: newParentId };
+
+			if (newParentId === 'root') {
+				// Add to root level
+				newElements.splice(position, 0, movedElement);
+			} else {
+				// Add to specific parent
+				const addToParent = (elements: BuilderElement[]): BuilderElement[] => {
+					return elements.map((el) => {
+						if (el.id === newParentId) {
+							const newChildren = [...el.children];
+							newChildren.splice(position, 0, movedElement);
+							return {
+								...el,
+								children: newChildren,
+							};
+						}
+						if (el.children.length > 0) {
+							return {
+								...el,
+								children: addToParent(el.children),
+							};
+						}
+						return el;
+					});
+				};
+				newElements = addToParent(newElements);
+			}
+
+			// Update parent references
+			newElements = updateParentReferences(newElements);
+
+			return {
+				elements: newElements,
+			};
+		});
 	},
 	moveElementToTop: (elementId) => {
-		//  TODO: Implement
+		const state = get();
+		const element = findElementById(state.elements, elementId);
+		if (element?.parent) {
+			state.moveElement(elementId, element.parent, 0);
+		}
 	},
 	moveElementInParent: (elementId, position) => {
-		//  TODO: Implement
+		const state = get();
+		const element = findElementById(state.elements, elementId);
+		if (element) {
+			state.moveElement(elementId, element.parent || 'root', position);
+		}
 	},
 	updateClasses: (id, classes) => {
-		//  TODO: Implement
+		get().updateElement(id, { classes });
 	},
 	undo: () => {
-		//  TODO: Implement
+		// TODO: Implement
 	},
 	redo: () => {
-		//  TODO: Implement
+		// TODO: Implement
 	},
 	loadTemplate: (template) => {
-		//  TODO: Implement
+		set({
+			elements: updateParentReferences(template),
+		});
 	},
 	exportHtml: () => {
 		return '';
