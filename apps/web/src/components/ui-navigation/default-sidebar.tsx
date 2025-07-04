@@ -1,9 +1,13 @@
 import { Download, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { templates } from '@/lib/templates';
+import { useBuilder } from '@/store/builder';
 
 function DefaultSidebar() {
+	const { loadTemplate } = useBuilder();
+
 	return (
-		<div>
+		<>
 			<div className="p-2 flex items-center gap-1">
 				<Button className="w-full">
 					<Download /> Import
@@ -12,7 +16,27 @@ function DefaultSidebar() {
 					<Search />
 				</Button>
 			</div>
-		</div>
+
+			<div className="p-2">
+				<h2 className="text-xs uppercase font-medium">Templates</h2>
+				<div className="flex flex-col gap-1 mt-3">
+					{templates.map((template) => (
+						<button
+							key={template.id}
+							type="button"
+							className="cursor-pointer w-full"
+							onClick={() => {
+								loadTemplate(template.elements);
+							}}
+						>
+							<div className="w-full flex items-center justify-center h-20 bg-gray-200 rounded-md">
+								<p className="text-xs text-gray-500">{template.name}</p>
+							</div>
+						</button>
+					))}
+				</div>
+			</div>
+		</>
 	);
 }
 

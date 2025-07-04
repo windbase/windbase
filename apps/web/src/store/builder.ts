@@ -6,6 +6,7 @@ type AttributeInput = {
 	type: 'text' | 'select';
 	label?: string;
 	options?: string[];
+	value?: string;
 };
 
 export interface BuilderElement {
