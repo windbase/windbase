@@ -38,7 +38,7 @@ function ElementPicker() {
 			<PopoverTrigger asChild>
 				<Plus className="hover:text-primary cursor-pointer" size={16} />
 			</PopoverTrigger>
-			<PopoverContent className="p-0 w-[300px] h-[400px] flex">
+			<PopoverContent className="p-0 w-[320px] h-[400px] flex">
 				<div className="w-[110px] h-full flex flex-col justify-evenly border-r">
 					{elementCategories.map((type, index) => {
 						const Icon = iconMap[type];
@@ -63,7 +63,7 @@ function ElementPicker() {
 							<button
 								key={element.id}
 								type="button"
-								className="h-[100px] w-full flex items-center justify-center hover:bg-muted/50 cursor-pointer"
+								className="h-[100px] w-full text-sm flex items-center justify-center hover:bg-muted/50 cursor-pointer"
 								onClick={() => {
 									const editorElement = definitionToEditor(element);
 									if (selectedElement) {
