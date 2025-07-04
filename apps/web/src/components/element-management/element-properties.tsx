@@ -18,6 +18,8 @@ import {
 } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
+import { elements } from '@/lib/elements';
+import type { AttributeInput } from '@/lib/types';
 import { useBuilder } from '@/store/builder';
 
 const ElementProperties = memo(() => {
@@ -56,11 +58,28 @@ const ElementProperties = memo(() => {
 	const getAttributeValue = useCallback(
 		(attribute: string): string => {
 			if (!selectedElement) return '';
-			// Check if the attribute exists on the element
-			return (selectedElement as any)[attribute] || '';
+			// Check if the attribute exists in the element's attributes
+			return selectedElement.attributes?.[attribute] || '';
 		},
 		[selectedElement],
 	);
+
+	// Get element definition that matches the selected element
+	const getElementDefinition = useCallback(() => {
+		if (!selectedElement) return null;
+
+		const elementCategory = elements[selectedElement.type];
+		if (!elementCategory) return null;
+
+		// Find the element definition that matches the tag
+		return elementCategory.find((el) => el.tag === selectedElement.tag) || null;
+	}, [selectedElement]);
+
+	// Get input attributes from the element definition
+	const getInputAttributes = useCallback((): AttributeInput[] => {
+		const definition = getElementDefinition();
+		return definition?.inputAttributes || [];
+	}, [getElementDefinition]);
 
 	const handleRemoveClass = useCallback(
 		(classToRemove: string) => {
@@ -148,14 +167,12 @@ const ElementProperties = memo(() => {
 	);
 
 	const attributeInputs = useMemo(() => {
-		if (
-			!selectedElement?.inputAttributes ||
-			selectedElement.inputAttributes.length === 0
-		) {
+		const inputAttributes = getInputAttributes();
+		if (inputAttributes.length === 0) {
 			return null;
 		}
-		return selectedElement.inputAttributes.map(renderAttributeInput);
-	}, [selectedElement?.inputAttributes, renderAttributeInput]);
+		return inputAttributes.map(renderAttributeInput);
+	}, [getInputAttributes, renderAttributeInput]);
 
 	if (!selectedElement) {
 		return (

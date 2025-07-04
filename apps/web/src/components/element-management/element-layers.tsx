@@ -17,7 +17,7 @@ import {
 	type TreeItem,
 	type TreeItemIndex,
 } from 'react-complex-tree';
-import type { BuilderElement } from '@/store/builder';
+import type { EditorElement } from '@/lib/types';
 import { useBuilder } from '@/store/builder';
 
 function ElementLayers() {
@@ -77,14 +77,15 @@ function ElementLayers() {
 		};
 
 		// Add all elements to the tree
-		const processElement = (element: BuilderElement) => {
+		const processElement = (element: EditorElement) => {
 			const isFolder = element.type === 'layout' || element.children.length > 0;
 
 			items[element.id] = {
 				index: element.id,
 				canMove: true,
 				isFolder,
-				children: element.children?.map((child) => child.id) || [],
+				children:
+					element.children?.map((child: EditorElement) => child.id) || [],
 				data: element.tag,
 				canRename: true,
 			};
@@ -121,7 +122,7 @@ function ElementLayers() {
 	};
 
 	// Get icon based on element type
-	const getElementIcon = (element: BuilderElement) => {
+	const getElementIcon = (element: EditorElement) => {
 		if (element.type === 'layout' || element.children.length > 0) {
 			return RowsIcon;
 		}
@@ -129,8 +130,8 @@ function ElementLayers() {
 	};
 
 	// Get element by ID
-	const getElementById = (id: string): BuilderElement | null => {
-		const findElement = (elements: BuilderElement[]): BuilderElement | null => {
+	const getElementById = (id: string): EditorElement | null => {
+		const findElement = (elements: EditorElement[]): EditorElement | null => {
 			for (const element of elements) {
 				if (element.id === id) return element;
 				if (element.children.length > 0) {

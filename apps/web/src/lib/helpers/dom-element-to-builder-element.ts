@@ -1,17 +1,15 @@
-import type { BuilderElement } from '@/store/builder';
-import { findInputAttributes } from './find-input-attributes';
+import type { EditorElement } from '../types';
 import { generateId } from './generate-id';
 import { getClassNameAsString } from './get-class-name-as-string';
 import { getDirectTextContent } from './get-direct-text-content';
-import { mapHtmlAttributesToInputAttributes } from './map-html-attributes-to-input-attributes';
 import { shouldBeContentEditable } from './should-be-content-editable';
 import { tagToElementType } from './tag-to-element-type';
 
-// Convert DOM element to BuilderElement
+// Convert DOM element to EditorElement
 export const domElementToBuilderElement = (
 	element: Element,
 	parentId?: string
-): BuilderElement => {
+): EditorElement => {
 	const tagName = element.tagName.toLowerCase();
 	const id = generateId();
 	const elementType = tagToElementType(tagName);
@@ -34,19 +32,13 @@ export const domElementToBuilderElement = (
 	const directContent = getDirectTextContent(element);
 
 	// Convert child elements
-	const children: BuilderElement[] = [];
+	const children: EditorElement[] = [];
 	for (const child of element.children) {
 		children.push(domElementToBuilderElement(child, id));
 	}
 
-	// Get input attributes definition from elements.ts
-	const inputAttributesDef = findInputAttributes(elementType, tagName);
-	const inputAttributes = inputAttributesDef
-		? mapHtmlAttributesToInputAttributes(element, inputAttributesDef)
-		: undefined;
-
-	// Create builder element
-	const builderElement: BuilderElement = {
+	// Create editor element (no inputAttributes in EditorElement)
+	const editorElement: EditorElement = {
 		id,
 		type: elementType,
 		tag: tagName,
@@ -54,18 +46,17 @@ export const domElementToBuilderElement = (
 		children,
 		parent: parentId,
 		attributes: Object.keys(attributes).length > 0 ? attributes : undefined,
-		inputAttributes,
 	};
 
 	// Add content if there's direct text content
 	if (directContent) {
-		builderElement.content = directContent;
+		editorElement.content = directContent;
 	}
 
 	// Set content editable for appropriate elements
 	if (shouldBeContentEditable(elementType, tagName)) {
-		builderElement.isContentEditable = true;
+		editorElement.isContentEditable = true;
 	}
 
-	return builderElement;
+	return editorElement;
 };

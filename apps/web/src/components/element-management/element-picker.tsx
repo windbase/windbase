@@ -3,6 +3,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { elements } from '@/lib/elements';
 import { elementTypes } from '@/lib/elementTypes';
+import { definitionToEditor } from '@/lib/transformers';
 import { useBuilder } from '@/store/builder';
 
 type ElementPickerProps = {
@@ -35,14 +36,15 @@ function ElementPicker({ onClose }: ElementPickerProps) {
 							key={element.id}
 							className="capitalize text-xs hover:bg-muted cursor-pointer text-muted-foreground h-10 flex items-center justify-center border rounded-sm"
 							onClick={() => {
+								const editorElement = definitionToEditor(element);
 								if (selectedElement) {
 									if (selectedElement.tag === 'div') {
-										addElement(element, selectedElement.id);
+										addElement(editorElement, selectedElement.id);
 									} else {
-										addElement(element, selectedElement.parent);
+										addElement(editorElement, selectedElement.parent);
 									}
 								} else {
-									addElement(element);
+									addElement(editorElement);
 								}
 								setSidebarView('layers');
 								onClose();
