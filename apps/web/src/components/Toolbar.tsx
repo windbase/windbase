@@ -24,7 +24,7 @@ import {
 function Toolbar() {
 	return (
 		<TooltipProvider>
-			<div className="h-14 border-b grid grid-cols-8 justify-between items-center px-6 gap-4">
+			<div className="h-14 min-h-14 border-b grid grid-cols-8 justify-between items-center px-6 gap-4">
 				<div className="flex items-center gap-2 col-span-3">
 					<Image
 						src="/windbase-circle.svg"

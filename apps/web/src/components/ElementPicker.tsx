@@ -10,7 +10,7 @@ type ElementPickerProps = {
 };
 
 function ElementPicker({ onClose }: ElementPickerProps) {
-	const { addElement, setSidebarView } = useBuilder();
+	const { addElement, selectedElement, setSidebarView } = useBuilder();
 
 	return (
 		<Tabs defaultValue="layout">
@@ -35,7 +35,15 @@ function ElementPicker({ onClose }: ElementPickerProps) {
 							key={element.id}
 							className="capitalize text-xs hover:bg-muted cursor-pointer text-muted-foreground h-10 flex items-center justify-center border rounded-sm"
 							onClick={() => {
-								addElement(element);
+								if (selectedElement) {
+									if (selectedElement.tag === 'div') {
+										addElement(element, selectedElement.id);
+									} else {
+										addElement(element, selectedElement.parent);
+									}
+								} else {
+									addElement(element);
+								}
 								setSidebarView('layers');
 								onClose();
 							}}
