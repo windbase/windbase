@@ -42,6 +42,7 @@ interface BuilderActions {
 	loadTemplate: (template: BuilderElement[]) => void;
 	exportHtml: () => string;
 	setSidebarView: (view: 'default' | 'layers') => void;
+	getParentIds: (elementId: string) => string[];
 }
 
 // Helper function to find element by ID recursively
@@ -84,6 +85,32 @@ const updateParentReferences = (
 		parent: parentId,
 		children: updateParentReferences(element.children, element.id),
 	}));
+};
+
+// Helper function to find all parent IDs of an element
+const findAllParentIds = (
+	elements: BuilderElement[],
+	targetId: string,
+	currentParents: string[] = []
+): string[] => {
+	for (const element of elements) {
+		// If this element has the target as a direct child
+		if (element.children.some((child) => child.id === targetId)) {
+			return [...currentParents, element.id];
+		}
+
+		// If this element has children, search recursively
+		if (element.children.length > 0) {
+			const found = findAllParentIds(element.children, targetId, [
+				...currentParents,
+				element.id,
+			]);
+			if (found.length > 0) {
+				return found;
+			}
+		}
+	}
+	return [];
 };
 
 export const useBuilder = create<BuilderState & BuilderActions>((set, get) => ({
@@ -307,5 +334,9 @@ export const useBuilder = create<BuilderState & BuilderActions>((set, get) => ({
 		set({
 			sidebarView: view,
 		});
+	},
+	getParentIds: (elementId) => {
+		const elements = get().elements;
+		return findAllParentIds(elements, elementId);
 	},
 }));
