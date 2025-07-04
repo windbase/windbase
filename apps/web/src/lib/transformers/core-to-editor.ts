@@ -1,4 +1,4 @@
-import type { ElementType } from '../elementTypes';
+import type { ElementCategory } from '../elementTypes';
 import { shouldBeContentEditable } from '../helpers/should-be-content-editable';
 import { tagToElementType } from '../helpers/tag-to-element-type';
 import type { CoreElement } from '../types/core-element';
@@ -12,7 +12,7 @@ export function coreToEditor(
 	coreElement: CoreElement,
 	parentId?: string
 ): EditorElement {
-	const type: ElementType = tagToElementType(coreElement.tag);
+	const type: ElementCategory = tagToElementType(coreElement.tag);
 
 	return {
 		...coreElement,

@@ -1,9 +1,9 @@
 import { elements } from '../elements';
-import type { ElementType } from '../elementTypes';
+import type { ElementCategory } from '../elementTypes';
 
 // Helper function to check if element should be content editable from elements.ts
 export const shouldBeContentEditable = (
-	type: ElementType,
+	type: ElementCategory,
 	tag: string
 ): boolean => {
 	const elementCategory = elements[type];

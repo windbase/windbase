@@ -1,4 +1,4 @@
-import type { ElementType } from '../elementTypes';
+import type { ElementCategory } from '../elementTypes';
 
 /**
  * Attribute input configuration for the element property panel
@@ -17,7 +17,7 @@ export type AttributeInput = {
  */
 export interface ElementDefinition {
 	id: string;
-	type: ElementType;
+	type: ElementCategory;
 	tag: string;
 	classes: string[];
 	content?: string;

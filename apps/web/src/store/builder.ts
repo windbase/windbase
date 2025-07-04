@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { ElementType } from '@/lib/elementTypes';
+import type { ElementCategory } from '@/lib/elementTypes';
 import { exportToFullHtml } from '@/lib/exporters';
 import { coreToEditor, editorToCore } from '@/lib/transformers';
 import type { CoreElement, EditorElement } from '@/lib/types';
@@ -7,7 +7,7 @@ import type { CoreElement, EditorElement } from '@/lib/types';
 // Legacy type for backward compatibility - will be removed in Phase 4
 export interface BuilderElement {
 	id: string;
-	type: ElementType;
+	type: ElementCategory;
 	tag: string;
 	classes: string[];
 	content?: string;

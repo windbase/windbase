@@ -1,4 +1,4 @@
-export const elementTypes = [
+export const elementCategories = [
 	'layout',
 	'form',
 	'media',
@@ -6,4 +6,4 @@ export const elementTypes = [
 	'other',
 ] as const;
 
-export type ElementType = (typeof elementTypes)[number];
+export type ElementCategory = (typeof elementCategories)[number];

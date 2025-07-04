@@ -1,8 +1,8 @@
 import { elements } from '../elements';
-import type { ElementType } from '../elementTypes';
+import type { ElementCategory } from '../elementTypes';
 
 // Helper function to find input attributes for a specific element type and tag
-export const findInputAttributes = (type: ElementType, tag: string) => {
+export const findInputAttributes = (type: ElementCategory, tag: string) => {
 	const elementCategory = elements[type];
 	if (!elementCategory) return undefined;
 

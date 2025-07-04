@@ -1,7 +1,7 @@
-import type { ElementType } from '../elementTypes';
+import type { ElementCategory } from '../elementTypes';
 
 // Map HTML tags to ElementType categories
-export const tagToElementType = (tagName: string): ElementType => {
+export const tagToElementType = (tagName: string): ElementCategory => {
 	const tag = tagName.toLowerCase();
 
 	// Layout elements
