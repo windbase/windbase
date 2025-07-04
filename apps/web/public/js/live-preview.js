@@ -188,11 +188,21 @@ function renderElement(element) {
 	const isSelected = selectedElementId === element.id;
 	const isHovered = hoveredElementId === element.id;
 
+	// Start with any existing inline styles from attributes
 	let style = '';
+	if (element.attributes?.style) {
+		style = element.attributes.style;
+		// Ensure it ends with semicolon for concatenation
+		if (style && !style.endsWith(';')) {
+			style += ';';
+		}
+	}
+
+	// Add selection/hover outline styles
 	if (isSelected) {
-		style = 'outline: 2px solid #3b82f6; outline-offset: 2px;';
+		style += ' outline: 2px solid #3b82f6; outline-offset: 2px;';
 	} else if (isHovered) {
-		style = 'outline: 2px solid #10b981; outline-offset: 2px;';
+		style += ' outline: 2px solid #10b981; outline-offset: 2px;';
 	}
 
 	// Handle self-closing tags
@@ -202,11 +212,14 @@ function renderElement(element) {
 		element.tag === 'br' ||
 		element.tag === 'hr'
 	) {
-		// Build attributes string
+		// Build attributes string (excluding style since we handle it separately)
 		let attributesString = '';
 		if (element.attributes) {
 			for (const [key, value] of Object.entries(element.attributes)) {
-				attributesString += ` ${key}="${value}"`;
+				if (key !== 'style') {
+					// Skip style, we handle it separately
+					attributesString += ` ${key}="${value}"`;
+				}
 			}
 		}
 
@@ -236,11 +249,14 @@ function renderElement(element) {
 			? 'false'
 			: element.isContentEditable || false;
 
-	// Build attributes string for regular elements
+	// Build attributes string for regular elements (excluding style)
 	let attributesString = '';
 	if (element.attributes) {
 		for (const [key, value] of Object.entries(element.attributes)) {
-			attributesString += ` ${key}="${value}"`;
+			if (key !== 'style') {
+				// Skip style, we handle it separately
+				attributesString += ` ${key}="${value}"`;
+			}
 		}
 	}
 
@@ -257,10 +273,7 @@ function renderElement(element) {
 		// Ensure SVG has proper display properties
 		if (!classNames.includes('block') && !classNames.includes('inline')) {
 			// Add inline-block display if no display class is present
-			const displayStyle = style
-				? `${style} display: inline-block;`
-				: 'display: inline-block;';
-			style = displayStyle;
+			style += ' display: inline-block;';
 		}
 	}
 
