@@ -1,5 +1,5 @@
-import LivePreview from './LivePreview';
-import LivePreviewToolbar from './LivePreviewToolbar';
+import LivePreview from './live-preview';
+import LivePreviewToolbar from './live-preview-toolbar';
 
 function LivePreviewArea() {
 	return (

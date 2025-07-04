@@ -1,4 +1,4 @@
-import { ThemeProvider } from '@/components/ThemeProvider';
+import { ThemeProvider } from '@/components/ui-navigation/theme-provider';
 
 import './global.css';
 

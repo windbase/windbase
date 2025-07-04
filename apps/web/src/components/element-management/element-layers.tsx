@@ -4,6 +4,7 @@ import {
 	ChevronDown,
 	ChevronRight,
 	Eye,
+	Layers,
 	RowsIcon,
 	Trash,
 	TypeIcon,
@@ -144,8 +145,8 @@ function ElementLayers() {
 
 	return (
 		<div>
-			<h1 className="text-xs font-medium p-4 uppercase text-muted-foreground">
-				Layers
+			<h1 className="text-xs font-medium px-2 py-3 uppercase text-muted-foreground flex items-center gap-2">
+				<Layers size={16} /> Layers
 			</h1>
 
 			<ControlledTreeEnvironment

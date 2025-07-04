@@ -1,12 +1,12 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import ElementLayers from '@/components/element-management/element-layers';
+import ElementProperties from '@/components/element-management/element-properties';
+import DefaultSidebar from '@/components/ui-navigation/default-sidebar';
+import Toolbar from '@/components/ui-navigation/toolbar';
 import { useBuilder } from '@/store/builder';
-import DefaultSidebar from './DefaultSidebar';
-import ElementLayers from './ElementLayers';
-import ElementProperties from './ElementProperties';
-import LivePreviewArea from './LivePreviewArea';
-import Toolbar from './Toolbar';
+import LivePreviewArea from './live-preview-area';
 
 function VisualBuilder() {
 	const canvasRef = useRef<HTMLDivElement>(null);

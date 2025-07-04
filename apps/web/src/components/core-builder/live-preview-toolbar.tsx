@@ -3,12 +3,12 @@
 import { TooltipProvider } from '@radix-ui/react-tooltip';
 import { Code, Plus } from 'lucide-react';
 import { useState } from 'react';
+import ElementPicker from '@/components/element-management/element-picker';
 import {
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
 } from '@/components/ui/popover';
-import ElementPicker from './ElementPicker';
 
 function LivePreviewToolbar() {
 	const [isOpen, setIsOpen] = useState(false);

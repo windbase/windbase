@@ -1,17 +1,24 @@
 /** biome-ignore-all lint/suspicious/noExplicitAny: we don't know the type of the element */
 import { ChevronsUpDown, XIcon } from 'lucide-react';
 import { memo, useCallback, useMemo, useRef } from 'react';
+import { Button } from '@/components/ui/button';
 import {
 	Collapsible,
 	CollapsibleContent,
 	CollapsibleTrigger,
 } from '@/components/ui/collapsible';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from '@/components/ui/select';
+import { Separator } from '@/components/ui/separator';
+import { Textarea } from '@/components/ui/textarea';
 import { useBuilder } from '@/store/builder';
-import { Button } from './ui/button';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import { Separator } from './ui/separator';
-import { Textarea } from './ui/textarea';
 
 const ElementProperties = memo(() => {
 	const classInputRef = useRef<HTMLInputElement>(null);
@@ -100,19 +107,21 @@ const ElementProperties = memo(() => {
 						>
 							{label || attribute}
 						</Label>
-						<select
-							id={inputId}
+						<Select
 							defaultValue={value}
-							onChange={(e) => handleAttributeChange(attribute, e.target.value)}
-							className="w-full px-3 py-2 border border-input bg-background rounded-md text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+							onValueChange={(value) => handleAttributeChange(attribute, value)}
 						>
-							<option value="">Select {label || attribute}</option>
-							{options.map((option: string) => (
-								<option key={option} value={option}>
-									{option}
-								</option>
-							))}
-						</select>
+							<SelectTrigger className="w-full">
+								<SelectValue placeholder={`Select ${label || attribute}`} />
+							</SelectTrigger>
+							<SelectContent>
+								{options.map((option: string) => (
+									<SelectItem key={option} value={option}>
+										{option}
+									</SelectItem>
+								))}
+							</SelectContent>
+						</Select>
 					</div>
 				);
 			}

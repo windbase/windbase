@@ -13,13 +13,13 @@ import {
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import DarkModeButton from './DarkModeButton';
 import {
 	Tooltip,
 	TooltipContent,
 	TooltipProvider,
 	TooltipTrigger,
-} from './ui/tooltip';
+} from '@/components/ui/tooltip';
+import DarkModeButton from './dark-mode-button';
 
 function Toolbar() {
 	return (
