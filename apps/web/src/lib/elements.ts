@@ -70,6 +70,13 @@ export const elements: Record<ElementType, BuilderElement[]> = {
 			tag: 'img',
 			classes: ['w-full', 'h-auto', 'rounded'],
 			children: [],
+			inputAttributes: [
+				{
+					attribute: 'src',
+					type: 'text',
+					label: 'Source',
+				},
+			],
 		},
 	],
 	list: [
