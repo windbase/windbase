@@ -1,8 +1,9 @@
 import { create } from 'zustand';
+import type { ElementType } from '@/lib/elementTypes';
 
 export interface BuilderElement {
 	id: string;
-	type: string;
+	type: ElementType;
 	tag: string;
 	classes: string[];
 	content?: string;
@@ -11,6 +12,7 @@ export interface BuilderElement {
 }
 
 interface BuilderState {
+	sidebarView: 'default' | 'layers';
 	elements: BuilderElement[];
 	selectedElement: string | null;
 	hoveredElement: string | null;
@@ -29,6 +31,8 @@ interface BuilderActions {
 		newParentId: string,
 		position: number
 	) => void;
+	moveElementToTop: (elementId: string) => void;
+	moveElementInParent: (elementId: string, position: number) => void;
 	updateClasses: (id: string, classes: string[]) => void;
 	undo: () => void;
 	redo: () => void;
@@ -36,9 +40,11 @@ interface BuilderActions {
 	canRedo: boolean;
 	loadTemplate: (template: BuilderElement[]) => void;
 	exportHtml: () => string;
+	setSidebarView: (view: 'default' | 'layers') => void;
 }
 
 export const useBuilder = create<BuilderState & BuilderActions>((set, get) => ({
+	sidebarView: 'default',
 	elements: [],
 	selectedElement: null,
 	hoveredElement: null,
@@ -54,8 +60,14 @@ export const useBuilder = create<BuilderState & BuilderActions>((set, get) => ({
 	hoverElement: (id) => {
 		//  TODO: Implement
 	},
-	addElement: (element, parentId) => {
-		//  TODO: Implement
+	addElement: (element) => {
+		const newElement: BuilderElement = {
+			...element,
+			id: crypto.randomUUID(),
+		};
+		set((state) => ({
+			elements: [...state.elements, newElement],
+		}));
 	},
 	updateElement: (id, updates) => {
 		//  TODO: Implement
@@ -64,6 +76,12 @@ export const useBuilder = create<BuilderState & BuilderActions>((set, get) => ({
 		//  TODO: Implement
 	},
 	moveElement: (elementId, newParentId, position) => {
+		//  TODO: Implement
+	},
+	moveElementToTop: (elementId) => {
+		//  TODO: Implement
+	},
+	moveElementInParent: (elementId, position) => {
 		//  TODO: Implement
 	},
 	updateClasses: (id, classes) => {
@@ -80,5 +98,10 @@ export const useBuilder = create<BuilderState & BuilderActions>((set, get) => ({
 	},
 	exportHtml: () => {
 		return '';
+	},
+	setSidebarView: (view) => {
+		set({
+			sidebarView: view,
+		});
 	},
 }));
