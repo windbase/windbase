@@ -28,6 +28,7 @@ interface BuilderState {
 	hoveredElement: BuilderElement | null;
 	history: BuilderElement[][];
 	historyIndex: number;
+	responsiveMode: 'desktop' | 'mobile';
 }
 
 interface BuilderActions {
@@ -52,6 +53,7 @@ interface BuilderActions {
 	exportHtml: () => string;
 	setSidebarView: (view: 'default' | 'layers') => void;
 	getParentIds: (elementId: string) => string[];
+	setResponsiveMode: (mode: 'desktop' | 'mobile') => void;
 }
 
 // Helper function to find element by ID recursively
@@ -131,6 +133,7 @@ export const useBuilder = create<BuilderState & BuilderActions>((set, get) => ({
 	historyIndex: 0,
 	canUndo: false,
 	canRedo: false,
+	responsiveMode: 'desktop',
 
 	// Actions
 	selectElement: (id) => {
@@ -347,5 +350,10 @@ export const useBuilder = create<BuilderState & BuilderActions>((set, get) => ({
 	getParentIds: (elementId) => {
 		const elements = get().elements;
 		return findAllParentIds(elements, elementId);
+	},
+	setResponsiveMode: (mode) => {
+		set({
+			responsiveMode: mode,
+		});
 	},
 }));

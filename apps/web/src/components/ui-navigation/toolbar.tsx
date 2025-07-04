@@ -19,9 +19,11 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { useBuilder } from '@/store/builder';
 import DarkModeButton from './dark-mode-button';
 
 function Toolbar() {
+	const { responsiveMode, setResponsiveMode } = useBuilder();
 	return (
 		<TooltipProvider>
 			<div className="h-14 min-h-14 border-b grid grid-cols-8 justify-between items-center px-6 gap-4">
@@ -39,12 +41,18 @@ function Toolbar() {
 					<Pencil size={14} />
 				</div>
 				<div className="mx-auto flex items-center col-span-2">
-					<Tabs aria-label="Options" defaultValue="pc">
+					<Tabs
+						aria-label="Options"
+						defaultValue={responsiveMode}
+						onValueChange={(value) =>
+							setResponsiveMode(value as 'desktop' | 'mobile')
+						}
+					>
 						<TabsList>
-							<TabsTrigger value="pc">
+							<TabsTrigger value="desktop">
 								<Monitor size={20} />
 							</TabsTrigger>
-							<TabsTrigger value="phone">
+							<TabsTrigger value="mobile">
 								<Smartphone size={20} />
 							</TabsTrigger>
 						</TabsList>
