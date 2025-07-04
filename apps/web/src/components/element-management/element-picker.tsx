@@ -72,6 +72,7 @@ function ElementPicker() {
 										addElement(editorElement);
 									}
 									setIsOpen(false);
+									setSidebarView('layers');
 								}}
 							>
 								{element.id}
