@@ -1,6 +1,13 @@
 import { create } from 'zustand';
 import type { ElementType } from '@/lib/elementTypes';
 
+type AttributeInput = {
+	attribute: string;
+	type: 'text' | 'select';
+	label?: string;
+	options?: string[];
+};
+
 export interface BuilderElement {
 	id: string;
 	type: ElementType;
@@ -8,6 +15,7 @@ export interface BuilderElement {
 	classes: string[];
 	content?: string;
 	isContentEditable?: boolean;
+	inputAttributes?: AttributeInput[];
 	children: BuilderElement[];
 	parent?: string;
 }

@@ -39,6 +39,19 @@ export const elements: Record<ElementType, BuilderElement[]> = {
 			tag: 'input',
 			classes: ['border', 'rounded', 'px-4', 'py-2'],
 			children: [],
+			inputAttributes: [
+				{
+					attribute: 'placeholder',
+					type: 'text',
+					label: 'Placeholder',
+				},
+				{
+					attribute: 'type',
+					type: 'select',
+					label: 'Type',
+					options: ['text', 'number', 'email', 'password'],
+				},
+			],
 		},
 		{
 			id: 'button',
