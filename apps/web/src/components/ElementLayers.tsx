@@ -26,6 +26,7 @@ function ElementLayers() {
 		selectElement,
 		moveElement,
 		hoverElement,
+		getParentIds,
 	} = useBuilder();
 	const [focusedItem, setFocusedItem] = useState<TreeItemIndex>();
 	const [expandedItems, setExpandedItems] = useState<TreeItemIndex[]>(['root']);
@@ -47,6 +48,20 @@ function ElementLayers() {
 			selectElement(item as string);
 		}
 	}, [selectedItems, selectElement]);
+
+	// Expand parent layers when an element is selected
+	useEffect(() => {
+		if (selectedElement) {
+			const parentIds = getParentIds(selectedElement.id);
+			const allParentIds = ['root', ...parentIds];
+
+			// Add parent IDs to expanded items
+			setExpandedItems((prev) => {
+				const newExpandedItems = [...new Set([...prev, ...allParentIds])];
+				return newExpandedItems;
+			});
+		}
+	}, [selectedElement, getParentIds]);
 
 	// Create data provider for react-complex-tree
 	const dataProvider = useMemo(() => {
