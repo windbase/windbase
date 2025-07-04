@@ -1,10 +1,10 @@
 import LivePreview from './LivePreview';
-import PreviewToolbar from './PreviewToolbar';
+import LivePreviewToolbar from './LivePreviewToolbar';
 
 function LivePreviewArea() {
 	return (
 		<div className="flex flex-col h-[95%] w-[88%] bg-background rounded-xl border">
-			<PreviewToolbar />
+			<LivePreviewToolbar />
 			<div className="flex-1 overflow-auto rounded-b-xl">
 				<LivePreview />
 			</div>

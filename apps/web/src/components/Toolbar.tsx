@@ -13,6 +13,7 @@ import {
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import DarkModeButton from './DarkModeButton';
 import {
 	Tooltip,
 	TooltipContent,
@@ -114,6 +115,15 @@ function Toolbar() {
 						</TooltipTrigger>
 						<TooltipContent>
 							<p>Save changes</p>
+						</TooltipContent>
+					</Tooltip>
+
+					<Tooltip delayDuration={200}>
+						<TooltipTrigger asChild>
+							<DarkModeButton />
+						</TooltipTrigger>
+						<TooltipContent>
+							<p>Dark Mode</p>
 						</TooltipContent>
 					</Tooltip>
 				</div>

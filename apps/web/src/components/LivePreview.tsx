@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 
 function LivePreview() {
 	const iframeRef = useRef<HTMLIFrameElement>(null);
-	const [iframeData, setIframeData] = useState<Document | null>(null);
+	const [, setIframeData] = useState<Document | null>(null);
 
 	useEffect(() => {
 		if (iframeRef.current) {

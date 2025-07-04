@@ -1,7 +1,9 @@
 function ElementLayers() {
 	return (
 		<div>
-			<h1>ElementLayers</h1>
+			<div className="p-2">
+				<h1 className="text-sm font-medium">Layers</h1>
+			</div>
 		</div>
 	);
 }
