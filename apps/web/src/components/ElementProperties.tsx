@@ -8,6 +8,7 @@ import {
 import { useBuilder } from '@/store/builder';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
+import { Label } from './ui/label';
 import { Separator } from './ui/separator';
 import { Textarea } from './ui/textarea';
 
@@ -30,6 +31,82 @@ function ElementProperties() {
 		}
 	};
 
+	const handleAttributeChange = (attribute: string, value: string) => {
+		if (selectedElement?.id) {
+			updateElement(selectedElement.id, {
+				[attribute]: value,
+			});
+		}
+	};
+
+	const getAttributeValue = (attribute: string): string => {
+		if (!selectedElement) return '';
+		// Check if the attribute exists on the element
+		return (selectedElement as any)[attribute] || '';
+	};
+
+	const renderAttributeInput = (inputAttr: any) => {
+		const { attribute, type, label, options } = inputAttr;
+		const value = getAttributeValue(attribute);
+		const inputId = `${selectedElement?.id}-${attribute}`;
+
+		if (type === 'select' && options) {
+			return (
+				<div key={attribute} className="mb-4">
+					<Label
+						htmlFor={inputId}
+						className="block text-xs uppercase font-medium mb-2"
+					>
+						{label || attribute}
+					</Label>
+					<select
+						id={inputId}
+						value={value}
+						onChange={(e) => handleAttributeChange(attribute, e.target.value)}
+						className="w-full px-3 py-2 border border-input bg-background rounded-md text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+					>
+						<option value="">Select {label || attribute}</option>
+						{options.map((option: string) => (
+							<option key={option} value={option}>
+								{option}
+							</option>
+						))}
+					</select>
+				</div>
+			);
+		}
+
+		return (
+			<div key={attribute} className="mb-4">
+				<Label
+					htmlFor={inputId}
+					className="block text-xs uppercase font-medium mb-2"
+				>
+					{label || attribute}
+				</Label>
+				<Input
+					id={inputId}
+					type="text"
+					value={value}
+					onChange={(e) => handleAttributeChange(attribute, e.target.value)}
+					placeholder={`Enter ${label || attribute}`}
+				/>
+			</div>
+		);
+	};
+
+	if (!selectedElement) {
+		return (
+			<div className="py-2 px-4">
+				<div className="text-sm text-muted-foreground h-20 flex items-center justify-center w-full">
+					No element selected
+				</div>
+			</div>
+		);
+	}
+
+	const contentInputId = `${selectedElement.id}-content`;
+
 	return (
 		<div className="py-2">
 			<Collapsible defaultOpen>
@@ -43,20 +120,47 @@ function ElementProperties() {
 					</CollapsibleTrigger>
 				</div>
 				<CollapsibleContent className="px-2 mt-2">
-					<Textarea
-						key={selectedElement?.id}
-						placeholder="Content"
-						className="resize-none"
-						rows={3}
-						value={selectedElement?.content || ''}
-						onChange={(e) => {
-							if (selectedElement?.id) {
-								updateElement(selectedElement.id, {
-									content: e.target.value,
-								});
-							}
-						}}
-					/>
+					{/* Only show textarea for content-editable elements */}
+					{selectedElement.isContentEditable && (
+						<div className="mb-4">
+							<Label
+								htmlFor={contentInputId}
+								className="block text-xs uppercase font-medium mb-2"
+							>
+								Content
+							</Label>
+							<Textarea
+								id={contentInputId}
+								key={selectedElement.id}
+								placeholder="Content"
+								className="resize-none"
+								rows={3}
+								value={selectedElement.content || ''}
+								onChange={(e) => {
+									updateElement(selectedElement.id, {
+										content: e.target.value,
+									});
+								}}
+							/>
+						</div>
+					)}
+
+					{/* Dynamic attribute inputs */}
+					{selectedElement.inputAttributes &&
+						selectedElement.inputAttributes.length > 0 && (
+							<div className="space-y-2">
+								{selectedElement.inputAttributes.map(renderAttributeInput)}
+							</div>
+						)}
+
+					{/* Show message if no attributes and not content editable */}
+					{!selectedElement.isContentEditable &&
+						(!selectedElement.inputAttributes ||
+							selectedElement.inputAttributes.length === 0) && (
+							<div className="text-sm text-muted-foreground h-20 flex items-center justify-center w-full">
+								No editable properties
+							</div>
+						)}
 				</CollapsibleContent>
 			</Collapsible>
 
@@ -91,7 +195,7 @@ function ElementProperties() {
 									size={14}
 									onClick={() => {
 										updateClasses(
-											selectedElement?.id as string,
+											selectedElement.id,
 											classes.filter((c) => c !== className),
 										);
 									}}
