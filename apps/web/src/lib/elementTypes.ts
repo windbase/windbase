@@ -2,7 +2,7 @@ export const elementTypes = [
 	'layout',
 	'form',
 	'media',
-	'list',
+	'text',
 	'other',
 ] as const;
 
