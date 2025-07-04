@@ -1,7 +1,7 @@
-import type { ElementType } from './elementTypes';
+import type { ElementCategory } from './elementTypes';
 import type { ElementDefinition } from './types/element-definition';
 
-export const elements: Record<ElementType, ElementDefinition[]> = {
+export const elements: Record<ElementCategory, ElementDefinition[]> = {
 	layout: [
 		{
 			id: 'div',

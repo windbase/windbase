@@ -1,18 +1,8 @@
-'use client';
-
 import { TooltipProvider } from '@radix-ui/react-tooltip';
-import { Code, Plus } from 'lucide-react';
-import { useState } from 'react';
-import ElementPicker from '@/components/element-management/element-picker';
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-} from '@/components/ui/popover';
+import { Code } from 'lucide-react';
+import ElementPicker from '../element-management/element-picker';
 
 function LivePreviewToolbar() {
-	const [isOpen, setIsOpen] = useState(false);
-
 	return (
 		<TooltipProvider>
 			<div
@@ -25,16 +15,7 @@ function LivePreviewToolbar() {
 					<div className="h-3 w-3 rounded-full bg-green-500" />
 				</div>
 				<div className="ml-auto flex items-center gap-2.5">
-					<Popover open={isOpen} onOpenChange={setIsOpen}>
-						<PopoverTrigger asChild>
-							<Plus className="hover:text-primary cursor-pointer" size={16} />
-						</PopoverTrigger>
-						<PopoverContent>
-							<h1 className="text-sm font-medium mb-3">Add component</h1>
-							<ElementPicker onClose={() => setIsOpen(false)} />
-						</PopoverContent>
-					</Popover>
-
+					<ElementPicker />
 					<Code className="hover:text-primary cursor-pointer" size={16} />
 				</div>
 			</div>
