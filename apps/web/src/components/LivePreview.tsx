@@ -137,6 +137,9 @@ function LivePreview() {
 									case 'hover-element':
 										hoverElement(data.elementId);
 										break;
+									case 'update-attributes':
+										updateElementAttributes(data.elementId, data.attributes);
+										break;
 								}
 							});
 
@@ -310,6 +313,15 @@ function LivePreview() {
 								}
 							}
 
+              function updateElementAttributes(elementId, attributes) {
+                const element = document.querySelector('[data-element-id="' + elementId + '"]');
+                if (element) {
+                  Object.entries(attributes).forEach(([key, value]) => {
+                    element.setAttribute(key, value);
+                  });
+                }
+              }
+
 							// Signal that iframe is ready
 							window.parent.postMessage({ type: 'iframe-ready' }, '*');
 						</script>
@@ -370,6 +382,10 @@ function LivePreview() {
 	// Handle content updates from properties panel
 	const prevSelectedElementContent = useRef<string | undefined>(undefined);
 	const prevSelectedElementId = useRef<string | undefined>(undefined);
+	const prevSelectedElementAttributes = useRef<
+		Record<string, string> | undefined
+	>(undefined);
+
 	useEffect(() => {
 		if (
 			isIframeLoaded &&
@@ -381,6 +397,9 @@ function LivePreview() {
 			const prevContent = prevSelectedElementContent.current;
 			const currentId = selectedElement.id;
 			const prevId = prevSelectedElementId.current;
+
+			const currentAttributes = selectedElement.attributes;
+			const prevAttributes = prevSelectedElementAttributes.current;
 
 			// Only send content update if:
 			// 1. Content actually changed
@@ -402,8 +421,24 @@ function LivePreview() {
 					'*',
 				);
 			}
+
+			if (currentAttributes !== prevAttributes && currentAttributes) {
+				const iframe = iframeRef.current;
+				iframe.contentWindow?.postMessage(
+					{
+						type: 'update-attributes',
+						data: {
+							elementId: selectedElement.id,
+							attributes: currentAttributes,
+						},
+					},
+					'*',
+				);
+			}
+
 			prevSelectedElementContent.current = currentContent;
 			prevSelectedElementId.current = currentId;
+			prevSelectedElementAttributes.current = currentAttributes;
 		}
 	}, [isIframeLoaded, selectedElement]);
 

@@ -1,5 +1,6 @@
+/** biome-ignore-all lint/suspicious/noExplicitAny: we don't know the type of the element */
 import { ChevronsUpDown, XIcon } from 'lucide-react';
-import { useMemo, useRef } from 'react';
+import { memo, useCallback, useMemo, useRef } from 'react';
 import {
 	Collapsible,
 	CollapsibleContent,
@@ -12,45 +13,110 @@ import { Label } from './ui/label';
 import { Separator } from './ui/separator';
 import { Textarea } from './ui/textarea';
 
-function ElementProperties() {
+const ElementProperties = memo(() => {
 	const classInputRef = useRef<HTMLInputElement>(null);
 	const { selectedElement, updateClasses, updateElement } = useBuilder();
 
 	const classes = useMemo(() => {
 		return selectedElement?.classes || [];
-	}, [selectedElement]);
+	}, [selectedElement?.classes]);
 
-	const handleAddClass = () => {
-		if (classInputRef.current) {
-			updateClasses(selectedElement?.id as string, [
-				...classes,
-				classInputRef.current.value,
-			]);
-			classInputRef.current.value = '';
-			classInputRef.current.focus();
+	const handleAddClass = useCallback(() => {
+		if (classInputRef.current && selectedElement?.id) {
+			const newClass = classInputRef.current.value.trim();
+			if (newClass && !classes.includes(newClass)) {
+				updateClasses(selectedElement.id, [...classes, newClass]);
+				classInputRef.current.value = '';
+				classInputRef.current.focus();
+			}
 		}
-	};
+	}, [classes, selectedElement?.id, updateClasses]);
 
-	const handleAttributeChange = (attribute: string, value: string) => {
-		if (selectedElement?.id) {
-			updateElement(selectedElement.id, {
-				[attribute]: value,
-			});
-		}
-	};
+	const handleAttributeChange = useCallback(
+		(attribute: string, value: string) => {
+			if (selectedElement?.id) {
+				updateElement(selectedElement.id, {
+					attributes: {
+						...selectedElement.attributes,
+						[attribute]: value,
+					},
+				});
+			}
+		},
+		[selectedElement?.id, selectedElement?.attributes, updateElement],
+	);
 
-	const getAttributeValue = (attribute: string): string => {
-		if (!selectedElement) return '';
-		// Check if the attribute exists on the element
-		return (selectedElement as any)[attribute] || '';
-	};
+	const getAttributeValue = useCallback(
+		(attribute: string): string => {
+			if (!selectedElement) return '';
+			// Check if the attribute exists on the element
+			return (selectedElement as any)[attribute] || '';
+		},
+		[selectedElement],
+	);
 
-	const renderAttributeInput = (inputAttr: any) => {
-		const { attribute, type, label, options } = inputAttr;
-		const value = getAttributeValue(attribute);
-		const inputId = `${selectedElement?.id}-${attribute}`;
+	const handleRemoveClass = useCallback(
+		(classToRemove: string) => {
+			if (selectedElement?.id) {
+				updateClasses(
+					selectedElement.id,
+					classes.filter((c) => c !== classToRemove),
+				);
+			}
+		},
+		[classes, selectedElement?.id, updateClasses],
+	);
 
-		if (type === 'select' && options) {
+	const handleContentChange = useCallback(
+		(content: string) => {
+			if (selectedElement?.id) {
+				updateElement(selectedElement.id, { content });
+			}
+		},
+		[selectedElement?.id, updateElement],
+	);
+
+	const handleKeyDown = useCallback(
+		(e: React.KeyboardEvent) => {
+			if (e.key === 'Enter') {
+				handleAddClass();
+			}
+		},
+		[handleAddClass],
+	);
+
+	const renderAttributeInput = useCallback(
+		(inputAttr: any) => {
+			const { attribute, type, label, options } = inputAttr;
+			const value = getAttributeValue(attribute);
+			const inputId = `${selectedElement?.id}-${attribute}`;
+
+			if (type === 'select' && options) {
+				return (
+					<div key={attribute} className="mb-4">
+						<Label
+							htmlFor={inputId}
+							className="block text-xs uppercase font-medium mb-2"
+						>
+							{label || attribute}
+						</Label>
+						<select
+							id={inputId}
+							defaultValue={value}
+							onChange={(e) => handleAttributeChange(attribute, e.target.value)}
+							className="w-full px-3 py-2 border border-input bg-background rounded-md text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+						>
+							<option value="">Select {label || attribute}</option>
+							{options.map((option: string) => (
+								<option key={option} value={option}>
+									{option}
+								</option>
+							))}
+						</select>
+					</div>
+				);
+			}
+
 			return (
 				<div key={attribute} className="mb-4">
 					<Label
@@ -59,41 +125,28 @@ function ElementProperties() {
 					>
 						{label || attribute}
 					</Label>
-					<select
+					<Input
 						id={inputId}
-						value={value}
+						type="text"
+						defaultValue={value}
 						onChange={(e) => handleAttributeChange(attribute, e.target.value)}
-						className="w-full px-3 py-2 border border-input bg-background rounded-md text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-					>
-						<option value="">Select {label || attribute}</option>
-						{options.map((option: string) => (
-							<option key={option} value={option}>
-								{option}
-							</option>
-						))}
-					</select>
+						placeholder={`Enter ${label || attribute}`}
+					/>
 				</div>
 			);
-		}
+		},
+		[getAttributeValue, handleAttributeChange, selectedElement?.id],
+	);
 
-		return (
-			<div key={attribute} className="mb-4">
-				<Label
-					htmlFor={inputId}
-					className="block text-xs uppercase font-medium mb-2"
-				>
-					{label || attribute}
-				</Label>
-				<Input
-					id={inputId}
-					type="text"
-					value={value}
-					onChange={(e) => handleAttributeChange(attribute, e.target.value)}
-					placeholder={`Enter ${label || attribute}`}
-				/>
-			</div>
-		);
-	};
+	const attributeInputs = useMemo(() => {
+		if (
+			!selectedElement?.inputAttributes ||
+			selectedElement.inputAttributes.length === 0
+		) {
+			return null;
+		}
+		return selectedElement.inputAttributes.map(renderAttributeInput);
+	}, [selectedElement?.inputAttributes, renderAttributeInput]);
 
 	if (!selectedElement) {
 		return (
@@ -136,31 +189,20 @@ function ElementProperties() {
 								className="resize-none"
 								rows={3}
 								value={selectedElement.content || ''}
-								onChange={(e) => {
-									updateElement(selectedElement.id, {
-										content: e.target.value,
-									});
-								}}
+								onChange={(e) => handleContentChange(e.target.value)}
 							/>
 						</div>
 					)}
 
-					{/* Dynamic attribute inputs */}
-					{selectedElement.inputAttributes &&
-						selectedElement.inputAttributes.length > 0 && (
-							<div className="space-y-2">
-								{selectedElement.inputAttributes.map(renderAttributeInput)}
-							</div>
-						)}
+					{attributeInputs && (
+						<div className="space-y-2">{attributeInputs}</div>
+					)}
 
-					{/* Show message if no attributes and not content editable */}
-					{!selectedElement.isContentEditable &&
-						(!selectedElement.inputAttributes ||
-							selectedElement.inputAttributes.length === 0) && (
-							<div className="text-sm text-muted-foreground h-20 flex items-center justify-center w-full">
-								No editable properties
-							</div>
-						)}
+					{!selectedElement.isContentEditable && !attributeInputs && (
+						<div className="text-sm text-muted-foreground h-20 flex items-center justify-center w-full">
+							No editable properties
+						</div>
+					)}
 				</CollapsibleContent>
 			</Collapsible>
 
@@ -178,12 +220,9 @@ function ElementProperties() {
 				</div>
 
 				<CollapsibleContent className="px-2 mt-2">
-					<h1 className="uppercase text-xs font-medium text-muted-foreground">
+					<Label className="block text-xs uppercase font-medium mb-2">
 						Classes
-					</h1>
-					<p className="text-xs text-muted-foreground mb-2 mt-0.5">
-						Add or remove classes to the element.
-					</p>
+					</Label>
 					<div className="flex flex-wrap gap-1 mt-2">
 						{classes.map((className) => (
 							<div
@@ -191,15 +230,7 @@ function ElementProperties() {
 								className="flex items-center gap-2 text-sm text-muted-foreground px-2 py-1 rounded-md bg-muted cursor-pointer"
 							>
 								{className}
-								<XIcon
-									size={14}
-									onClick={() => {
-										updateClasses(
-											selectedElement.id,
-											classes.filter((c) => c !== className),
-										);
-									}}
-								/>
+								<XIcon size={14} onClick={() => handleRemoveClass(className)} />
 							</div>
 						))}
 						{classes.length === 0 && (
@@ -213,11 +244,7 @@ function ElementProperties() {
 						<Input
 							placeholder="Add class"
 							ref={classInputRef}
-							onKeyDown={(e) => {
-								if (e.key === 'Enter') {
-									handleAddClass();
-								}
-							}}
+							onKeyDown={handleKeyDown}
 						/>
 						<Button onClick={handleAddClass}>Add</Button>
 					</div>
@@ -226,6 +253,8 @@ function ElementProperties() {
 			<Separator className="my-2" />
 		</div>
 	);
-}
+});
+
+ElementProperties.displayName = 'ElementProperties';
 
 export default ElementProperties;
