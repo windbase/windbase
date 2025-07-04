@@ -20,8 +20,13 @@ import type { BuilderElement } from '@/store/builder';
 import { useBuilder } from '@/store/builder';
 
 function ElementLayers() {
-	const { elements, selectedElement, selectElement, moveElement } =
-		useBuilder();
+	const {
+		elements,
+		selectedElement,
+		selectElement,
+		moveElement,
+		hoverElement,
+	} = useBuilder();
 	const [focusedItem, setFocusedItem] = useState<TreeItemIndex>();
 	const [expandedItems, setExpandedItems] = useState<TreeItemIndex[]>(['root']);
 	const [selectedItems, setSelectedItems] = useState<TreeItemIndex[]>([]);
@@ -177,10 +182,21 @@ function ElementLayers() {
 					const Icon = element ? getElementIcon(element) : TypeIcon;
 
 					return (
-						<li>
+						<li
+							onMouseEnter={() => {
+								if (item.index !== 'root') {
+									hoverElement(item.index.toString());
+								}
+							}}
+							onMouseLeave={() => {
+								hoverElement(null);
+							}}
+						>
 							<div
 								className={`flex items-center gap-2 px-2 py-2.5 cursor-pointer ${
-									context.isSelected ? 'bg-primary text-primary-foreground' : ''
+									context.isSelected
+										? 'bg-primary text-primary-foreground'
+										: 'hover:bg-muted/50'
 								} flex items-center group`}
 								{...context.itemContainerWithoutChildrenProps}
 								{...context.interactiveElementProps}
