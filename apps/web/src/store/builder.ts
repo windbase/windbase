@@ -7,6 +7,7 @@ export interface BuilderElement {
 	tag: string;
 	classes: string[];
 	content?: string;
+	isContentEditable?: boolean;
 	children: BuilderElement[];
 	parent?: string;
 }
@@ -14,8 +15,8 @@ export interface BuilderElement {
 interface BuilderState {
 	sidebarView: 'default' | 'layers';
 	elements: BuilderElement[];
-	selectedElement: string | null;
-	hoveredElement: string | null;
+	selectedElement: BuilderElement | null;
+	hoveredElement: BuilderElement | null;
 	history: BuilderElement[][];
 	historyIndex: number;
 }
@@ -97,10 +98,10 @@ export const useBuilder = create<BuilderState & BuilderActions>((set, get) => ({
 
 	// Actions
 	selectElement: (id) => {
-		set({ selectedElement: id });
+		set({ selectedElement: id ? findElementById(get().elements, id) : null });
 	},
 	hoverElement: (id) => {
-		set({ hoveredElement: id });
+		set({ hoveredElement: id ? findElementById(get().elements, id) : null });
 	},
 	addElement: (element, parentId) => {
 		const newElement: BuilderElement = {
@@ -158,8 +159,25 @@ export const useBuilder = create<BuilderState & BuilderActions>((set, get) => ({
 					return element;
 				});
 			};
+
+			const updatedElements = updateInElements(state.elements);
+
+			// Update selectedElement reference if it's the same element
+			const updatedSelectedElement =
+				state.selectedElement?.id === id
+					? findElementById(updatedElements, id)
+					: state.selectedElement;
+
+			// Update hoveredElement reference if it's the same element
+			const updatedHoveredElement =
+				state.hoveredElement?.id === id
+					? findElementById(updatedElements, id)
+					: state.hoveredElement;
+
 			return {
-				elements: updateInElements(state.elements),
+				elements: updatedElements,
+				selectedElement: updatedSelectedElement,
+				hoveredElement: updatedHoveredElement,
 			};
 		});
 	},
@@ -167,7 +185,7 @@ export const useBuilder = create<BuilderState & BuilderActions>((set, get) => ({
 		set((state) => ({
 			elements: removeElementById(state.elements, id),
 			selectedElement:
-				state.selectedElement === id ? null : state.selectedElement,
+				state.selectedElement?.id === id ? null : state.selectedElement,
 		}));
 	},
 	moveElement: (elementId, newParentId, position) => {
@@ -232,7 +250,44 @@ export const useBuilder = create<BuilderState & BuilderActions>((set, get) => ({
 		}
 	},
 	updateClasses: (id, classes) => {
-		get().updateElement(id, { classes });
+		set((state) => {
+			const updateInElements = (
+				elements: BuilderElement[]
+			): BuilderElement[] => {
+				return elements.map((element) => {
+					if (element.id === id) {
+						return { ...element, classes };
+					}
+					if (element.children.length > 0) {
+						return {
+							...element,
+							children: updateInElements(element.children),
+						};
+					}
+					return element;
+				});
+			};
+
+			const updatedElements = updateInElements(state.elements);
+
+			// Update selectedElement reference if it's the same element
+			const updatedSelectedElement =
+				state.selectedElement?.id === id
+					? findElementById(updatedElements, id)
+					: state.selectedElement;
+
+			// Update hoveredElement reference if it's the same element
+			const updatedHoveredElement =
+				state.hoveredElement?.id === id
+					? findElementById(updatedElements, id)
+					: state.hoveredElement;
+
+			return {
+				elements: updatedElements,
+				selectedElement: updatedSelectedElement,
+				hoveredElement: updatedHoveredElement,
+			};
+		});
 	},
 	undo: () => {
 		// TODO: Implement
