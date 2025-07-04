@@ -211,7 +211,11 @@ function ElementLayers() {
 							}}
 						>
 							<button
-								type="button"
+								onKeyDown={(e) => {
+									if (e.key === 'Enter' || e.key === ' ') {
+										selectElement(item.index.toString());
+									}
+								}}
 								className={`flex w-full items-center gap-2 px-2 py-2.5 cursor-pointer ${
 									context.isSelected
 										? 'bg-primary text-primary-foreground'
@@ -220,11 +224,15 @@ function ElementLayers() {
 								style={{
 									paddingLeft: `${(depth + 1) * 12}px`,
 								}}
+								{...context.itemContainerWithoutChildrenProps}
+								{...context.interactiveElementProps}
 								onClick={() => {
 									if (item.index !== 'root') {
 										selectElement(item.index.toString());
 									}
 								}}
+								type="button"
+								tabIndex={0}
 							>
 								{arrow || <Icon size={16} />}
 								{title}
