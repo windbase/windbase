@@ -87,6 +87,13 @@ export const elements: Record<ElementType, BuilderElement[]> = {
 			classes: ['list-disc', 'list-inside'],
 			children: [],
 		},
+		{
+			id: 'ordered-list',
+			type: 'list',
+			tag: 'li',
+			classes: ['list-inside'],
+			children: [],
+		},
 	],
 	other: [
 		{
