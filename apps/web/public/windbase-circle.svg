@@ -3,8 +3,8 @@
     <title>windbase-circle</title>
     <defs>
         <linearGradient x1="48.0642914%" y1="100%" x2="70.3361365%" y2="2.17083002%" id="linearGradient-1">
-            <stop stop-color="#FF6060" offset="0%"></stop>
-            <stop stop-color="#E546F1" offset="100%"></stop>
+            <stop stop-color="#6160FF" offset="0%"></stop>
+            <stop stop-color="#46ADF1" offset="100%"></stop>
         </linearGradient>
     </defs>
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
