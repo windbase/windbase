@@ -44,8 +44,8 @@ function VisualBuilder() {
 	return (
 		<div className="h-screen overflow-hidden flex flex-col">
 			<Toolbar />
-			<div className="flex-1 flex">
-				<div className="w-56 h-full border-r">
+			<div className="flex-1 flex overflow-hidden">
+				<div className="w-56 h-full border-r overflow-auto">
 					{sidebarView === 'default' ? <DefaultSidebar /> : <ElementLayers />}
 				</div>
 				<div
@@ -54,7 +54,7 @@ function VisualBuilder() {
 				>
 					<LivePreviewArea />
 				</div>
-				<div className="w-60 h-full border-l">
+				<div className="w-60 h-full border-l overflow-auto">
 					{selectedElement && <ElementProperties />}
 				</div>
 			</div>

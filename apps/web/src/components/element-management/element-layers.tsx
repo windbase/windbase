@@ -144,8 +144,8 @@ function ElementLayers() {
 	};
 
 	return (
-		<div>
-			<h1 className="text-xs font-medium px-2 py-3 uppercase text-muted-foreground flex items-center gap-2">
+		<>
+			<h1 className="sticky top-0 z-10 bg-background text-xs font-medium px-2 py-3 uppercase text-muted-foreground flex items-center gap-2">
 				<Layers size={16} /> Layers
 			</h1>
 
@@ -273,7 +273,7 @@ function ElementLayers() {
 					treeLabel="Element Layers"
 				/>
 			</ControlledTreeEnvironment>
-		</div>
+		</>
 	);
 }
 
