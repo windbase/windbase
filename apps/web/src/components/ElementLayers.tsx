@@ -34,7 +34,7 @@ function ElementLayers() {
 	// Update selected items when selectedElement changes
 	useEffect(() => {
 		if (selectedElement) {
-			setSelectedItems([selectedElement]);
+			setSelectedItems([selectedElement.id as TreeItemIndex]);
 		} else {
 			setSelectedItems([]);
 		}
@@ -44,7 +44,7 @@ function ElementLayers() {
 	useEffect(() => {
 		const item = selectedItems[0];
 		if (item && item !== 'root') {
-			selectElement(item.toString());
+			selectElement(item as string);
 		}
 	}, [selectedItems, selectElement]);
 
