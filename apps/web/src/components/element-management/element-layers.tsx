@@ -123,6 +123,11 @@ function ElementLayers() {
 
 	// Get icon based on element type
 	const getElementIcon = (element: EditorElement) => {
+		// Show TypeIcon for content-editable elements (headings, text, etc.)
+		if (element.isContentEditable) {
+			return TypeIcon;
+		}
+		// Show RowsIcon for layout elements or elements with children
 		if (element.type === 'layout' || element.children.length > 0) {
 			return RowsIcon;
 		}

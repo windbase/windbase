@@ -66,7 +66,7 @@ function LivePreview() {
 							}
 						</style>
 					</head>
-					<body>
+					<body class="bg-white dark:bg-neutral-950 dark:text-white">
 						<div id="preview-container"></div>
 						<div id="empty-state" class="empty-state">
 							<div class="empty-state-content">
