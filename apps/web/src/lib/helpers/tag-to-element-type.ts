@@ -15,14 +15,6 @@ export const tagToElementType = (tagName: string): ElementType => {
 			'main',
 			'aside',
 			'nav',
-			'span',
-			'p',
-			'h1',
-			'h2',
-			'h3',
-			'h4',
-			'h5',
-			'h6',
 		].includes(tag)
 	) {
 		return 'layout';
@@ -65,6 +57,26 @@ export const tagToElementType = (tagName: string): ElementType => {
 	// List elements
 	if (['ul', 'ol', 'li', 'dl', 'dt', 'dd'].includes(tag)) {
 		return 'list';
+	}
+
+	// Text elements (including headings, paragraphs, spans, etc.)
+	if (
+		[
+			'p',
+			'h1',
+			'h2',
+			'h3',
+			'h4',
+			'h5',
+			'h6',
+			'span',
+			'a',
+			'strong',
+			'em',
+			'i',
+		].includes(tag)
+	) {
+		return 'other';
 	}
 
 	// Default to other
