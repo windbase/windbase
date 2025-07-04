@@ -67,12 +67,16 @@ function ElementPicker() {
 								onClick={() => {
 									const editorElement = definitionToEditor(element);
 									if (selectedElement) {
-										addElement(editorElement, selectedElement.id);
+										if (selectedElement.tag === 'div') {
+											addElement(editorElement, selectedElement.id);
+										} else {
+											addElement(editorElement, selectedElement.parent);
+										}
 									} else {
 										addElement(editorElement);
 									}
-									setIsOpen(false);
 									setSidebarView('layers');
+									setIsOpen(false);
 								}}
 							>
 								{element.id}
