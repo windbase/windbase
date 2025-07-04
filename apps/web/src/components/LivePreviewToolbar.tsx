@@ -15,7 +15,10 @@ function LivePreviewToolbar() {
 
 	return (
 		<TooltipProvider>
-			<div className="flex h-8 items-center px-3 border-b bg-neutral-50 dark:bg-neutral-900 rounded-t-xl">
+			<div
+				className="flex h-8 items-center px-3 border-b bg-neutral-50 dark:bg-neutral-900 rounded-t-xl"
+				id="live-preview-toolbar"
+			>
 				<div className="flex items-center gap-1.5">
 					<div className="h-3 w-3 rounded-full bg-red-500" />
 					<div className="h-3 w-3 rounded-full bg-yellow-500" />

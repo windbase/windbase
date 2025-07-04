@@ -15,7 +15,13 @@ function VisualBuilder() {
 
 	useEffect(() => {
 		if (canvasRef.current) {
-			canvasRef.current.addEventListener('click', () => {
+			canvasRef.current.addEventListener('click', (event) => {
+				const toolbar = (event.target as HTMLElement)?.closest(
+					'#live-preview-toolbar',
+				);
+				if (toolbar) {
+					return;
+				}
 				selectElement(null);
 			});
 		}
