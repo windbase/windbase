@@ -5,29 +5,27 @@ export default function Component() {
 		<div className="flex flex-col items-center justify-center min-h-[400px] p-8 text-center">
 			<div className="relative mb-8">
 				<div className="relative">
-					<div className="w-20 h-20 bg-white rounded-2xl shadow-lg flex items-center justify-center mb-4">
-						<Layers className="w-10 h-10 text-gray-400" />
+					<div className="w-20 h-20 bg-background dark:bg-neutral-900 rounded-2xl shadow-lg flex items-center justify-center mb-4">
+						<Layers className="w-10 h-10 text-muted-foreground" />
 					</div>
-					<div className="absolute -top-2 -right-2 w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center animate-bounce">
-						<Plus className="w-4 h-4 text-white" />
+					<div className="absolute -top-2 -right-2 w-8 h-8 bg-primary rounded-full flex items-center justify-center animate-bounce">
+						<Plus className="w-4 h-4 text-background" />
 					</div>
-					<div className="absolute -bottom-1 -left-3 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center animate-pulse">
-						<MousePointer className="w-3 h-3 text-white" />
+					<div className="absolute -bottom-1 -left-3 w-6 h-6 bg-primary rounded-full flex items-center justify-center animate-pulse">
+						<MousePointer className="w-3 h-3 text-background" />
 					</div>
 				</div>
 			</div>
 
 			<div className="space-y-3 max-w-md">
-				<h2 className="text-2xl font-semibold text-gray-900">
-					Your canvas is empty
-				</h2>
-				<p className="text-gray-600 leading-relaxed">
+				<h2 className="text-2xl font-semibold">Your canvas is empty</h2>
+				<p className="text-muted-foreground leading-relaxed">
 					Start building by adding elements from the sidebar or use the toolbar
 					above to create your first component.
 				</p>
 			</div>
 
-			<div className="mt-8 flex flex-col sm:flex-row gap-4 text-sm text-gray-500">
+			<div className="mt-8 flex flex-col sm:flex-row gap-4 text-sm text-muted-foreground">
 				<div className="flex items-center gap-2">
 					<div className="w-6 h-6 bg-blue-100 rounded flex items-center justify-center">
 						<Plus className="w-3 h-3 text-blue-600" />
