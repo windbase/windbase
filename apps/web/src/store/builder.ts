@@ -1,14 +1,10 @@
 import { create } from 'zustand';
 import type { ElementType } from '@/lib/elementTypes';
+import { exportToFullHtml } from '@/lib/exporters';
+import { coreToEditor, editorToCore } from '@/lib/transformers';
+import type { CoreElement, EditorElement } from '@/lib/types';
 
-type AttributeInput = {
-	attribute: string;
-	type: 'text' | 'select';
-	label?: string;
-	options?: string[];
-	value?: string;
-};
-
+// Legacy type for backward compatibility - will be removed in Phase 4
 export interface BuilderElement {
 	id: string;
 	type: ElementType;
@@ -22,12 +18,21 @@ export interface BuilderElement {
 	attributes?: Record<string, string>;
 }
 
+// Legacy AttributeInput type - moved to types/element-definition.ts
+type AttributeInput = {
+	attribute: string;
+	type: 'text' | 'select';
+	label?: string;
+	options?: string[];
+	value?: string;
+};
+
 interface BuilderState {
 	sidebarView: 'default' | 'layers';
-	elements: BuilderElement[];
-	selectedElement: BuilderElement | null;
-	hoveredElement: BuilderElement | null;
-	history: BuilderElement[][];
+	elements: EditorElement[];
+	selectedElement: EditorElement | null;
+	hoveredElement: EditorElement | null;
+	history: EditorElement[][];
 	historyIndex: number;
 	responsiveMode: 'desktop' | 'mobile';
 }
@@ -35,8 +40,8 @@ interface BuilderState {
 interface BuilderActions {
 	selectElement: (id: string | null) => void;
 	hoverElement: (id: string | null) => void;
-	addElement: (element: Omit<BuilderElement, 'id'>, parentId?: string) => void;
-	updateElement: (id: string, updates: Partial<BuilderElement>) => void;
+	addElement: (element: Omit<EditorElement, 'id'>, parentId?: string) => void;
+	updateElement: (id: string, updates: Partial<EditorElement>) => void;
 	deleteElement: (id: string) => void;
 	moveElement: (
 		elementId: string,
@@ -50,18 +55,21 @@ interface BuilderActions {
 	redo: () => void;
 	canUndo: boolean;
 	canRedo: boolean;
-	loadTemplate: (template: BuilderElement[]) => void;
+	loadTemplate: (template: EditorElement[]) => void;
 	exportHtml: () => string;
 	setSidebarView: (view: 'default' | 'layers') => void;
 	getParentIds: (elementId: string) => string[];
 	setResponsiveMode: (mode: 'desktop' | 'mobile') => void;
+	// New transformation methods
+	loadFromCore: (coreElements: CoreElement[]) => void;
+	exportToCore: () => CoreElement[];
 }
 
 // Helper function to find element by ID recursively
 const findElementById = (
-	elements: BuilderElement[],
+	elements: EditorElement[],
 	id: string
-): BuilderElement | null => {
+): EditorElement | null => {
 	for (const element of elements) {
 		if (element.id === id) {
 			return element;
@@ -76,9 +84,9 @@ const findElementById = (
 
 // Helper function to remove element by ID recursively
 const removeElementById = (
-	elements: BuilderElement[],
+	elements: EditorElement[],
 	id: string
-): BuilderElement[] => {
+): EditorElement[] => {
 	return elements
 		.filter((element) => element.id !== id)
 		.map((element) => ({
@@ -89,9 +97,9 @@ const removeElementById = (
 
 // Helper function to update element parent references
 const updateParentReferences = (
-	elements: BuilderElement[],
+	elements: EditorElement[],
 	parentId?: string
-): BuilderElement[] => {
+): EditorElement[] => {
 	return elements.map((element) => ({
 		...element,
 		parent: parentId,
@@ -101,7 +109,7 @@ const updateParentReferences = (
 
 // Helper function to find all parent IDs of an element
 const findAllParentIds = (
-	elements: BuilderElement[],
+	elements: EditorElement[],
 	targetId: string,
 	currentParents: string[] = []
 ): string[] => {
@@ -144,7 +152,7 @@ export const useBuilder = create<BuilderState & BuilderActions>((set, get) => ({
 		set({ hoveredElement: id ? findElementById(get().elements, id) : null });
 	},
 	addElement: (element, parentId) => {
-		const newElement: BuilderElement = {
+		const newElement: EditorElement = {
 			...element,
 			id: crypto.randomUUID(),
 			parent: parentId,
@@ -341,7 +349,8 @@ export const useBuilder = create<BuilderState & BuilderActions>((set, get) => ({
 		});
 	},
 	exportHtml: () => {
-		return '';
+		const coreElements = get().exportToCore();
+		return exportToFullHtml(coreElements);
 	},
 	setSidebarView: (view) => {
 		set({
@@ -356,5 +365,15 @@ export const useBuilder = create<BuilderState & BuilderActions>((set, get) => ({
 		set({
 			responsiveMode: mode,
 		});
+	},
+	loadFromCore: (coreElements) => {
+		const editorElements = coreElements.map((element) => coreToEditor(element));
+		set({
+			elements: editorElements,
+		});
+	},
+	exportToCore: () => {
+		const elements = get().elements;
+		return elements.map((element) => editorToCore(element));
 	},
 }));

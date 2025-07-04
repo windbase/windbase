@@ -209,16 +209,20 @@ function ElementLayers() {
 								hoverElement(null);
 							}}
 						>
-							<div
-								className={`flex items-center gap-2 px-2 py-2.5 cursor-pointer ${
+							<button
+								type="button"
+								className={`flex w-full items-center gap-2 px-2 py-2.5 cursor-pointer ${
 									context.isSelected
 										? 'bg-primary text-primary-foreground'
 										: 'hover:bg-muted/50'
 								} flex items-center group`}
-								{...context.itemContainerWithoutChildrenProps}
-								{...context.interactiveElementProps}
 								style={{
 									paddingLeft: `${(depth + 1) * 12}px`,
+								}}
+								onClick={() => {
+									if (item.index !== 'root') {
+										selectElement(item.index.toString());
+									}
 								}}
 							>
 								{arrow || <Icon size={16} />}
@@ -233,7 +237,7 @@ function ElementLayers() {
 										}}
 									/>
 								</div>
-							</div>
+							</button>
 							{children}
 						</li>
 					);

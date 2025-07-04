@@ -1,7 +1,7 @@
-import type { BuilderElement } from '@/store/builder';
 import type { ElementType } from './elementTypes';
+import type { ElementDefinition } from './types/element-definition';
 
-export const elements: Record<ElementType, BuilderElement[]> = {
+export const elements: Record<ElementType, ElementDefinition[]> = {
 	layout: [
 		{
 			id: 'div',

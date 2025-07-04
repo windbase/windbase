@@ -1,0 +1,35 @@
+import type { ElementType } from '../elementTypes';
+import { shouldBeContentEditable } from '../helpers/should-be-content-editable';
+import { tagToElementType } from '../helpers/tag-to-element-type';
+import type { CoreElement } from '../types/core-element';
+import type { EditorElement } from '../types/editor-element';
+
+/**
+ * Transform CoreElement to EditorElement
+ * Adds editor-specific metadata required for the visual builder
+ */
+export function coreToEditor(
+	coreElement: CoreElement,
+	parentId?: string
+): EditorElement {
+	const type: ElementType = tagToElementType(coreElement.tag);
+
+	return {
+		...coreElement,
+		type,
+		parent: parentId,
+		isContentEditable: shouldBeContentEditable(type, coreElement.tag),
+		children: coreElement.children.map((child) =>
+			coreToEditor(child, coreElement.id)
+		),
+	};
+}
+
+/**
+ * Transform multiple CoreElements to EditorElements
+ */
+export function coreArrayToEditor(
+	coreElements: CoreElement[]
+): EditorElement[] {
+	return coreElements.map((element) => coreToEditor(element));
+}
