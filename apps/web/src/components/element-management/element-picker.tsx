@@ -57,7 +57,7 @@ function ElementPicker() {
 						);
 					})}
 				</div>
-				<div className="flex-1">
+				<div className="flex-1 overflow-auto">
 					<div className="grid grid-cols-2 gap-1.5 overflow-y-auto w-full">
 						{elements[selectedType].map((element) => (
 							<button
