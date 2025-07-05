@@ -63,6 +63,8 @@ interface BuilderActions {
 	// New transformation methods
 	loadFromCore: (coreElements: CoreElement[]) => void;
 	exportToCore: () => CoreElement[];
+	// Helper method to save state to history
+	saveToHistory: () => void;
 }
 
 // Helper function to find element by ID recursively
@@ -138,11 +140,42 @@ export const useBuilder = create<BuilderState & BuilderActions>((set, get) => ({
 	elements: [],
 	selectedElement: null,
 	hoveredElement: null,
-	history: [],
+	history: [[]], // Initialize with empty state
 	historyIndex: 0,
 	canUndo: false,
 	canRedo: false,
 	responsiveMode: 'desktop',
+
+	// Helper method to save current state to history (called after actions)
+	saveToHistory: () => {
+		const state = get();
+		const currentElements = JSON.parse(JSON.stringify(state.elements));
+
+		// Don't save if the current state is the same as the last saved state
+		if (
+			state.history.length > 0 &&
+			JSON.stringify(state.history[state.history.length - 1]) ===
+				JSON.stringify(currentElements)
+		) {
+			return;
+		}
+
+		// Remove any future history if we're not at the end
+		const newHistory = state.history.slice(0, state.historyIndex + 1);
+		newHistory.push(currentElements);
+
+		// Limit history to 50 entries
+		if (newHistory.length > 50) {
+			newHistory.shift();
+		}
+
+		set({
+			history: newHistory,
+			historyIndex: newHistory.length - 1,
+			canUndo: newHistory.length > 1,
+			canRedo: false,
+		});
+	},
 
 	// Actions
 	selectElement: (id) => {
@@ -188,6 +221,9 @@ export const useBuilder = create<BuilderState & BuilderActions>((set, get) => ({
 				};
 			}
 		});
+
+		// Save current state to history after making changes
+		get().saveToHistory();
 	},
 	updateElement: (id, updates) => {
 		set((state) => {
@@ -228,6 +264,9 @@ export const useBuilder = create<BuilderState & BuilderActions>((set, get) => ({
 				hoveredElement: updatedHoveredElement,
 			};
 		});
+
+		// Save current state to history after making changes
+		get().saveToHistory();
 	},
 	deleteElement: (id) => {
 		set((state) => ({
@@ -235,6 +274,9 @@ export const useBuilder = create<BuilderState & BuilderActions>((set, get) => ({
 			selectedElement:
 				state.selectedElement?.id === id ? null : state.selectedElement,
 		}));
+
+		// Save current state to history after making changes
+		get().saveToHistory();
 	},
 	moveElement: (elementId, newParentId, position) => {
 		set((state) => {
@@ -282,6 +324,9 @@ export const useBuilder = create<BuilderState & BuilderActions>((set, get) => ({
 				elements: newElements,
 			};
 		});
+
+		// Save current state to history after making changes
+		get().saveToHistory();
 	},
 	moveElementToTop: (elementId) => {
 		const state = get();
@@ -336,17 +381,45 @@ export const useBuilder = create<BuilderState & BuilderActions>((set, get) => ({
 				hoveredElement: updatedHoveredElement,
 			};
 		});
+
+		// Save current state to history after making changes
+		get().saveToHistory();
 	},
 	undo: () => {
-		// TODO: Implement
+		const state = get();
+		if (state.historyIndex > 0) {
+			const prevElements = state.history[state.historyIndex - 1];
+			const newHistoryIndex = state.historyIndex - 1;
+
+			set({
+				elements: JSON.parse(JSON.stringify(prevElements)),
+				historyIndex: newHistoryIndex,
+				canUndo: newHistoryIndex > 0,
+				canRedo: true,
+			});
+		}
 	},
 	redo: () => {
-		// TODO: Implement
+		const state = get();
+		if (state.historyIndex < state.history.length - 1) {
+			const nextElements = state.history[state.historyIndex + 1];
+			const newHistoryIndex = state.historyIndex + 1;
+
+			set({
+				elements: JSON.parse(JSON.stringify(nextElements)),
+				historyIndex: newHistoryIndex,
+				canUndo: true,
+				canRedo: newHistoryIndex < state.history.length - 1,
+			});
+		}
 	},
 	loadTemplate: (template) => {
 		set({
 			elements: updateParentReferences(template),
 		});
+
+		// Save current state to history after loading template
+		get().saveToHistory();
 	},
 	exportHtml: () => {
 		const coreElements = get().exportToCore();
