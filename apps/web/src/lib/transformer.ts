@@ -24,7 +24,7 @@ export const htmlToBuilderElements = (htmlString: string): EditorElement[] => {
 
 	// Convert each root element
 	const builderElements: EditorElement[] = [];
-	for (const element of bodyElements) {
+	for (const element of Array.from(bodyElements)) {
 		builderElements.push(domElementToBuilderElement(element));
 	}
 
@@ -48,7 +48,7 @@ export const htmlFragmentToBuilderElements = (
 
 	// Convert each root element
 	const builderElements: EditorElement[] = [];
-	for (const element of tempDiv.children) {
+	for (const element of Array.from(tempDiv.children)) {
 		builderElements.push(domElementToBuilderElement(element));
 	}
 
