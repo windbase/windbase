@@ -45,16 +45,16 @@ function VisualBuilder() {
 		<div className="h-screen overflow-hidden flex flex-col">
 			<Toolbar />
 			<div className="flex-1 flex overflow-hidden">
-				<div className="w-56 h-full border-r overflow-auto">
+				<div className="w-56 min-w-56 h-full border-r overflow-auto">
 					{sidebarView === 'default' ? <DefaultSidebar /> : <ElementLayers />}
 				</div>
 				<div
 					ref={canvasRef}
-					className="flex-1 bg-neutral-50 dark:bg-neutral-900 flex justify-center items-center"
+					className="flex-1 bg-neutral-50 dark:bg-neutral-900 flex justify-center items-center px-4"
 				>
 					<LivePreviewArea />
 				</div>
-				<div className="w-60 h-full border-l overflow-auto">
+				<div className="w-60 min-w-60 h-full border-l overflow-auto">
 					{selectedElement && <ElementProperties />}
 				</div>
 			</div>

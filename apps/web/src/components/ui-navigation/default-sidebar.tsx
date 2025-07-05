@@ -1,6 +1,7 @@
 import { Download, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { templates } from '@/lib/templates';
+import { htmlToBuilderElements } from '@/lib/transformer';
 import { useBuilder } from '@/store/builder';
 
 function DefaultSidebar() {
@@ -26,7 +27,7 @@ function DefaultSidebar() {
 							type="button"
 							className="cursor-pointer w-full"
 							onClick={() => {
-								loadTemplate(template.elements);
+								loadTemplate(htmlToBuilderElements(template.html));
 							}}
 						>
 							<div className="w-full flex items-center justify-center h-20 bg-gray-200 rounded-md">
