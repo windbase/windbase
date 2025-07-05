@@ -1,7 +1,6 @@
 import {
 	ChevronDown,
 	Code,
-	Download,
 	Eye,
 	Monitor,
 	Pencil,
@@ -20,6 +19,7 @@ import {
 } from '@/components/ui/tooltip';
 import { useBuilder } from '@/store/builder';
 import DarkModeButton from './dark-mode-button';
+import ExportButton from './export-button';
 
 function Toolbar() {
 	const { responsiveMode, setResponsiveMode } = useBuilder();
@@ -82,10 +82,8 @@ function Toolbar() {
 					</Tooltip>
 
 					<Tooltip delayDuration={200}>
-						<TooltipTrigger asChild>
-							<Button variant="outline" size="icon">
-								<Download />
-							</Button>
+						<TooltipTrigger>
+							<ExportButton />
 						</TooltipTrigger>
 						<TooltipContent>
 							<p>Export</p>
