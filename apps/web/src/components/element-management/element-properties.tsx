@@ -1,6 +1,6 @@
 /** biome-ignore-all lint/suspicious/noExplicitAny: we don't know the type of the element */
 import { ChevronsUpDown, XIcon } from 'lucide-react';
-import { memo, useCallback, useMemo, useRef } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
 	Collapsible,
@@ -51,6 +51,9 @@ const CONTENTEDITABLE_TAGS = [
 
 const ElementProperties = memo(() => {
 	const classInputRef = useRef<HTMLInputElement>(null);
+	const editingInputRef = useRef<HTMLInputElement>(null);
+	const [editingClass, setEditingClass] = useState<string | null>(null);
+	const [editingValue, setEditingValue] = useState<string>('');
 	const { selectedElement, updateClasses, updateElement } = useBuilder();
 
 	const classes = useMemo(() => {
@@ -63,6 +66,15 @@ const ElementProperties = memo(() => {
 			? CONTENTEDITABLE_TAGS.includes(selectedElement.tag)
 			: false;
 	}, [selectedElement]);
+
+	// Focus and position cursor when editing starts
+	useEffect(() => {
+		if (editingClass && editingInputRef.current) {
+			const inputElement = editingInputRef.current;
+			inputElement.focus();
+			inputElement.setSelectionRange(editingValue.length, editingValue.length);
+		}
+	}, [editingClass, editingValue.length]);
 
 	const handleAddClass = useCallback(() => {
 		if (classInputRef.current && selectedElement?.id) {
@@ -129,23 +141,62 @@ const ElementProperties = memo(() => {
 		[classes, selectedElement?.id, updateClasses],
 	);
 
-	const handleContentChange = useCallback(
-		(content: string) => {
-			if (selectedElement?.id) {
-				updateElement(selectedElement.id, { content });
-			}
+	const handleEditClass = useCallback(
+		(className: string) => {
+			setEditingClass(className);
+			setEditingValue(className);
 		},
-		[selectedElement?.id, updateElement],
+		[],
 	);
 
+	const handleSaveClass = useCallback(
+		(oldClassName: string) => {
+			if (selectedElement?.id) {
+				const trimmedValue = editingValue.trim();
+				if (trimmedValue && trimmedValue !== oldClassName && !classes.includes(trimmedValue)) {
+					const newClasses = classes.map((c) =>
+						c === oldClassName ? trimmedValue : c,
+					);
+					updateClasses(selectedElement.id, newClasses);
+				}
+			}
+			setEditingClass(null);
+			setEditingValue('');
+		},
+		[classes, editingValue, selectedElement?.id, updateClasses],
+	);
+
+	const handleCancelEdit = useCallback(() => {
+		setEditingClass(null);
+		setEditingValue('');
+	}, []);
+
+	const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+		const value = e.target.value;
+		setEditingValue(value);
+		// Auto-resize input based on content
+		e.target.style.width = `${Math.max(value.length * 8, 50)}px`;
+	}, []);
+
 	const handleKeyDown = useCallback(
-		(e: React.KeyboardEvent) => {
+		(e: React.KeyboardEvent, className?: string) => {
 			if (e.key === 'Enter') {
-				handleAddClass();
+				if (className) {
+					handleSaveClass(className);
+				} else {
+					handleAddClass();
+				}
+			} else if (e.key === 'Escape' && className) {
+				handleCancelEdit();
 			}
 		},
-		[handleAddClass],
+		[handleAddClass, handleSaveClass, handleCancelEdit],
 	);
+
+	// Calculate input width based on content
+	const getInputWidth = useCallback((value: string) => {
+		return Math.max(value.length * 8, 50);
+	}, []);
 
 	const renderAttributeInput = useCallback(
 		(inputAttr: any) => {
@@ -209,6 +260,15 @@ const ElementProperties = memo(() => {
 		}
 		return inputAttributes.map(renderAttributeInput);
 	}, [getInputAttributes, renderAttributeInput]);
+
+	const handleContentChange = useCallback(
+		(content: string) => {
+			if (selectedElement?.id) {
+				updateElement(selectedElement.id, { content });
+			}
+		},
+		[selectedElement?.id, updateElement],
+	);
 
 	if (!selectedElement) {
 		return (
@@ -291,7 +351,34 @@ const ElementProperties = memo(() => {
 								key={className}
 								className="flex items-center gap-2 text-sm text-muted-foreground px-2 py-1 rounded-md bg-muted cursor-pointer"
 							>
-								{className}
+								{editingClass === className ? (
+									<input
+										ref={editingInputRef}
+										type="text"
+										value={editingValue}
+										onChange={handleInputChange}
+										onBlur={() => handleSaveClass(className)}
+										onKeyDown={(e) => handleKeyDown(e, className)}
+										className="bg-transparent border-none outline-none text-sm"
+										style={{ 
+											width: `${getInputWidth(editingValue)}px`,
+											minWidth: '50px'
+										}}
+									/>
+								) : (
+									<button
+										type="button"
+										onClick={() => handleEditClass(className)}
+										onKeyDown={(e) => {
+											if (e.key === 'Enter' || e.key === ' ') {
+												handleEditClass(className);
+											}
+										}}
+										className="bg-transparent border-none outline-none text-sm min-w-0 flex-1 text-left"
+									>
+										{className}
+									</button>
+								)}
 								<XIcon size={14} onClick={() => handleRemoveClass(className)} />
 							</div>
 						))}
