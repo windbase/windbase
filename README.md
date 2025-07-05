@@ -1,17 +1,17 @@
 <p align="center">
   <a href="https://github.com/windbase/windbase">
-    <img src="./windbase.svg" width="80px" alt="Drivebase Logo" />
+    <img src="./windbase.svg" width="80px" alt="Windbase Logo" />
   </a>
 </p>
 
 <h3 align="center">
-  Design, Preview, and Export Tailwind CSS UI Seamlessly
+  Design, Preview, and Export Tailwind CSS
 </h3>
 <p align="center">
 Open-source, visual builder for TailwindCSS with several in-built plugins. Supports DaisyUI and Flowbite.
 </p>
 
-<p align="center"><a href="https://github.com/drivebase/drivebase/discussions">Discussions</a> · <a href="https://docs.windbase.dev">Documentation</a> · <a href="https://windbase.dev">Website</a></p>
+<p align="center"><a href="https://github.com/Windbase/Windbase/discussions">Discussions</a> · <a href="https://docs.windbase.dev">Documentation</a> · <a href="https://windbase.dev">Website</a></p>
 
 > [!WARNING]
 > This project is currently in early development, expect breaking changes with each commit.
