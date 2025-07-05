@@ -123,8 +123,35 @@ function ElementLayers() {
 
 	// Get icon based on element type
 	const getElementIcon = (element: EditorElement) => {
+		// Define which HTML tags should be contenteditable (same as in live-preview.js)
+		const CONTENTEDITABLE_TAGS = [
+			'h1',
+			'h2',
+			'h3',
+			'h4',
+			'h5',
+			'h6', // Headings
+			'p',
+			'span',
+			'div', // Text containers
+			'a',
+			'strong',
+			'em',
+			'i',
+			'b',
+			'u', // Inline text elements
+			'label',
+			'button', // Form elements with text
+			'blockquote',
+			'pre',
+			'code', // Special text elements
+			'li',
+			'dt',
+			'dd', // List elements
+		];
+
 		// Show TypeIcon for content-editable elements (headings, text, etc.)
-		if (element.isContentEditable) {
+		if (CONTENTEDITABLE_TAGS.includes(element.tag)) {
 			return TypeIcon;
 		}
 		// Show RowsIcon for layout elements or elements with children

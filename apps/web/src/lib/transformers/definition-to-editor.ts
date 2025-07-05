@@ -14,7 +14,6 @@ export function definitionToEditor(
 		tag: definition.tag,
 		classes: [...definition.classes], // Create new array to avoid mutations
 		content: definition.content,
-		isContentEditable: definition.isContentEditable,
 		attributes: {}, // Start with empty attributes, will be populated by inputAttributes
 		parent: parentId,
 		children: [], // New elements start with no children

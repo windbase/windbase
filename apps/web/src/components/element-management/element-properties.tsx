@@ -22,6 +22,33 @@ import { elements } from '@/lib/elements';
 import type { AttributeInput } from '@/lib/types';
 import { useBuilder } from '@/store/builder';
 
+// Define which HTML tags should be contenteditable (same as in live-preview.js)
+const CONTENTEDITABLE_TAGS = [
+	'h1',
+	'h2',
+	'h3',
+	'h4',
+	'h5',
+	'h6', // Headings
+	'p',
+	'span',
+	'div', // Text containers
+	'a',
+	'strong',
+	'em',
+	'i',
+	'b',
+	'u', // Inline text elements
+	'label',
+	'button', // Form elements with text
+	'blockquote',
+	'pre',
+	'code', // Special text elements
+	'li',
+	'dt',
+	'dd', // List elements
+];
+
 const ElementProperties = memo(() => {
 	const classInputRef = useRef<HTMLInputElement>(null);
 	const { selectedElement, updateClasses, updateElement } = useBuilder();
@@ -29,6 +56,13 @@ const ElementProperties = memo(() => {
 	const classes = useMemo(() => {
 		return selectedElement?.classes || [];
 	}, [selectedElement?.classes]);
+
+	// Check if the selected element should be contenteditable
+	const isContentEditable = useMemo(() => {
+		return selectedElement
+			? CONTENTEDITABLE_TAGS.includes(selectedElement.tag)
+			: false;
+	}, [selectedElement]);
 
 	const handleAddClass = useCallback(() => {
 		if (classInputRef.current && selectedElement?.id) {
@@ -200,7 +234,7 @@ const ElementProperties = memo(() => {
 				</div>
 				<CollapsibleContent className="px-2 mt-2">
 					{/* Only show textarea for content-editable elements */}
-					{selectedElement.isContentEditable && (
+					{isContentEditable && (
 						<div className="mb-4">
 							<Label
 								htmlFor={contentInputId}
@@ -224,7 +258,7 @@ const ElementProperties = memo(() => {
 						<div className="space-y-2">{attributeInputs}</div>
 					)}
 
-					{!selectedElement.isContentEditable && !attributeInputs && (
+					{!isContentEditable && !attributeInputs && (
 						<div className="text-sm text-muted-foreground h-20 flex items-center justify-center w-full">
 							No editable properties
 						</div>

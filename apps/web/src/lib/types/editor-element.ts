@@ -1,13 +1,16 @@
 import type { ElementCategory } from '../elementTypes';
-import type { CoreElement } from './core-element';
 
 /**
- * EditorElement - Extended structure for editor functionality
- * Contains core element data plus editor-specific state and metadata
+ * Editor element - runtime representation of elements in the visual builder
+ * Extended from CoreElement with editor-specific metadata
  */
-export interface EditorElement extends Omit<CoreElement, 'children'> {
+export interface EditorElement {
+	id: string;
 	type: ElementCategory;
-	isContentEditable?: boolean;
+	tag: string;
+	classes: string[];
+	content?: string;
+	attributes?: Record<string, string>;
 	parent?: string;
 	children: EditorElement[];
 }

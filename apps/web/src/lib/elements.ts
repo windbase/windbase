@@ -59,7 +59,6 @@ export const elements: Record<ElementCategory, ElementDefinition[]> = {
 			tag: 'button',
 			classes: ['border', 'border-gray-300', 'px-4', 'py-2', 'rounded'],
 			content: 'Button',
-			isContentEditable: true,
 			children: [],
 		},
 		{
@@ -68,7 +67,6 @@ export const elements: Record<ElementCategory, ElementDefinition[]> = {
 			tag: 'label',
 			classes: ['text-sm', 'font-medium'],
 			content: 'Label text',
-			isContentEditable: true,
 			children: [],
 		},
 	],
@@ -95,7 +93,6 @@ export const elements: Record<ElementCategory, ElementDefinition[]> = {
 			tag: 'p',
 			classes: ['text-base'],
 			content: 'Text content',
-			isContentEditable: true,
 			children: [],
 		},
 		{
@@ -104,7 +101,6 @@ export const elements: Record<ElementCategory, ElementDefinition[]> = {
 			tag: 'h1',
 			classes: ['text-4xl', 'font-bold'],
 			content: 'Heading 1',
-			isContentEditable: true,
 			children: [],
 		},
 		{
@@ -113,7 +109,6 @@ export const elements: Record<ElementCategory, ElementDefinition[]> = {
 			tag: 'h2',
 			classes: ['text-3xl', 'font-bold'],
 			content: 'Heading 2',
-			isContentEditable: true,
 			children: [],
 		},
 		{
@@ -122,7 +117,6 @@ export const elements: Record<ElementCategory, ElementDefinition[]> = {
 			tag: 'h3',
 			classes: ['text-2xl', 'font-bold'],
 			content: 'Heading 3',
-			isContentEditable: true,
 			children: [],
 		},
 		{
@@ -131,7 +125,6 @@ export const elements: Record<ElementCategory, ElementDefinition[]> = {
 			tag: 'h4',
 			classes: ['text-xl', 'font-bold'],
 			content: 'Heading 4',
-			isContentEditable: true,
 			children: [],
 		},
 		{
@@ -140,7 +133,6 @@ export const elements: Record<ElementCategory, ElementDefinition[]> = {
 			tag: 'h5',
 			classes: ['text-lg', 'font-bold'],
 			content: 'Heading 5',
-			isContentEditable: true,
 			children: [],
 		},
 		{
@@ -149,7 +141,6 @@ export const elements: Record<ElementCategory, ElementDefinition[]> = {
 			tag: 'h6',
 			classes: ['text-base', 'font-bold'],
 			content: 'Heading 6',
-			isContentEditable: true,
 			children: [],
 		},
 		{
@@ -158,7 +149,6 @@ export const elements: Record<ElementCategory, ElementDefinition[]> = {
 			tag: 'span',
 			classes: [],
 			content: 'Span text',
-			isContentEditable: true,
 			children: [],
 		},
 		{
@@ -167,7 +157,6 @@ export const elements: Record<ElementCategory, ElementDefinition[]> = {
 			tag: 'i',
 			classes: ['italic'],
 			content: 'Italic text',
-			isContentEditable: true,
 			children: [],
 		},
 		{
@@ -176,7 +165,6 @@ export const elements: Record<ElementCategory, ElementDefinition[]> = {
 			tag: 'em',
 			classes: ['italic'],
 			content: 'Emphasized text',
-			isContentEditable: true,
 			children: [],
 		},
 		{
@@ -185,7 +173,6 @@ export const elements: Record<ElementCategory, ElementDefinition[]> = {
 			tag: 'strong',
 			classes: ['font-bold'],
 			content: 'Strong text',
-			isContentEditable: true,
 			children: [],
 		},
 		{
@@ -194,7 +181,6 @@ export const elements: Record<ElementCategory, ElementDefinition[]> = {
 			tag: 'a',
 			classes: ['text-blue-600', 'hover:text-blue-800', 'underline'],
 			content: 'Link text',
-			isContentEditable: true,
 			children: [],
 			inputAttributes: [
 				{
@@ -244,18 +230,16 @@ export const elements: Record<ElementCategory, ElementDefinition[]> = {
 			id: 'definition-term',
 			type: 'other',
 			tag: 'dt',
-			classes: ['font-semibold'],
-			content: 'Definition term',
-			isContentEditable: true,
+			classes: ['font-medium'],
+			content: 'Term',
 			children: [],
 		},
 		{
 			id: 'definition-description',
 			type: 'other',
 			tag: 'dd',
-			classes: ['ml-4'],
-			content: 'Definition description',
-			isContentEditable: true,
+			classes: ['text-sm', 'text-gray-600'],
+			content: 'Description',
 			children: [],
 		},
 	],

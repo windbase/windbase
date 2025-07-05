@@ -1,5 +1,4 @@
 import type { ElementCategory } from '../elementTypes';
-import { shouldBeContentEditable } from '../helpers/should-be-content-editable';
 import { tagToElementType } from '../helpers/tag-to-element-type';
 import type { CoreElement } from '../types/core-element';
 import type { EditorElement } from '../types/editor-element';
@@ -18,7 +17,6 @@ export function coreToEditor(
 		...coreElement,
 		type,
 		parent: parentId,
-		isContentEditable: shouldBeContentEditable(type, coreElement.tag),
 		children: coreElement.children.map((child) =>
 			coreToEditor(child, coreElement.id)
 		),

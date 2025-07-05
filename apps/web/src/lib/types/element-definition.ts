@@ -3,13 +3,14 @@ import type { ElementCategory } from '../elementTypes';
 /**
  * Attribute input configuration for the element property panel
  */
-export type AttributeInput = {
+export interface AttributeInput {
 	attribute: string;
-	type: 'text' | 'select';
-	label?: string;
+	type: 'text' | 'select' | 'number' | 'color' | 'checkbox';
+	label: string;
 	options?: string[];
-	value?: string;
-};
+	placeholder?: string;
+	defaultValue?: string;
+}
 
 /**
  * ElementDefinition - Template definitions for element picker
@@ -21,7 +22,7 @@ export interface ElementDefinition {
 	tag: string;
 	classes: string[];
 	content?: string;
-	isContentEditable?: boolean;
+	children: ElementDefinition[];
 	inputAttributes?: AttributeInput[];
-	children: never[]; // Always empty for definitions
+	attributes?: Record<string, string>;
 }

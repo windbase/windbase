@@ -2,7 +2,6 @@ import type { EditorElement } from '../types';
 import { generateId } from './generate-id';
 import { getClassNameAsString } from './get-class-name-as-string';
 import { getDirectTextContent } from './get-direct-text-content';
-import { shouldBeContentEditable } from './should-be-content-editable';
 import { tagToElementType } from './tag-to-element-type';
 
 // Convert DOM element to EditorElement
@@ -37,7 +36,7 @@ export const domElementToBuilderElement = (
 		children.push(domElementToBuilderElement(child, id));
 	}
 
-	// Create editor element (no inputAttributes in EditorElement)
+	// Create editor element
 	const editorElement: EditorElement = {
 		id,
 		type: elementType,
@@ -51,11 +50,6 @@ export const domElementToBuilderElement = (
 	// Add content if there's direct text content
 	if (directContent) {
 		editorElement.content = directContent;
-	}
-
-	// Set content editable for appropriate elements
-	if (shouldBeContentEditable(elementType, tagName)) {
-		editorElement.isContentEditable = true;
 	}
 
 	return editorElement;
