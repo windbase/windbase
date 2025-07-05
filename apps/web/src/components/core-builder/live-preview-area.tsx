@@ -5,22 +5,14 @@ import LivePreviewToolbar from './live-preview-toolbar';
 function LivePreviewArea() {
 	const { responsiveMode } = useBuilder();
 
-	// Calculate aspect ratios for different modes
-	const desktopAspectRatio = 2880 / 1800; // 1.6 (8:5)
-	const mobileAspectRatio = 1179 / 2556; // ~0.461
-
-	const aspectRatio =
-		responsiveMode === 'mobile' ? mobileAspectRatio : desktopAspectRatio;
-	const maxWidth = responsiveMode === 'mobile' ? '1179px' : '2880px';
-
 	return (
 		<div
 			className="flex flex-col bg-background rounded-xl border transition-all duration-300"
 			style={{
+				width: responsiveMode === 'mobile' ? '40%' : '100%',
 				height: '95%',
-				width: `min(95vh * ${aspectRatio}, calc(100% - 0rem))`,
-				maxWidth: maxWidth,
-				aspectRatio: `${aspectRatio}`,
+				maxHeight: '95%',
+				transform: 'scale(0.95)',
 			}}
 		>
 			<LivePreviewToolbar />
