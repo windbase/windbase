@@ -50,7 +50,7 @@ function VisualBuilder() {
 				</div>
 				<div
 					ref={canvasRef}
-					className="flex-1 bg-neutral-50 dark:bg-neutral-900 flex justify-center items-center"
+					className="flex-1 bg-neutral-50 dark:bg-muted/20 flex justify-center items-center"
 				>
 					<LivePreviewArea />
 				</div>

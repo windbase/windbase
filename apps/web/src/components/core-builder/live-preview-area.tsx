@@ -7,7 +7,7 @@ function LivePreviewArea() {
 
 	return (
 		<div
-			className="flex flex-col bg-background rounded-xl border transition-all duration-300"
+			className="flex flex-col rounded-xl border transition-all duration-300"
 			style={{
 				width: responsiveMode === 'mobile' ? '40%' : '100%',
 				height: '95%',
