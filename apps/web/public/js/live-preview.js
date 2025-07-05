@@ -2,6 +2,33 @@ let currentElements = [];
 let selectedElementId = null;
 let hoveredElementId = null;
 
+// Define which HTML tags should be contenteditable
+const CONTENTEDITABLE_TAGS = [
+	'h1',
+	'h2',
+	'h3',
+	'h4',
+	'h5',
+	'h6', // Headings
+	'p',
+	'span',
+	'div', // Text containers
+	'a',
+	'strong',
+	'em',
+	'i',
+	'b',
+	'u', // Inline text elements
+	'label',
+	'button', // Form elements with text
+	'blockquote',
+	'pre',
+	'code', // Special text elements
+	'li',
+	'dt',
+	'dd', // List elements
+];
+
 // Handle element selection
 document.addEventListener('click', (e) => {
 	const elementId = e.target
@@ -244,10 +271,13 @@ function renderElement(element) {
 
 	// Only add contenteditable if the element has no children
 	// Elements with children should not be directly editable to avoid destroying child elements
+	const shouldBeContentEditable = CONTENTEDITABLE_TAGS.includes(element.tag);
 	const contenteditable =
 		element.children && element.children.length > 0
 			? 'false'
-			: element.isContentEditable || false;
+			: shouldBeContentEditable
+			? 'true'
+			: 'false';
 
 	// Build attributes string for regular elements (excluding style)
 	let attributesString = '';
