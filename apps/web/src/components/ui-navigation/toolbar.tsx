@@ -10,7 +10,6 @@ import {
 	Smartphone,
 	Undo,
 } from 'lucide-react';
-import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
@@ -28,7 +27,7 @@ function Toolbar() {
 		<TooltipProvider>
 			<div className="h-14 min-h-14 border-b grid grid-cols-8 justify-between items-center px-6 gap-4">
 				<div className="flex items-center gap-2 col-span-3">
-					<Image
+					<img
 						src="/windbase-circle.svg"
 						alt="Windbase"
 						width={100}

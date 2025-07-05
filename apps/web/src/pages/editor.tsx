@@ -1,7 +1,7 @@
 import VisualBuilder from '@/components/core-builder/visual-builder';
 
-function Page() {
+function EditorPage() {
 	return <VisualBuilder />;
 }
 
-export default Page;
+export default EditorPage;
