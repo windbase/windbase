@@ -1,8 +1,9 @@
-import { Download, Search } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { templates } from '@/lib/templates';
 import { htmlToBuilderElements } from '@/lib/transformer';
 import { useBuilder } from '@/store/builder';
+import ImportButton from '../core-builder/import-button';
 
 function DefaultSidebar() {
 	const { loadTemplate } = useBuilder();
@@ -10,9 +11,7 @@ function DefaultSidebar() {
 	return (
 		<>
 			<div className="p-2 flex items-center gap-1">
-				<Button className="w-full">
-					<Download /> Import
-				</Button>
+				<ImportButton />
 				<Button variant="outline">
 					<Search />
 				</Button>
