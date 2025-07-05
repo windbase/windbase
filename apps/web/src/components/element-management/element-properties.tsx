@@ -102,8 +102,10 @@ const ElementProperties = memo(() => {
 	const getElementDefinition = useCallback(() => {
 		if (!selectedElement) return null;
 
-		const elementCategory = elements[selectedElement.type];
-		if (!elementCategory) return null;
+		const elementCategory = elements.filter(
+			(el) => el.type === selectedElement.type,
+		);
+		if (!elementCategory.length) return null;
 
 		// Find the element definition that matches the tag
 		return elementCategory.find((el) => el.tag === selectedElement.tag) || null;
