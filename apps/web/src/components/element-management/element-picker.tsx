@@ -38,7 +38,7 @@ function ElementPicker() {
 			<PopoverTrigger asChild>
 				<Plus className="hover:text-primary cursor-pointer" size={16} />
 			</PopoverTrigger>
-			<PopoverContent className="p-0 w-[320px] h-[400px] flex">
+			<PopoverContent className="p-0 w-[320px] h-[250px] flex">
 				<div className="w-[110px] h-full flex flex-col justify-evenly border-r">
 					{elementCategories.map((type, index) => {
 						const Icon = iconMap[type];
@@ -59,29 +59,31 @@ function ElementPicker() {
 				</div>
 				<div className="flex-1 overflow-auto">
 					<div className="grid grid-cols-2 gap-1.5 overflow-y-auto w-full">
-						{elements[selectedType].map((element) => (
-							<button
-								key={element.id}
-								type="button"
-								className="h-[100px] w-full text-sm flex items-center justify-center hover:bg-muted/50 cursor-pointer"
-								onClick={() => {
-									const editorElement = definitionToEditor(element);
-									if (selectedElement) {
-										if (selectedElement.tag === 'div') {
-											addElement(editorElement, selectedElement.id);
+						{elements
+							.filter((element) => element.type === selectedType)
+							.map((element) => (
+								<button
+									key={element.id}
+									type="button"
+									className="h-[40px] w-full text-sm flex items-center justify-center hover:bg-muted/50 cursor-pointer text-muted-foreground"
+									onClick={() => {
+										const editorElement = definitionToEditor(element);
+										if (selectedElement) {
+											if (selectedElement.tag === 'div') {
+												addElement(editorElement, selectedElement.id);
+											} else {
+												addElement(editorElement, selectedElement.parent);
+											}
 										} else {
-											addElement(editorElement, selectedElement.parent);
+											addElement(editorElement);
 										}
-									} else {
-										addElement(editorElement);
-									}
-									setSidebarView('layers');
-									setIsOpen(false);
-								}}
-							>
-								{element.id}
-							</button>
-						))}
+										setSidebarView('layers');
+										setIsOpen(false);
+									}}
+								>
+									{element.id}
+								</button>
+							))}
 					</div>
 				</div>
 			</PopoverContent>
