@@ -56,7 +56,7 @@ export const tagToElementType = (tagName: string): ElementCategory => {
 
 	// List elements
 	if (['ul', 'ol', 'li', 'dl', 'dt', 'dd'].includes(tag)) {
-		return 'list';
+		return 'other';
 	}
 
 	// Text elements (including headings, paragraphs, spans, etc.)
@@ -76,7 +76,7 @@ export const tagToElementType = (tagName: string): ElementCategory => {
 			'i',
 		].includes(tag)
 	) {
-		return 'other';
+		return 'text';
 	}
 
 	// Default to other
