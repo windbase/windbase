@@ -84,7 +84,7 @@ export const elements: ElementDefinition[] = [
 	},
 	// text
 	{
-		id: 'text',
+		id: 'p',
 		type: 'text',
 		tag: 'p',
 		classes: ['text-base'],
@@ -92,7 +92,7 @@ export const elements: ElementDefinition[] = [
 		children: [],
 	},
 	{
-		id: 'heading-1',
+		id: 'h1',
 		type: 'text',
 		tag: 'h1',
 		classes: ['text-4xl', 'font-bold'],
@@ -100,7 +100,7 @@ export const elements: ElementDefinition[] = [
 		children: [],
 	},
 	{
-		id: 'heading-2',
+		id: 'h2',
 		type: 'text',
 		tag: 'h2',
 		classes: ['text-3xl', 'font-bold'],
@@ -108,7 +108,7 @@ export const elements: ElementDefinition[] = [
 		children: [],
 	},
 	{
-		id: 'heading-3',
+		id: 'h3',
 		type: 'text',
 		tag: 'h3',
 		classes: ['text-2xl', 'font-bold'],
@@ -116,7 +116,7 @@ export const elements: ElementDefinition[] = [
 		children: [],
 	},
 	{
-		id: 'heading-4',
+		id: 'h4',
 		type: 'text',
 		tag: 'h4',
 		classes: ['text-xl', 'font-bold'],
@@ -124,7 +124,7 @@ export const elements: ElementDefinition[] = [
 		children: [],
 	},
 	{
-		id: 'heading-5',
+		id: 'h5',
 		type: 'text',
 		tag: 'h5',
 		classes: ['text-lg', 'font-bold'],
@@ -132,7 +132,7 @@ export const elements: ElementDefinition[] = [
 		children: [],
 	},
 	{
-		id: 'heading-6',
+		id: 'h6',
 		type: 'text',
 		tag: 'h6',
 		classes: ['text-base', 'font-bold'],
