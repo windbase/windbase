@@ -11,7 +11,7 @@
 Open-source, visual builder for TailwindCSS with several in-built plugins. Supports DaisyUI and Flowbite.
 </p>
 
-<p align="center"><a href="https://github.com/Windbase/Windbase/discussions">Discussions</a> · <a href="https://docs.windbase.dev">Documentation</a> · <a href="https://windbase.dev">Website</a></p>
+<p align="center"><a href="https://github.com/windbase/windbase/discussions">Discussions</a> · <a href="https://docs.windbase.dev">Documentation</a> · <a href="https://windbase.dev">Website</a></p>
 
 > [!WARNING]
 > This project is currently in early development, expect breaking changes with each commit.
