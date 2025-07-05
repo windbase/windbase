@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useKeyboardShortcuts } from '@/components/common/keyboard-shortcuts';
 import ElementLayers from '@/components/element-management/element-layers';
 import ElementProperties from '@/components/element-management/element-properties';
 import DefaultSidebar from '@/components/ui-navigation/default-sidebar';
@@ -10,8 +11,13 @@ import LivePreviewArea from './live-preview-area';
 
 function VisualBuilder() {
 	const canvasRef = useRef<HTMLDivElement>(null);
+	const builderRef = useRef<HTMLDivElement>(null);
+	const [isBuilderFocused, setIsBuilderFocused] = useState(false);
 	const { sidebarView, selectedElement, selectElement, setSidebarView } =
 		useBuilder();
+
+	// Enable keyboard shortcuts when builder is focused
+	useKeyboardShortcuts(isBuilderFocused);
 
 	useEffect(() => {
 		if (canvasRef.current) {
@@ -41,8 +47,33 @@ function VisualBuilder() {
 		}
 	}, [selectedElement, setSidebarView]);
 
+	// Handle focus state for the builder (without actual DOM focus)
+	useEffect(() => {
+		const handleMouseEnter = () => setIsBuilderFocused(true);
+		const handleMouseLeave = () => setIsBuilderFocused(false);
+		const handleClick = () => setIsBuilderFocused(true);
+
+		const builderElement = builderRef.current;
+		if (builderElement) {
+			builderElement.addEventListener('mouseenter', handleMouseEnter);
+			builderElement.addEventListener('mouseleave', handleMouseLeave);
+			builderElement.addEventListener('click', handleClick);
+
+			// Set initial focus state (no DOM focus needed)
+			setIsBuilderFocused(true);
+		}
+
+		return () => {
+			if (builderElement) {
+				builderElement.removeEventListener('mouseenter', handleMouseEnter);
+				builderElement.removeEventListener('mouseleave', handleMouseLeave);
+				builderElement.removeEventListener('click', handleClick);
+			}
+		};
+	}, []);
+
 	return (
-		<div className="h-screen overflow-hidden flex flex-col">
+		<div ref={builderRef} className="h-screen overflow-hidden flex flex-col">
 			<Toolbar />
 			<div className="flex-1 flex overflow-hidden">
 				<div className="w-56 min-w-56 h-full border-r overflow-auto">
