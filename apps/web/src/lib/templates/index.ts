@@ -1,11 +1,3 @@
-import { basicAuth } from './basic-auth';
+import { CTA01 } from './cta/cta-01';
 
-export const templates = [
-	{
-		id: '1',
-		name: 'Template 1',
-		description: 'Template 1 description',
-		image: 'https://via.placeholder.com/150',
-		elements: basicAuth,
-	},
-];
+export const templates = [CTA01];
