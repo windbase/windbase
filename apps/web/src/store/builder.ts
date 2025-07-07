@@ -271,18 +271,24 @@ export const useBuilder = create<BuilderState & BuilderActions>((set, get) => ({
 	},
 	deleteElement: (id) => {
 		set((state) => {
+			const updatedElements = removeElementById(state.elements, id);
+
 			if (state.selectedElement?.id === id) {
-				const parentId = state.selectedElement?.parent;
-				if (parentId) {
-					return {
-						elements: removeElementById(state.elements, id),
-						selectedElement: findElementById(state.elements, parentId),
-					};
-				}
+			    const parentId = state.selectedElement?.parent;
+			    if (parentId) {
+			        return {
+			            elements: updatedElements,
+			            selectedElement: findElementById(updatedElements, parentId),
+			        };
+			    }
+			    return {
+			        elements: updatedElements,
+			        selectedElement: null,
+			    };
 			}
 
 			return {
-				elements: removeElementById(state.elements, id),
+			    elements: updatedElements,
 			};
 		});
 
