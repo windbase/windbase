@@ -213,11 +213,12 @@ export const useBuilder = create<BuilderState & BuilderActions>((set, get) => ({
 				};
 				return {
 					elements: addToParent(state.elements),
+					selectedElement: newElement,
 				};
 			} else {
-				// Add to root level
 				return {
 					elements: [...state.elements, newElement],
+					selectedElement: newElement,
 				};
 			}
 		});
@@ -269,11 +270,27 @@ export const useBuilder = create<BuilderState & BuilderActions>((set, get) => ({
 		get().saveToHistory();
 	},
 	deleteElement: (id) => {
-		set((state) => ({
-			elements: removeElementById(state.elements, id),
-			selectedElement:
-				state.selectedElement?.id === id ? null : state.selectedElement,
-		}));
+		set((state) => {
+			const updatedElements = removeElementById(state.elements, id);
+
+			if (state.selectedElement?.id === id) {
+			    const parentId = state.selectedElement?.parent;
+			    if (parentId) {
+			        return {
+			            elements: updatedElements,
+			            selectedElement: findElementById(updatedElements, parentId),
+			        };
+			    }
+			    return {
+			        elements: updatedElements,
+			        selectedElement: null,
+			    };
+			}
+
+			return {
+			    elements: updatedElements,
+			};
+		});
 
 		// Save current state to history after making changes
 		get().saveToHistory();
