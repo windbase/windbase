@@ -72,7 +72,7 @@ function Toolbar() {
 							</Button>
 						</TooltipTrigger>
 						<TooltipContent>
-							<p>Undo (Ctrl+Z)</p>
+							<p>Undo</p>
 						</TooltipContent>
 					</Tooltip>
 
@@ -88,7 +88,7 @@ function Toolbar() {
 							</Button>
 						</TooltipTrigger>
 						<TooltipContent>
-							<p>Redo (Ctrl+Y)</p>
+							<p>Redo</p>
 						</TooltipContent>
 					</Tooltip>
 
