@@ -3,9 +3,9 @@ import {
 	Code,
 	Eye,
 	Monitor,
-	Pencil,
+	// Pencil,
 	Redo,
-	Save,
+	// Save,
 	Smartphone,
 	Undo,
 } from 'lucide-react';
@@ -36,8 +36,8 @@ function Toolbar() {
 					/>
 					<ChevronDown size={16} />
 					<div className="w-4" />
-					<span>Untitled project</span>
-					<Pencil size={14} />
+					{/* <span>Untitled project</span>
+					<Pencil size={14} /> */}
 				</div>
 				<div className="mx-auto flex items-center col-span-2">
 					<Tabs
@@ -112,7 +112,7 @@ function Toolbar() {
 						</TooltipContent>
 					</Tooltip>
 
-					<Tooltip delayDuration={200}>
+					{/* <Tooltip delayDuration={200}>
 						<TooltipTrigger asChild>
 							<Button>
 								<Save /> Save
@@ -121,7 +121,7 @@ function Toolbar() {
 						<TooltipContent>
 							<p>Save changes</p>
 						</TooltipContent>
-					</Tooltip>
+					</Tooltip> */}
 
 					<Tooltip delayDuration={200}>
 						<TooltipTrigger asChild>
