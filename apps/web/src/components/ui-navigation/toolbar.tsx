@@ -22,8 +22,15 @@ import DarkModeButton from './dark-mode-button';
 import ExportButton from './export-button';
 
 function Toolbar() {
-	const { responsiveMode, setResponsiveMode, undo, redo, canUndo, canRedo } =
-		useBuilder();
+	const {
+		responsiveMode,
+		setResponsiveMode,
+		undo,
+		redo,
+		canUndo,
+		canRedo,
+		exportHtml,
+	} = useBuilder();
 	return (
 		<TooltipProvider>
 			<div className="h-14 min-h-14 border-b grid grid-cols-8 justify-between items-center px-3 gap-4">
@@ -114,7 +121,18 @@ function Toolbar() {
 
 					<Tooltip delayDuration={200}>
 						<TooltipTrigger asChild>
-							<Button variant="outline" size="icon">
+							<Button
+								variant="outline"
+								size="icon"
+								onClick={() => {
+									const htmlContent = exportHtml();
+									const previewWindow = window.open('', '_blank');
+									if (previewWindow) {
+										previewWindow.document.write(htmlContent);
+										previewWindow.document.close();
+									}
+								}}
+							>
 								<Eye />
 							</Button>
 						</TooltipTrigger>
