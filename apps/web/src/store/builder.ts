@@ -388,28 +388,44 @@ export const useBuilder = create<BuilderState & BuilderActions>((set, get) => ({
 	undo: () => {
 		const state = get();
 		if (state.historyIndex > 0) {
-			const prevElements = state.history[state.historyIndex - 1];
+			const prevElements = JSON.parse(
+				JSON.stringify(state.history[state.historyIndex - 1])
+			);
 			const newHistoryIndex = state.historyIndex - 1;
 
+			// Update selected element reference to point to the element in the new state
+			const updatedSelectedElement = state.selectedElement
+				? findElementById(prevElements, state.selectedElement.id)
+				: null;
+
 			set({
-				elements: JSON.parse(JSON.stringify(prevElements)),
+				elements: prevElements,
 				historyIndex: newHistoryIndex,
 				canUndo: newHistoryIndex > 0,
 				canRedo: true,
+				selectedElement: updatedSelectedElement,
 			});
 		}
 	},
 	redo: () => {
 		const state = get();
 		if (state.historyIndex < state.history.length - 1) {
-			const nextElements = state.history[state.historyIndex + 1];
+			const nextElements = JSON.parse(
+				JSON.stringify(state.history[state.historyIndex + 1])
+			);
 			const newHistoryIndex = state.historyIndex + 1;
 
+			// Update selected element reference to point to the element in the new state
+			const updatedSelectedElement = state.selectedElement
+				? findElementById(nextElements, state.selectedElement.id)
+				: null;
+
 			set({
-				elements: JSON.parse(JSON.stringify(nextElements)),
+				elements: nextElements,
 				historyIndex: newHistoryIndex,
 				canUndo: true,
 				canRedo: newHistoryIndex < state.history.length - 1,
+				selectedElement: updatedSelectedElement,
 			});
 		}
 	},

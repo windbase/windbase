@@ -22,7 +22,8 @@ import DarkModeButton from './dark-mode-button';
 import ExportButton from './export-button';
 
 function Toolbar() {
-	const { responsiveMode, setResponsiveMode } = useBuilder();
+	const { responsiveMode, setResponsiveMode, undo, redo, canUndo, canRedo } =
+		useBuilder();
 	return (
 		<TooltipProvider>
 			<div className="h-14 min-h-14 border-b grid grid-cols-8 justify-between items-center px-6 gap-4">
@@ -61,23 +62,33 @@ function Toolbar() {
 				<div className="flex items-center gap-1.5 ml-auto col-span-3">
 					<Tooltip delayDuration={200}>
 						<TooltipTrigger asChild>
-							<Button disabled variant="outline" size="icon">
+							<Button
+								disabled={!canUndo}
+								variant="outline"
+								size="icon"
+								onClick={undo}
+							>
 								<Undo />
 							</Button>
 						</TooltipTrigger>
 						<TooltipContent>
-							<p>Undo</p>
+							<p>Undo (Ctrl+Z)</p>
 						</TooltipContent>
 					</Tooltip>
 
 					<Tooltip delayDuration={200}>
 						<TooltipTrigger asChild>
-							<Button disabled variant="outline" size="icon">
+							<Button
+								disabled={!canRedo}
+								variant="outline"
+								size="icon"
+								onClick={redo}
+							>
 								<Redo />
 							</Button>
 						</TooltipTrigger>
 						<TooltipContent>
-							<p>Redo</p>
+							<p>Redo (Ctrl+Y)</p>
 						</TooltipContent>
 					</Tooltip>
 
