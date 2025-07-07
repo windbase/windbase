@@ -1,16 +1,5 @@
-import {
-	ChevronDown,
-	Code,
-	Eye,
-	Monitor,
-	// Pencil,
-	Redo,
-	// Save,
-	Smartphone,
-	Undo,
-} from 'lucide-react';
+import { ChevronDown, Code, Eye, Grid, Redo, Undo } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
 	Tooltip,
 	TooltipContent,
@@ -18,19 +7,14 @@ import {
 	TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { useBuilder } from '@/store/builder';
+import ElementPicker from '../element-management/element-picker';
+import { Separator } from '../ui/separator';
 import DarkModeButton from './dark-mode-button';
 import ExportButton from './export-button';
 
 function Toolbar() {
-	const {
-		responsiveMode,
-		setResponsiveMode,
-		undo,
-		redo,
-		canUndo,
-		canRedo,
-		exportHtml,
-	} = useBuilder();
+	const { undo, redo, canUndo, canRedo, exportHtml } = useBuilder();
+
 	return (
 		<TooltipProvider>
 			<div className="h-14 min-h-14 border-b grid grid-cols-8 justify-between items-center px-3 gap-4">
@@ -43,30 +27,29 @@ function Toolbar() {
 						className="h-8 w-8 rounded-md"
 					/>
 					<ChevronDown size={16} />
-					<div className="w-4" />
-					{/* <span>Untitled project</span>
-					<Pencil size={14} /> */}
 				</div>
-				<div className="mx-auto flex items-center col-span-2">
-					<Tabs
-						aria-label="Options"
-						defaultValue={responsiveMode}
-						onValueChange={(value) =>
-							setResponsiveMode(value as 'desktop' | 'mobile')
-						}
-					>
-						<TabsList>
-							<TabsTrigger value="desktop">
-								<Monitor size={20} />
-							</TabsTrigger>
-							<TabsTrigger value="mobile">
-								<Smartphone size={20} />
-							</TabsTrigger>
-						</TabsList>
-					</Tabs>
-				</div>
+				<div className="mx-auto flex items-center col-span-2 gap-2"></div>
 
 				<div className="flex items-center gap-1.5 ml-auto col-span-3">
+					<Tooltip delayDuration={200}>
+						<TooltipTrigger>
+							<ElementPicker />
+						</TooltipTrigger>
+						<TooltipContent>
+							<p>Add element</p>
+						</TooltipContent>
+					</Tooltip>
+					<Tooltip delayDuration={200}>
+						<TooltipTrigger asChild>
+							<Button variant={'outline'} size={'icon'}>
+								<Grid />
+							</Button>
+						</TooltipTrigger>
+						<TooltipContent>
+							<p>Templates</p>
+						</TooltipContent>
+					</Tooltip>
+					<Separator orientation="vertical" className="h-4 mx-2" />
 					<Tooltip delayDuration={200}>
 						<TooltipTrigger asChild>
 							<Button
@@ -140,17 +123,6 @@ function Toolbar() {
 							<p>Preview</p>
 						</TooltipContent>
 					</Tooltip>
-
-					{/* <Tooltip delayDuration={200}>
-						<TooltipTrigger asChild>
-							<Button>
-								<Save /> Save
-							</Button>
-						</TooltipTrigger>
-						<TooltipContent>
-							<p>Save changes</p>
-						</TooltipContent>
-					</Tooltip> */}
 
 					<Tooltip delayDuration={200}>
 						<TooltipTrigger asChild>

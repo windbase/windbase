@@ -1,5 +1,3 @@
-'use client';
-
 import {
 	Box,
 	Image,
@@ -9,16 +7,20 @@ import {
 	Plus,
 	Text,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-} from '@/components/ui/popover';
+	CommandDialog,
+	CommandEmpty,
+	CommandGroup,
+	CommandInput,
+	CommandItem,
+	CommandList,
+} from '@/components/ui/command';
 import { elements } from '@/lib/elements';
-import { type ElementCategory, elementCategories } from '@/lib/elementTypes';
+import type { ElementCategory } from '@/lib/elementTypes';
 import { definitionToEditor } from '@/lib/transformers';
 import { useBuilder } from '@/store/builder';
+import { Button } from '../ui/button';
 
 const iconMap: Record<ElementCategory, LucideIcon> = {
 	layout: LayoutGrid,
@@ -29,65 +31,65 @@ const iconMap: Record<ElementCategory, LucideIcon> = {
 };
 
 function ElementPicker() {
-	const [isOpen, setIsOpen] = useState(false);
-	const [selectedType, setSelectedType] = useState<ElementCategory>('layout');
-	const { addElement, selectedElement, setSidebarView } = useBuilder();
+	const [open, setOpen] = useState(false);
+	const { selectedElement, addElement, setSidebarView } = useBuilder();
+
+	const categories = useMemo(() => {
+		return elements.reduce(
+			(acc, element) => {
+				acc[element.type] = [...(acc[element.type] || []), element];
+				return acc;
+			},
+			{} as Record<ElementCategory, typeof elements>,
+		);
+	}, []);
 
 	return (
-		<Popover open={isOpen} onOpenChange={setIsOpen}>
-			<PopoverTrigger asChild>
-				<Plus className="hover:text-primary cursor-pointer" size={16} />
-			</PopoverTrigger>
-			<PopoverContent className="p-0 w-[320px] h-[250px] flex">
-				<div className="w-[110px] h-full flex flex-col justify-evenly border-r">
-					{elementCategories.map((type, index) => {
-						const Icon = iconMap[type];
+		<>
+			<Button variant={'outline'} size={'icon'} onClick={() => setOpen(true)}>
+				<Plus />
+			</Button>
+			<CommandDialog open={open} onOpenChange={setOpen}>
+				<CommandInput placeholder="Search for an element..." />
+				<CommandList>
+					<CommandEmpty>No results found.</CommandEmpty>
+
+					{Object.entries(categories).map(([category, elements]) => {
+						const Icon = iconMap[category as ElementCategory];
 						return (
-							<button
-								key={type}
-								type="button"
-								className={`w-full h-full text-sm text-muted-foreground flex items-center justify-start pl-4 space-x-2 ${
-									index > 0 ? 'border-t' : ''
-								} ${selectedType === type ? 'bg-muted/50' : 'bg-muted/10'} capitalize`}
-								onClick={() => setSelectedType(type)}
+							<CommandGroup
+								key={category}
+								heading={category}
+								className="capitalize"
 							>
-								{Icon && <Icon className="w-4 h-4" />}
-								<span>{type}</span>
-							</button>
+								{elements.map((element) => (
+									<CommandItem
+										key={element.id}
+										onSelect={() => {
+											setOpen(false);
+											const editorElement = definitionToEditor(element);
+											if (selectedElement) {
+												if (selectedElement.tag === 'div') {
+													addElement(editorElement, selectedElement.id);
+												} else {
+													addElement(editorElement, selectedElement.parent);
+												}
+											} else {
+												addElement(editorElement);
+											}
+											setSidebarView('layers');
+										}}
+									>
+										<Icon className="w-4 h-4 mr-2" />
+										<span>{element.id}</span>
+									</CommandItem>
+								))}
+							</CommandGroup>
 						);
 					})}
-				</div>
-				<div className="flex-1 overflow-auto">
-					<div className="grid grid-cols-2 gap-1.5 overflow-y-auto w-full">
-						{elements
-							.filter((element) => element.type === selectedType)
-							.map((element) => (
-								<button
-									key={element.id}
-									type="button"
-									className="h-[40px] w-full text-sm flex items-center justify-center hover:bg-muted/50 cursor-pointer text-muted-foreground"
-									onClick={() => {
-										const editorElement = definitionToEditor(element);
-										if (selectedElement) {
-											if (selectedElement.tag === 'div') {
-												addElement(editorElement, selectedElement.id);
-											} else {
-												addElement(editorElement, selectedElement.parent);
-											}
-										} else {
-											addElement(editorElement);
-										}
-										setSidebarView('layers');
-										setIsOpen(false);
-									}}
-								>
-									{element.id}
-								</button>
-							))}
-					</div>
-				</div>
-			</PopoverContent>
-		</Popover>
+				</CommandList>
+			</CommandDialog>
+		</>
 	);
 }
 
