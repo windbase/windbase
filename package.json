@@ -2,7 +2,9 @@
 	"name": "@windbase/source",
 	"version": "0.0.0",
 	"license": "MIT",
-	"scripts": {},
+	"scripts": {
+		"dev": "nx dev web"
+	},
 	"private": true,
 	"devDependencies": {
 		"@biomejs/biome": "^2.0.6",
