@@ -10,7 +10,7 @@ function DefaultSidebar() {
 
 	return (
 		<>
-			<div className="p-2 flex items-center gap-1">
+			<div className="px-3 py-2 flex items-center gap-1">
 				<ImportButton />
 				<Button variant="outline">
 					<Search />
