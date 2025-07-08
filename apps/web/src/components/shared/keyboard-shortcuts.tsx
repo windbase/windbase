@@ -1,5 +1,5 @@
+import { useBuilder } from '@windbase/engine';
 import { useEffect } from 'react';
-import { useBuilder } from '@/store/builder';
 
 interface KeyboardShortcutsProps {
 	isActive: boolean;

@@ -37,5 +37,24 @@
     "src/**/*.ts",
     "src/**/*.tsx"
   ],
-  "references": []
+  "references": [
+    {
+      "path": "../../packages/utils/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/ui/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/templates/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/exporters/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/engine/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/core/tsconfig.lib.json"
+    }
+  ]
 }

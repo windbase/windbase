@@ -1,18 +1,18 @@
 import { javascript } from '@codemirror/lang-javascript';
 import CodeMirror from '@uiw/react-codemirror';
-import { ArrowBigDown } from 'lucide-react';
-import { useCallback, useState } from 'react';
+import { useBuilder } from '@windbase/engine';
 import {
+	Button,
 	Dialog,
 	DialogContent,
 	DialogDescription,
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
-} from '@/components/ui/dialog';
-import { htmlToBuilderElements } from '@/lib/transformer';
-import { useBuilder } from '@/store/builder';
-import { Button } from '../ui/button';
+} from '@windbase/ui';
+import { htmlToBuilderElements } from '@windbase/utils';
+import { ArrowBigDown } from 'lucide-react';
+import { useCallback, useState } from 'react';
 
 function ImportButton() {
 	const [value, setValue] = useState('');

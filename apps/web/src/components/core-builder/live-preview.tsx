@@ -1,7 +1,7 @@
 'use client';
 
+import { useBuilder } from '@windbase/engine';
 import { useEffect, useRef, useState } from 'react';
-import { useBuilder } from '@/store/builder';
 
 function LivePreview() {
 	const iframeRef = useRef<HTMLIFrameElement>(null);

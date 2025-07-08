@@ -1,4 +1,4 @@
-import { useBuilder } from '@/store/builder';
+import { useBuilder } from '@windbase/engine';
 import LivePreview from './live-preview';
 import LivePreviewToolbar from './live-preview-toolbar';
 

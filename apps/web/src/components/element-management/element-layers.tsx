@@ -1,5 +1,5 @@
-'use client';
-
+import type { EditorElement } from '@windbase/core';
+import { useBuilder } from '@windbase/engine';
 import {
 	ChevronDown,
 	ChevronRight,
@@ -17,8 +17,6 @@ import {
 	type TreeItem,
 	type TreeItemIndex,
 } from 'react-complex-tree';
-import type { EditorElement } from '@/lib/types';
-import { useBuilder } from '@/store/builder';
 
 function ElementLayers() {
 	const {

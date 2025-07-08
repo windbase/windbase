@@ -3,6 +3,24 @@
 	"include": [],
 	"references": [
     {
+      "path": "../../packages/utils"
+    },
+    {
+      "path": "../../packages/ui"
+    },
+    {
+      "path": "../../packages/templates"
+    },
+    {
+      "path": "../../packages/exporters"
+    },
+    {
+      "path": "../../packages/engine"
+    },
+    {
+      "path": "../../packages/core"
+    },
+    {
       "path": "./tsconfig.app.json"
     }
   ],

@@ -1,4 +1,4 @@
-import { TooltipProvider } from '@radix-ui/react-tooltip';
+import { TooltipProvider } from '@windbase/ui';
 
 function LivePreviewToolbar() {
 	return (
