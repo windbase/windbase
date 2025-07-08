@@ -193,7 +193,14 @@ importers:
 
   packages/core: {}
 
-  packages/engine: {}
+  packages/engine:
+    dependencies:
+      '@windbase/core':
+        specifier: workspace:*
+        version: link:../core
+      zustand:
+        specifier: ^5.0.6
+        version: 5.0.6(@types/react@19.0.0)(react@19.0.0)
 
   packages/exporters: {}
 
