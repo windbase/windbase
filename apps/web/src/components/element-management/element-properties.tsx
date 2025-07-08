@@ -22,9 +22,9 @@ const ElementProperties = memo(() => {
 		<div className="py-2">
 			<BasicPanel />
 			<Separator className="my-2" />
-			<AdvancedPanel />
-			<Separator className="my-2" />
 			<ColorPanel />
+			<Separator className="my-2" />
+			<AdvancedPanel />
 			<Separator className="my-2" />
 		</div>
 	);
