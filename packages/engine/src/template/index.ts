@@ -1,5 +1,6 @@
 import type { CoreElement, EditorElement } from '@windbase/core';
 import { coreToEditor, editorToCore } from '@windbase/core';
+import { exportToFullHtml } from '@windbase/exporters';
 import type { StateCreator } from 'zustand';
 import type { BuilderStore, TemplateSlice } from '../store/types';
 
@@ -30,8 +31,6 @@ export const createTemplateSlice: StateCreator<
 
 	exportHtml: () => {
 		const coreElements = get().exportToCore();
-		// TODO: Move exportToFullHtml to @windbase/exporters package
-		// return exportToFullHtml(coreElements);
-		return JSON.stringify(coreElements); // Placeholder for now
+		return exportToFullHtml(coreElements);
 	},
 });
