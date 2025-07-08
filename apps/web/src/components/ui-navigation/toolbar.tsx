@@ -1,14 +1,14 @@
-import { ChevronDown, Code, Eye, Grid, Redo, Undo } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { useBuilder } from '@windbase/engine';
 import {
+	Button,
+	Separator,
 	Tooltip,
 	TooltipContent,
 	TooltipProvider,
 	TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { useBuilder } from '@/store/builder';
+} from '@windbase/ui';
+import { ChevronDown, Code, Eye, Grid, Redo, Undo } from 'lucide-react';
 import ElementPicker from '../element-management/element-picker';
-import { Separator } from '../ui/separator';
 import DarkModeButton from './dark-mode-button';
 import ExportButton from './export-button';
 

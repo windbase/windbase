@@ -1,3 +1,15 @@
+import type { ElementCategory } from '@windbase/core';
+import { definitionToEditor, elements } from '@windbase/core';
+import { useBuilder } from '@windbase/engine';
+import {
+	Button,
+	CommandDialog,
+	CommandEmpty,
+	CommandGroup,
+	CommandInput,
+	CommandItem,
+	CommandList,
+} from '@windbase/ui';
 import {
 	Box,
 	Image,
@@ -8,19 +20,6 @@ import {
 	Text,
 } from 'lucide-react';
 import { useMemo, useState } from 'react';
-import {
-	CommandDialog,
-	CommandEmpty,
-	CommandGroup,
-	CommandInput,
-	CommandItem,
-	CommandList,
-} from '@/components/ui/command';
-import { elements } from '@/lib/elements';
-import type { ElementCategory } from '@/lib/elementTypes';
-import { definitionToEditor } from '@/lib/transformers';
-import { useBuilder } from '@/store/builder';
-import { Button } from '../ui/button';
 
 const iconMap: Record<ElementCategory, LucideIcon> = {
 	layout: LayoutGrid,
@@ -37,7 +36,10 @@ function ElementPicker() {
 	const categories = useMemo(() => {
 		return elements.reduce(
 			(acc, element) => {
-				acc[element.type] = [...(acc[element.type] || []), element];
+				acc[element.type as ElementCategory] = [
+					...(acc[element.type as ElementCategory] || []),
+					element,
+				];
 				return acc;
 			},
 			{} as Record<ElementCategory, typeof elements>,

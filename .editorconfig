@@ -1,0 +1,6 @@
+root = true
+[*.{js,jsx,ts,tsx}]
+indent_style = tab
+indent_size = 2
+charset = utf-8
+max_line_length = 120

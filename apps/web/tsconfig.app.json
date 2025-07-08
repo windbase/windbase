@@ -31,5 +31,30 @@
 		"src/**/*.spec.jsx",
 		"src/**/*.test.jsx"
 	],
-	"include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"]
+  "include": [
+    "src/**/*.js",
+    "src/**/*.jsx",
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ],
+  "references": [
+    {
+      "path": "../../packages/utils/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/ui/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/templates/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/exporters/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/engine/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/core/tsconfig.lib.json"
+    }
+  ]
 }

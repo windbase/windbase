@@ -1,12 +1,12 @@
 'use client';
 
+import { useBuilder } from '@windbase/engine';
 import { useEffect, useRef, useState } from 'react';
 import ElementLayers from '@/components/element-management/element-layers';
 import ElementProperties from '@/components/element-management/element-properties';
 import { useKeyboardShortcuts } from '@/components/shared/keyboard-shortcuts';
 import DefaultSidebar from '@/components/ui-navigation/default-sidebar';
 import Toolbar from '@/components/ui-navigation/toolbar';
-import { useBuilder } from '@/store/builder';
 import LivePreviewArea from './live-preview-area';
 
 function VisualBuilder() {

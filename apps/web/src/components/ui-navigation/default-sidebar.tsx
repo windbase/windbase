@@ -1,8 +1,8 @@
+import { useBuilder } from '@windbase/engine';
+import { templates } from '@windbase/templates';
+import { Button } from '@windbase/ui';
+import { htmlToBuilderElements } from '@windbase/utils';
 import { Search } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { templates } from '@/lib/templates';
-import { htmlToBuilderElements } from '@/lib/transformer';
-import { useBuilder } from '@/store/builder';
 import ImportButton from '../core-builder/import-button';
 
 function DefaultSidebar() {
@@ -26,7 +26,7 @@ function DefaultSidebar() {
 							type="button"
 							className="cursor-pointer w-full"
 							onClick={() => {
-								loadTemplate(htmlToBuilderElements(template.html));
+								loadTemplate(htmlToBuilderElements(template.html || ''));
 							}}
 						>
 							<div className="w-full flex items-center justify-center h-20 bg-gray-200 rounded-md">

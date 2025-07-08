@@ -1,26 +1,25 @@
 /** biome-ignore-all lint/suspicious/noExplicitAny: we don't know the type of the element */
-import { ChevronsUpDown, XIcon } from 'lucide-react';
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Button } from '@/components/ui/button';
+
+import type { AttributeInput } from '@windbase/core';
+import { elements } from '@windbase/core';
+import { useBuilder } from '@windbase/engine';
 import {
+	Button,
 	Collapsible,
 	CollapsibleContent,
 	CollapsibleTrigger,
-} from '@/components/ui/collapsible';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import {
+	Input,
+	Label,
 	Select,
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from '@/components/ui/select';
-import { Separator } from '@/components/ui/separator';
-import { Textarea } from '@/components/ui/textarea';
-import { elements } from '@/lib/elements';
-import type { AttributeInput } from '@/lib/types';
-import { useBuilder } from '@/store/builder';
+	Separator,
+	Textarea,
+} from '@windbase/ui';
+import { ChevronsUpDown, XIcon } from 'lucide-react';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 // Define which HTML tags should be contenteditable (same as in live-preview.js)
 const CONTENTEDITABLE_TAGS = [
@@ -141,19 +140,20 @@ const ElementProperties = memo(() => {
 		[classes, selectedElement?.id, updateClasses],
 	);
 
-	const handleEditClass = useCallback(
-		(className: string) => {
-			setEditingClass(className);
-			setEditingValue(className);
-		},
-		[],
-	);
+	const handleEditClass = useCallback((className: string) => {
+		setEditingClass(className);
+		setEditingValue(className);
+	}, []);
 
 	const handleSaveClass = useCallback(
 		(oldClassName: string) => {
 			if (selectedElement?.id) {
 				const trimmedValue = editingValue.trim();
-				if (trimmedValue && trimmedValue !== oldClassName && !classes.includes(trimmedValue)) {
+				if (
+					trimmedValue &&
+					trimmedValue !== oldClassName &&
+					!classes.includes(trimmedValue)
+				) {
 					const newClasses = classes.map((c) =>
 						c === oldClassName ? trimmedValue : c,
 					);
@@ -171,12 +171,15 @@ const ElementProperties = memo(() => {
 		setEditingValue('');
 	}, []);
 
-	const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-		const value = e.target.value;
-		setEditingValue(value);
-		// Auto-resize input based on content
-		e.target.style.width = `${Math.max(value.length * 8, 50)}px`;
-	}, []);
+	const handleInputChange = useCallback(
+		(e: React.ChangeEvent<HTMLInputElement>) => {
+			const value = e.target.value;
+			setEditingValue(value);
+			// Auto-resize input based on content
+			e.target.style.width = `${Math.max(value.length * 8, 50)}px`;
+		},
+		[],
+	);
 
 	const handleKeyDown = useCallback(
 		(e: React.KeyboardEvent, className?: string) => {
@@ -360,9 +363,9 @@ const ElementProperties = memo(() => {
 										onBlur={() => handleSaveClass(className)}
 										onKeyDown={(e) => handleKeyDown(e, className)}
 										className="bg-transparent border-none outline-none text-sm"
-										style={{ 
+										style={{
 											width: `${getInputWidth(editingValue)}px`,
-											minWidth: '50px'
+											minWidth: '50px',
 										}}
 									/>
 								) : (

@@ -1,8 +1,8 @@
 'use client';
 
+import { Button } from '@windbase/ui';
 import { Moon, Sun } from 'lucide-react';
 import { useTheme } from '@/components/providers/theme-provider';
-import { Button } from '@/components/ui/button';
 
 function DarkModeButton() {
 	const { setTheme, theme } = useTheme();

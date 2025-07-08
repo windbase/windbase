@@ -2,10 +2,28 @@
 	"files": [],
 	"include": [],
 	"references": [
-		{
-			"path": "./tsconfig.app.json"
-		}
-	],
+    {
+      "path": "../../packages/utils"
+    },
+    {
+      "path": "../../packages/ui"
+    },
+    {
+      "path": "../../packages/templates"
+    },
+    {
+      "path": "../../packages/exporters"
+    },
+    {
+      "path": "../../packages/engine"
+    },
+    {
+      "path": "../../packages/core"
+    },
+    {
+      "path": "./tsconfig.app.json"
+    }
+  ],
 	"extends": "../../tsconfig.base.json",
 	"compilerOptions": {
 		"baseUrl": ".",

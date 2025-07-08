@@ -5,6 +5,24 @@
   "references": [
     {
       "path": "./apps/web"
+    },
+    {
+      "path": "./packages/core"
+    },
+    {
+      "path": "./packages/engine"
+    },
+    {
+      "path": "./packages/exporters"
+    },
+    {
+      "path": "./packages/templates"
+    },
+    {
+      "path": "./packages/utils"
+    },
+    {
+      "path": "./packages/ui"
     }
   ]
 }
