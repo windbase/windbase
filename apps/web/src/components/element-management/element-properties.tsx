@@ -3,6 +3,7 @@ import { Separator } from '@windbase/ui';
 import { memo } from 'react';
 import AdvancedPanel from './panels/advanced-panel';
 import BasicPanel from './panels/basic-panel';
+import ColorPanel from './panels/color-panel';
 
 const ElementProperties = memo(() => {
 	const { selectedElement } = useBuilder();
@@ -22,6 +23,8 @@ const ElementProperties = memo(() => {
 			<BasicPanel />
 			<Separator className="my-2" />
 			<AdvancedPanel />
+			<Separator className="my-2" />
+			<ColorPanel />
 			<Separator className="my-2" />
 		</div>
 	);

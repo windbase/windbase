@@ -1,3 +1,7 @@
 @import "../../../packages/ui/styles.css";
 
 @source "../../../packages/ui/src";
+
+::-webkit-scrollbar { 
+  display: none;  /* Older Safari and Chromium */
+}
