@@ -596,7 +596,7 @@ const ColorPanel = memo(() => {
 							key={breakpoint}
 							variant={selectedBreakpoint === breakpoint ? 'default' : 'ghost'}
 							size="sm"
-							className="text-xs px-2 py-1 h-auto min-w-0 flex-shrink-0"
+							className="text-xs px-3 py-1 h-auto min-w-0 flex-shrink-0"
 							onClick={() => setSelectedBreakpoint(breakpoint)}
 						>
 							{breakpoint}
