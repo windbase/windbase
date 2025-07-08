@@ -1,4 +1,4 @@
-import type { ElementCategory } from '../elementTypes';
+import type { ElementCategory } from '../element-system/element-types';
 
 /**
  * Editor element - runtime representation of elements in the visual builder
