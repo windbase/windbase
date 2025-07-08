@@ -1,9 +1,9 @@
-import type { BuilderElement } from '@/store/builder';
+import type { AttributeInput } from '@windbase/core';
 
 // Helper function to map HTML attributes to input attributes with values
 export const mapHtmlAttributesToInputAttributes = (
 	element: Element,
-	inputAttributes: BuilderElement['inputAttributes']
+	inputAttributes: AttributeInput[]
 ) => {
 	if (!inputAttributes) return undefined;
 
