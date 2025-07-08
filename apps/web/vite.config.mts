@@ -10,11 +10,11 @@ export default defineConfig(() => ({
 	cacheDir: '../../node_modules/.vite/apps/web',
 	server: {
 		port: 3000,
-		host: 'localhost',
+		host: 'localhost'
 	},
 	preview: {
 		port: 3000,
-		host: 'localhost',
+		host: 'localhost'
 	},
 	plugins: [react(), tailwindcss(), tsconfigPaths()],
 	build: {
@@ -22,7 +22,7 @@ export default defineConfig(() => ({
 		emptyOutDir: true,
 		reportCompressedSize: true,
 		commonjsOptions: {
-			transformMixedEsModules: true,
-		},
-	},
+			transformMixedEsModules: true
+		}
+	}
 }));

@@ -5,5 +5,5 @@ export {
 	deserializeFromDb,
 	serializeArrayForDb,
 	serializeForDb,
-	validateCoreElement,
+	validateCoreElement
 } from './db-serializer';

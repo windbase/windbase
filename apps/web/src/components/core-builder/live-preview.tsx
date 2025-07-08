@@ -13,7 +13,7 @@ function LivePreview() {
 		hoverElement,
 		selectElement,
 		hoveredElement,
-		updateElement,
+		updateElement
 	} = useBuilder();
 
 	// Initialize iframe with basic HTML structure once
@@ -102,7 +102,7 @@ function LivePreview() {
 			} else if (event.data.type === 'element-content-changed') {
 				isEditingInIframe.current = true;
 				updateElement(event.data.elementId, {
-					content: event.data.content,
+					content: event.data.content
 				});
 				// Reset flag after a short delay to allow for re-sync from external sources
 				setTimeout(() => {
@@ -122,9 +122,9 @@ function LivePreview() {
 			iframe.contentWindow?.postMessage(
 				{
 					type: 'sync-elements',
-					data: { elements },
+					data: { elements }
 				},
-				'*',
+				'*'
 			);
 		}
 	}, [isIframeLoaded, elements]);
@@ -166,9 +166,9 @@ function LivePreview() {
 				iframe.contentWindow?.postMessage(
 					{
 						type: 'update-content',
-						data: { elementId: selectedElement.id, content: currentContent },
+						data: { elementId: selectedElement.id, content: currentContent }
 					},
-					'*',
+					'*'
 				);
 			}
 
@@ -179,10 +179,10 @@ function LivePreview() {
 						type: 'update-attributes',
 						data: {
 							elementId: selectedElement.id,
-							attributes: currentAttributes,
-						},
+							attributes: currentAttributes
+						}
 					},
-					'*',
+					'*'
 				);
 			}
 
@@ -199,9 +199,9 @@ function LivePreview() {
 			iframe.contentWindow?.postMessage(
 				{
 					type: 'select-element',
-					data: { elementId: selectedElement?.id || null },
+					data: { elementId: selectedElement?.id || null }
 				},
-				'*',
+				'*'
 			);
 		}
 	}, [isIframeLoaded, selectedElement]);
@@ -213,9 +213,9 @@ function LivePreview() {
 			iframe.contentWindow?.postMessage(
 				{
 					type: 'hover-element',
-					data: { elementId: hoveredElement?.id || null },
+					data: { elementId: hoveredElement?.id || null }
 				},
-				'*',
+				'*'
 			);
 		}
 	}, [isIframeLoaded, hoveredElement]);

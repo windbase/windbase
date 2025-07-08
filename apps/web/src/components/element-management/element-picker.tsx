@@ -8,7 +8,7 @@ import {
 	CommandGroup,
 	CommandInput,
 	CommandItem,
-	CommandList,
+	CommandList
 } from '@windbase/ui';
 import {
 	Box,
@@ -17,7 +17,7 @@ import {
 	type LucideIcon,
 	Pen,
 	Plus,
-	Text,
+	Text
 } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
@@ -26,7 +26,7 @@ const iconMap: Record<ElementCategory, LucideIcon> = {
 	form: Pen,
 	media: Image,
 	text: Text,
-	other: Box,
+	other: Box
 };
 
 function ElementPicker() {
@@ -38,11 +38,11 @@ function ElementPicker() {
 			(acc, element) => {
 				acc[element.type as ElementCategory] = [
 					...(acc[element.type as ElementCategory] || []),
-					element,
+					element
 				];
 				return acc;
 			},
-			{} as Record<ElementCategory, typeof elements>,
+			{} as Record<ElementCategory, typeof elements>
 		);
 	}, []);
 

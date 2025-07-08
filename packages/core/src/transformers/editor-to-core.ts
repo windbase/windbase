@@ -12,7 +12,7 @@ export function editorToCore(editorElement: EditorElement): CoreElement {
 		classes: editorElement.classes,
 		content: editorElement.content,
 		attributes: editorElement.attributes,
-		children: editorElement.children.map((child) => editorToCore(child)),
+		children: editorElement.children.map((child) => editorToCore(child))
 	};
 }
 

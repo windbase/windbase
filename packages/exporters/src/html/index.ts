@@ -2,5 +2,5 @@
 export {
 	exportArrayToHtml,
 	exportToFullHtml,
-	exportToHtml,
+	exportToHtml
 } from './html-exporter';

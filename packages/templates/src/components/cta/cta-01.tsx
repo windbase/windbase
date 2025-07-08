@@ -42,5 +42,5 @@ export const CTA01: LegacyTemplate = defineLegacyTemplate({
 	preview:
 		'https://tailwindcss.com/plus-assets/img/component-images/dark-project-app-screenshot.png',
 	author: 'Windbase',
-	html: cta01HTML,
+	html: cta01HTML
 });

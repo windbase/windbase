@@ -14,7 +14,7 @@ export const tagToElementType = (tagName: string): ElementCategory => {
 			'footer',
 			'main',
 			'aside',
-			'nav',
+			'nav'
 		].includes(tag)
 	) {
 		return 'layout';
@@ -32,7 +32,7 @@ export const tagToElementType = (tagName: string): ElementCategory => {
 			'fieldset',
 			'legend',
 			'option',
-			'optgroup',
+			'optgroup'
 		].includes(tag)
 	) {
 		return 'form';
@@ -48,7 +48,7 @@ export const tagToElementType = (tagName: string): ElementCategory => {
 			'svg',
 			'picture',
 			'source',
-			'track',
+			'track'
 		].includes(tag)
 	) {
 		return 'media';
@@ -73,7 +73,7 @@ export const tagToElementType = (tagName: string): ElementCategory => {
 			'a',
 			'strong',
 			'em',
-			'i',
+			'i'
 		].includes(tag)
 	) {
 		return 'text';

@@ -18,7 +18,7 @@ export function coreToEditor(
 		parent: parentId,
 		children: coreElement.children.map((child) =>
 			coreToEditor(child, coreElement.id)
-		),
+		)
 	};
 }
 

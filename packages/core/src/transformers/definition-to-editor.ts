@@ -16,7 +16,7 @@ export function definitionToEditor(
 		content: definition.content,
 		attributes: {}, // Start with empty attributes, will be populated by inputAttributes
 		parent: parentId,
-		children: [], // New elements start with no children
+		children: [] // New elements start with no children
 	};
 }
 

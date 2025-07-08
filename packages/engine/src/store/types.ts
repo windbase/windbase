@@ -1,7 +1,7 @@
 import type {
 	AttributeInput,
 	CoreElement,
-	EditorElement,
+	EditorElement
 } from '@windbase/core';
 
 // History slice

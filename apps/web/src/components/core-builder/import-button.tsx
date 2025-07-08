@@ -8,7 +8,7 @@ import {
 	DialogDescription,
 	DialogHeader,
 	DialogTitle,
-	DialogTrigger,
+	DialogTrigger
 } from '@windbase/ui';
 import { htmlToBuilderElements } from '@windbase/utils';
 import { ArrowBigDown } from 'lucide-react';

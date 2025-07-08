@@ -57,7 +57,7 @@ export function useKeyboardShortcuts(isActive: boolean) {
 }
 
 export default function KeyboardShortcuts({
-	isActive,
+	isActive
 }: KeyboardShortcutsProps) {
 	useKeyboardShortcuts(isActive);
 	return null;

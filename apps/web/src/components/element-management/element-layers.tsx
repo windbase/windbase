@@ -7,7 +7,7 @@ import {
 	Layers,
 	RowsIcon,
 	Trash,
-	TypeIcon,
+	TypeIcon
 } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import {
@@ -15,7 +15,7 @@ import {
 	type DraggingPosition,
 	Tree,
 	type TreeItem,
-	type TreeItemIndex,
+	type TreeItemIndex
 } from 'react-complex-tree';
 
 function ElementLayers() {
@@ -26,7 +26,7 @@ function ElementLayers() {
 		moveElement,
 		hoverElement,
 		getParentIds,
-		deleteElement,
+		deleteElement
 	} = useBuilder();
 	const [focusedItem, setFocusedItem] = useState<TreeItemIndex>();
 	const [expandedItems, setExpandedItems] = useState<TreeItemIndex[]>(['root']);
@@ -70,8 +70,8 @@ function ElementLayers() {
 				index: 'root',
 				isFolder: true,
 				children: elements.map((element) => element.id),
-				data: 'root',
-			},
+				data: 'root'
+			}
 		};
 
 		// Add all elements to the tree
@@ -85,7 +85,7 @@ function ElementLayers() {
 				children:
 					element.children?.map((child: EditorElement) => child.id) || [],
 				data: element.tag,
-				canRename: true,
+				canRename: true
 			};
 
 			// Process children recursively
@@ -145,7 +145,7 @@ function ElementLayers() {
 			'code', // Special text elements
 			'li',
 			'dt',
-			'dd', // List elements
+			'dd' // List elements
 		];
 
 		// Show TypeIcon for content-editable elements (headings, text, etc.)
@@ -189,8 +189,8 @@ function ElementLayers() {
 					'element-tree': {
 						focusedItem,
 						expandedItems,
-						selectedItems,
-					},
+						selectedItems
+					}
 				}}
 				onFocusItem={(item) => setFocusedItem(item.index)}
 				onExpandItem={(item) =>
@@ -199,8 +199,8 @@ function ElementLayers() {
 				onCollapseItem={(item) =>
 					setExpandedItems(
 						expandedItems.filter(
-							(expandedItemIndex) => expandedItemIndex !== item.index,
-						),
+							(expandedItemIndex) => expandedItemIndex !== item.index
+						)
 					)
 				}
 				onSelectItems={(items) => {
@@ -252,7 +252,7 @@ function ElementLayers() {
 										: 'hover:bg-muted/50'
 								} flex items-center group`}
 								style={{
-									paddingLeft: `${(depth + 1) * 12}px`,
+									paddingLeft: `${(depth + 1) * 12}px`
 								}}
 								{...context.itemContainerWithoutChildrenProps}
 								{...context.interactiveElementProps}
@@ -304,7 +304,7 @@ function ElementLayers() {
 										? '-4px'
 										: '-2px',
 							left: `${draggingPosition.depth * 12}px`,
-							height: '2px',
+							height: '2px'
 						}}
 						className="bg-primary rounded-full"
 					/>

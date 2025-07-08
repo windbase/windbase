@@ -32,5 +32,5 @@ export const createTemplateSlice: StateCreator<
 	exportHtml: () => {
 		const coreElements = get().exportToCore();
 		return exportToFullHtml(coreElements);
-	},
+	}
 });

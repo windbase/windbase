@@ -11,7 +11,7 @@ export const mapHtmlAttributesToInputAttributes = (
 		const htmlValue = element.getAttribute(attr.attribute);
 		return {
 			...attr,
-			value: htmlValue || undefined, // Add the actual value from HTML
+			value: htmlValue || undefined // Add the actual value from HTML
 		};
 	});
 };

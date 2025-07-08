@@ -9,7 +9,7 @@ export const useBuilder = create<BuilderStore>()((...a) => ({
 	...createHistorySlice(...a),
 	...createSelectionSlice(...a),
 	...createManipulationSlice(...a),
-	...createTemplateSlice(...a),
+	...createTemplateSlice(...a)
 }));
 
 // Export types for external usage
@@ -19,5 +19,5 @@ export type {
 	HistorySlice,
 	ManipulationSlice,
 	SelectionSlice,
-	TemplateSlice,
+	TemplateSlice
 } from './types';

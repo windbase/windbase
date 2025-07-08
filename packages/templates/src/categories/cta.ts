@@ -6,7 +6,7 @@ templateRegistry.register(CTA01, { featured: true, popular: true });
 
 // Export CTA templates for direct import
 export const CTATemplates = {
-	CTA01,
+	CTA01
 };
 
 // Export helper for getting all CTA templates

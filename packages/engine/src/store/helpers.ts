@@ -26,7 +26,7 @@ export const removeElementById = (
 		.filter((element) => element.id !== id)
 		.map((element) => ({
 			...element,
-			children: removeElementById(element.children, id),
+			children: removeElementById(element.children, id)
 		}));
 };
 
@@ -38,7 +38,7 @@ export const updateParentReferences = (
 	return elements.map((element) => ({
 		...element,
 		parent: parentId,
-		children: updateParentReferences(element.children, element.id),
+		children: updateParentReferences(element.children, element.id)
 	}));
 };
 
@@ -58,7 +58,7 @@ export const findAllParentIds = (
 		if (element.children.length > 0) {
 			const found = findAllParentIds(element.children, targetId, [
 				...currentParents,
-				element.id,
+				element.id
 			]);
 			if (found.length > 0) {
 				return found;

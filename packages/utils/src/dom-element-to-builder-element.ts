@@ -43,7 +43,7 @@ export const domElementToBuilderElement = (
 		classes,
 		children,
 		parent: parentId,
-		attributes: Object.keys(attributes).length > 0 ? attributes : undefined,
+		attributes: Object.keys(attributes).length > 0 ? attributes : undefined
 	};
 
 	// Add content if there's direct text content

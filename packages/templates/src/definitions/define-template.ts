@@ -9,7 +9,7 @@ export function defineTemplate(template: Template): Template {
 		...template,
 		createdAt: template.createdAt || new Date(),
 		updatedAt: template.updatedAt || new Date(),
-		version: template.version || '1.0.0',
+		version: template.version || '1.0.0'
 	};
 }
 
@@ -21,7 +21,7 @@ export function defineLegacyTemplate(template: LegacyTemplate): LegacyTemplate {
 		...template,
 		createdAt: template.createdAt || new Date(),
 		updatedAt: template.updatedAt || new Date(),
-		version: template.version || '1.0.0',
+		version: template.version || '1.0.0'
 	};
 }
 
@@ -50,7 +50,7 @@ export function createTemplateMetadata(
 		author: options.author,
 		version: options.version || '1.0.0',
 		createdAt: new Date(),
-		updatedAt: new Date(),
+		updatedAt: new Date()
 	};
 }
 
@@ -67,10 +67,10 @@ export function htmlToBasicElements(html: string): CoreElement[] {
 			classes: ['template-container'],
 			content: '',
 			attributes: {
-				'data-template-html': 'true',
+				'data-template-html': 'true'
 			},
-			children: [],
-		},
+			children: []
+		}
 	];
 }
 
@@ -85,7 +85,7 @@ export class TemplateBuilder {
 			id,
 			name,
 			tags: [],
-			elements: [],
+			elements: []
 		};
 	}
 

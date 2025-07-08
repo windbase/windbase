@@ -16,7 +16,7 @@ export function serializeForDb(element: CoreElement): CoreElement {
 		classes: [...element.classes], // Create new array
 		content: element.content || undefined,
 		attributes: element.attributes ? { ...element.attributes } : undefined,
-		children: element.children.map((child) => serializeForDb(child)),
+		children: element.children.map((child) => serializeForDb(child))
 	};
 }
 
@@ -38,7 +38,7 @@ export function deserializeFromDb(data: CoreElement): CoreElement {
 		classes: data.classes || [],
 		content: data.content,
 		attributes: data.attributes,
-		children: data.children?.map((child) => deserializeFromDb(child)) || [],
+		children: data.children?.map((child) => deserializeFromDb(child)) || []
 	};
 }
 
@@ -80,7 +80,7 @@ export function cleanCoreElement(element: CoreElement): CoreElement {
 		id: element.id,
 		tag: element.tag,
 		classes: element.classes.filter((cls) => cls?.trim()),
-		children: element.children.map((child) => cleanCoreElement(child)),
+		children: element.children.map((child) => cleanCoreElement(child))
 	};
 
 	// Only include content if it exists and is not empty

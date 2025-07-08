@@ -12,7 +12,7 @@ import '@fontsource/ubuntu/500.css';
 import '@fontsource/ubuntu/700.css';
 
 const root = ReactDOM.createRoot(
-	document.getElementById('root') as HTMLElement,
+	document.getElementById('root') as HTMLElement
 );
 
 root.render(
@@ -22,5 +22,5 @@ root.render(
 				<Router />
 			</ThemeProvider>
 		</BrowserRouter>
-	</StrictMode>,
+	</StrictMode>
 );

@@ -41,7 +41,7 @@ export const createSelectionSlice: StateCreator<
 				if (element.children.length > 0) {
 					const found = findParents(element.children, targetId, [
 						...currentParents,
-						element.id,
+						element.id
 					]);
 					if (found.length > 0) {
 						return found;
@@ -52,5 +52,5 @@ export const createSelectionSlice: StateCreator<
 		};
 
 		return findParents(elements, elementId);
-	},
+	}
 });

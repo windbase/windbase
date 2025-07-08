@@ -5,7 +5,7 @@ import {
 	Tooltip,
 	TooltipContent,
 	TooltipProvider,
-	TooltipTrigger,
+	TooltipTrigger
 } from '@windbase/ui';
 import { ChevronDown, Code, Eye, Grid, Redo, Undo } from 'lucide-react';
 import ElementPicker from '../element-management/element-picker';

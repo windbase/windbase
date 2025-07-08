@@ -12,7 +12,7 @@ function LivePreviewArea() {
 				width: responsiveMode === 'mobile' ? '40%' : '100%',
 				height: '95%',
 				maxHeight: '95%',
-				transform: 'scale(0.95)',
+				transform: 'scale(0.95)'
 			}}
 		>
 			<LivePreviewToolbar />

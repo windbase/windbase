@@ -16,7 +16,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 	Separator,
-	Textarea,
+	Textarea
 } from '@windbase/ui';
 import { ChevronsUpDown, XIcon } from 'lucide-react';
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -45,7 +45,7 @@ const CONTENTEDITABLE_TAGS = [
 	'code', // Special text elements
 	'li',
 	'dt',
-	'dd', // List elements
+	'dd' // List elements
 ];
 
 const ElementProperties = memo(() => {
@@ -92,12 +92,12 @@ const ElementProperties = memo(() => {
 				updateElement(selectedElement.id, {
 					attributes: {
 						...selectedElement.attributes,
-						[attribute]: value,
-					},
+						[attribute]: value
+					}
 				});
 			}
 		},
-		[selectedElement?.id, selectedElement?.attributes, updateElement],
+		[selectedElement?.id, selectedElement?.attributes, updateElement]
 	);
 
 	const getAttributeValue = useCallback(
@@ -106,7 +106,7 @@ const ElementProperties = memo(() => {
 			// Check if the attribute exists in the element's attributes
 			return selectedElement.attributes?.[attribute] || '';
 		},
-		[selectedElement],
+		[selectedElement]
 	);
 
 	// Get element definition that matches the selected element
@@ -114,7 +114,7 @@ const ElementProperties = memo(() => {
 		if (!selectedElement) return null;
 
 		const elementCategory = elements.filter(
-			(el) => el.type === selectedElement.type,
+			(el) => el.type === selectedElement.type
 		);
 		if (!elementCategory.length) return null;
 
@@ -133,11 +133,11 @@ const ElementProperties = memo(() => {
 			if (selectedElement?.id) {
 				updateClasses(
 					selectedElement.id,
-					classes.filter((c) => c !== classToRemove),
+					classes.filter((c) => c !== classToRemove)
 				);
 			}
 		},
-		[classes, selectedElement?.id, updateClasses],
+		[classes, selectedElement?.id, updateClasses]
 	);
 
 	const handleEditClass = useCallback((className: string) => {
@@ -155,7 +155,7 @@ const ElementProperties = memo(() => {
 					!classes.includes(trimmedValue)
 				) {
 					const newClasses = classes.map((c) =>
-						c === oldClassName ? trimmedValue : c,
+						c === oldClassName ? trimmedValue : c
 					);
 					updateClasses(selectedElement.id, newClasses);
 				}
@@ -163,7 +163,7 @@ const ElementProperties = memo(() => {
 			setEditingClass(null);
 			setEditingValue('');
 		},
-		[classes, editingValue, selectedElement?.id, updateClasses],
+		[classes, editingValue, selectedElement?.id, updateClasses]
 	);
 
 	const handleCancelEdit = useCallback(() => {
@@ -178,7 +178,7 @@ const ElementProperties = memo(() => {
 			// Auto-resize input based on content
 			e.target.style.width = `${Math.max(value.length * 8, 50)}px`;
 		},
-		[],
+		[]
 	);
 
 	const handleKeyDown = useCallback(
@@ -193,7 +193,7 @@ const ElementProperties = memo(() => {
 				handleCancelEdit();
 			}
 		},
-		[handleAddClass, handleSaveClass, handleCancelEdit],
+		[handleAddClass, handleSaveClass, handleCancelEdit]
 	);
 
 	// Calculate input width based on content
@@ -253,7 +253,7 @@ const ElementProperties = memo(() => {
 				</div>
 			);
 		},
-		[getAttributeValue, handleAttributeChange, selectedElement?.id],
+		[getAttributeValue, handleAttributeChange, selectedElement?.id]
 	);
 
 	const attributeInputs = useMemo(() => {
@@ -270,7 +270,7 @@ const ElementProperties = memo(() => {
 				updateElement(selectedElement.id, { content });
 			}
 		},
-		[selectedElement?.id, updateElement],
+		[selectedElement?.id, updateElement]
 	);
 
 	if (!selectedElement) {
@@ -365,7 +365,7 @@ const ElementProperties = memo(() => {
 										className="bg-transparent border-none outline-none text-sm"
 										style={{
 											width: `${getInputWidth(editingValue)}px`,
-											minWidth: '50px',
+											minWidth: '50px'
 										}}
 									/>
 								) : (

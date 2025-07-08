@@ -39,7 +39,7 @@ export const createHistorySlice: StateCreator<
 			history: newHistory,
 			historyIndex: newHistory.length - 1,
 			canUndo: newHistory.length > 1,
-			canRedo: false,
+			canRedo: false
 		});
 	},
 
@@ -55,7 +55,7 @@ export const createHistorySlice: StateCreator<
 				historyIndex: newIndex,
 				canUndo: newIndex > 0,
 				canRedo: true,
-				selectedElement: null, // Clear selection after undo
+				selectedElement: null // Clear selection after undo
 			});
 		}
 	},
@@ -72,8 +72,8 @@ export const createHistorySlice: StateCreator<
 				historyIndex: newIndex,
 				canUndo: true,
 				canRedo: newIndex < state.history.length - 1,
-				selectedElement: null, // Clear selection after redo
+				selectedElement: null // Clear selection after redo
 			});
 		}
-	},
+	}
 });

@@ -60,8 +60,8 @@ function generateJsx(element: CoreElement, indent = 3): string {
 
 	return `${tabs}<${element.tag}${className}${attributes}>
 ${content ? `${nextTabs}${content}` : ''}${
-		content && childrenJsx ? '\n' : ''
-	}${childrenJsx}
+	content && childrenJsx ? '\n' : ''
+}${childrenJsx}
 ${tabs}</${element.tag}>`;
 }
 

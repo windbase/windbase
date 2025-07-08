@@ -26,7 +26,7 @@ const CONTENTEDITABLE_TAGS = [
 	'code', // Special text elements
 	'li',
 	'dt',
-	'dd', // List elements
+	'dd' // List elements
 ];
 
 // Handle element selection
@@ -38,7 +38,7 @@ document.addEventListener('click', (e) => {
 		window.parent.postMessage(
 			{
 				type: 'element-selected',
-				elementId: elementId,
+				elementId: elementId
 			},
 			'*'
 		);
@@ -54,7 +54,7 @@ document.addEventListener('mouseover', (e) => {
 		window.parent.postMessage(
 			{
 				type: 'element-hovered',
-				elementId: elementId,
+				elementId: elementId
 			},
 			'*'
 		);
@@ -64,7 +64,7 @@ document.addEventListener('mouseover', (e) => {
 document.addEventListener('mouseout', () => {
 	window.parent.postMessage(
 		{
-			type: 'element-unhovered',
+			type: 'element-unhovered'
 		},
 		'*'
 	);
@@ -79,7 +79,7 @@ document.addEventListener('input', (e) => {
 			{
 				type: 'element-content-changed',
 				elementId: elementId,
-				content: e.target.textContent || '',
+				content: e.target.textContent || ''
 			},
 			'*'
 		);
@@ -276,8 +276,8 @@ function renderElement(element) {
 		element.children && element.children.length > 0
 			? 'false'
 			: shouldBeContentEditable
-			? 'true'
-			: 'false';
+				? 'true'
+				: 'false';
 
 	// Build attributes string for regular elements (excluding style)
 	let attributesString = '';
@@ -389,7 +389,7 @@ function updateElementAttributes(elementId, attributes) {
 			'data-element-id',
 			'contenteditable',
 			'style',
-			'class',
+			'class'
 		];
 		const currentAttributes = [...element.attributes];
 

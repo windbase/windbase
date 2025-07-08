@@ -7,28 +7,28 @@ export const elements: ElementDefinition[] = [
 		type: 'layout',
 		tag: 'div',
 		classes: [],
-		children: [],
+		children: []
 	},
 	{
 		id: 'container',
 		type: 'layout',
 		tag: 'div',
 		classes: ['container', 'mx-auto', 'px-4'],
-		children: [],
+		children: []
 	},
 	{
 		id: 'grid',
 		type: 'layout',
 		tag: 'div',
 		classes: ['grid', 'grid-cols-2', 'gap-4'],
-		children: [],
+		children: []
 	},
 	{
 		id: 'flex',
 		type: 'layout',
 		tag: 'div',
 		classes: ['flex', 'items-center', 'justify-between'],
-		children: [],
+		children: []
 	},
 	// form
 	{
@@ -41,15 +41,15 @@ export const elements: ElementDefinition[] = [
 			{
 				attribute: 'placeholder',
 				type: 'text',
-				label: 'Placeholder',
+				label: 'Placeholder'
 			},
 			{
 				attribute: 'type',
 				type: 'select',
 				label: 'Type',
-				options: ['text', 'number', 'email', 'password'],
-			},
-		],
+				options: ['text', 'number', 'email', 'password']
+			}
+		]
 	},
 	{
 		id: 'button',
@@ -57,7 +57,7 @@ export const elements: ElementDefinition[] = [
 		tag: 'button',
 		classes: ['border', 'border-gray-300', 'px-4', 'py-2', 'rounded'],
 		content: 'Button',
-		children: [],
+		children: []
 	},
 	{
 		id: 'label',
@@ -65,7 +65,7 @@ export const elements: ElementDefinition[] = [
 		tag: 'label',
 		classes: ['text-sm', 'font-medium'],
 		content: 'Label text',
-		children: [],
+		children: []
 	},
 	// media
 	{
@@ -78,9 +78,9 @@ export const elements: ElementDefinition[] = [
 			{
 				attribute: 'src',
 				type: 'text',
-				label: 'Source',
-			},
-		],
+				label: 'Source'
+			}
+		]
 	},
 	// text
 	{
@@ -89,7 +89,7 @@ export const elements: ElementDefinition[] = [
 		tag: 'p',
 		classes: ['text-base'],
 		content: 'Text content',
-		children: [],
+		children: []
 	},
 	{
 		id: 'h1',
@@ -97,7 +97,7 @@ export const elements: ElementDefinition[] = [
 		tag: 'h1',
 		classes: ['text-4xl', 'font-bold'],
 		content: 'Heading 1',
-		children: [],
+		children: []
 	},
 	{
 		id: 'h2',
@@ -105,7 +105,7 @@ export const elements: ElementDefinition[] = [
 		tag: 'h2',
 		classes: ['text-3xl', 'font-bold'],
 		content: 'Heading 2',
-		children: [],
+		children: []
 	},
 	{
 		id: 'h3',
@@ -113,7 +113,7 @@ export const elements: ElementDefinition[] = [
 		tag: 'h3',
 		classes: ['text-2xl', 'font-bold'],
 		content: 'Heading 3',
-		children: [],
+		children: []
 	},
 	{
 		id: 'h4',
@@ -121,7 +121,7 @@ export const elements: ElementDefinition[] = [
 		tag: 'h4',
 		classes: ['text-xl', 'font-bold'],
 		content: 'Heading 4',
-		children: [],
+		children: []
 	},
 	{
 		id: 'h5',
@@ -129,7 +129,7 @@ export const elements: ElementDefinition[] = [
 		tag: 'h5',
 		classes: ['text-lg', 'font-bold'],
 		content: 'Heading 5',
-		children: [],
+		children: []
 	},
 	{
 		id: 'h6',
@@ -137,7 +137,7 @@ export const elements: ElementDefinition[] = [
 		tag: 'h6',
 		classes: ['text-base', 'font-bold'],
 		content: 'Heading 6',
-		children: [],
+		children: []
 	},
 	{
 		id: 'span',
@@ -145,7 +145,7 @@ export const elements: ElementDefinition[] = [
 		tag: 'span',
 		classes: [],
 		content: 'Span text',
-		children: [],
+		children: []
 	},
 	{
 		id: 'italic',
@@ -153,7 +153,7 @@ export const elements: ElementDefinition[] = [
 		tag: 'i',
 		classes: ['italic'],
 		content: 'Italic text',
-		children: [],
+		children: []
 	},
 	{
 		id: 'emphasis',
@@ -161,7 +161,7 @@ export const elements: ElementDefinition[] = [
 		tag: 'em',
 		classes: ['italic'],
 		content: 'Emphasized text',
-		children: [],
+		children: []
 	},
 	{
 		id: 'strong',
@@ -169,7 +169,7 @@ export const elements: ElementDefinition[] = [
 		tag: 'strong',
 		classes: ['font-bold'],
 		content: 'Strong text',
-		children: [],
+		children: []
 	},
 	{
 		id: 'link',
@@ -182,15 +182,15 @@ export const elements: ElementDefinition[] = [
 			{
 				attribute: 'href',
 				type: 'text',
-				label: 'URL',
+				label: 'URL'
 			},
 			{
 				attribute: 'target',
 				type: 'select',
 				label: 'Target',
-				options: ['_self', '_blank', '_parent', '_top'],
-			},
-		],
+				options: ['_self', '_blank', '_parent', '_top']
+			}
+		]
 	},
 	// other
 	{
@@ -198,28 +198,28 @@ export const elements: ElementDefinition[] = [
 		type: 'other',
 		tag: 'ul',
 		classes: ['list-disc', 'list-inside'],
-		children: [],
+		children: []
 	},
 	{
 		id: 'ol',
 		type: 'other',
 		tag: 'ol',
 		classes: ['list-decimal', 'list-inside'],
-		children: [],
+		children: []
 	},
 	{
 		id: 'li',
 		type: 'other',
 		tag: 'li',
 		classes: ['list-inside'],
-		children: [],
+		children: []
 	},
 	{
 		id: 'dl',
 		type: 'other',
 		tag: 'dl',
 		classes: ['space-y-2'],
-		children: [],
+		children: []
 	},
 	{
 		id: 'dt',
@@ -227,7 +227,7 @@ export const elements: ElementDefinition[] = [
 		tag: 'dt',
 		classes: ['font-medium'],
 		content: 'Term',
-		children: [],
+		children: []
 	},
 	{
 		id: 'dd',
@@ -235,6 +235,6 @@ export const elements: ElementDefinition[] = [
 		tag: 'dd',
 		classes: ['text-sm', 'text-gray-600'],
 		content: 'Description',
-		children: [],
-	},
+		children: []
+	}
 ];

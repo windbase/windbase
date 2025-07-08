@@ -4,7 +4,7 @@ import type {
 	Template,
 	TemplateCategory,
 	TemplateFilter,
-	TemplateRegistryEntry,
+	TemplateRegistryEntry
 } from '../definitions/types';
 
 // Union type for templates
@@ -32,7 +32,7 @@ export class TemplateRegistry {
 
 		this.templates.set(normalizedTemplate.id, {
 			template: normalizedTemplate,
-			...options,
+			...options
 		});
 	}
 
@@ -50,8 +50,7 @@ export class TemplateRegistry {
 		return {
 			...legacyTemplate,
 			elements:
-				legacyTemplate.elements ||
-				this.htmlToBasicElements(legacyTemplate.html),
+				legacyTemplate.elements || this.htmlToBasicElements(legacyTemplate.html)
 		};
 	}
 
@@ -67,10 +66,10 @@ export class TemplateRegistry {
 				content: '',
 				attributes: {
 					'data-template-html': 'true',
-					'data-html': html,
+					'data-html': html
 				},
-				children: [],
-			},
+				children: []
+			}
 		];
 	}
 
@@ -246,7 +245,7 @@ export class TemplateRegistry {
 			featured: all.filter((entry) => entry.featured && !entry.deprecated)
 				.length,
 			popular: all.filter((entry) => entry.popular && !entry.deprecated).length,
-			deprecated: all.filter((entry) => entry.deprecated).length,
+			deprecated: all.filter((entry) => entry.deprecated).length
 		};
 	}
 }

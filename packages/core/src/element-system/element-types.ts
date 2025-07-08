@@ -3,7 +3,7 @@ export const elementCategories = [
 	'form',
 	'media',
 	'text',
-	'other',
+	'other'
 ] as const;
 
 export type ElementCategory = (typeof elementCategories)[number];

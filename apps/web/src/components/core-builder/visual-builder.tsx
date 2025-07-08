@@ -23,7 +23,7 @@ function VisualBuilder() {
 		if (canvasRef.current) {
 			canvasRef.current.addEventListener('click', (event) => {
 				const toolbar = (event.target as HTMLElement)?.closest(
-					'#live-preview-toolbar',
+					'#live-preview-toolbar'
 				);
 				if (toolbar) {
 					return;

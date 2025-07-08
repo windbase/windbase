@@ -6,7 +6,7 @@ export type {
 	HistorySlice,
 	ManipulationSlice,
 	SelectionSlice,
-	TemplateSlice,
+	TemplateSlice
 } from './store';
 export { useBuilder } from './store';
 
