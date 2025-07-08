@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { useKeyboardShortcuts } from '@/components/common/keyboard-shortcuts';
 import ElementLayers from '@/components/element-management/element-layers';
 import ElementProperties from '@/components/element-management/element-properties';
+import { useKeyboardShortcuts } from '@/components/shared/keyboard-shortcuts';
 import DefaultSidebar from '@/components/ui-navigation/default-sidebar';
 import Toolbar from '@/components/ui-navigation/toolbar';
 import { useBuilder } from '@/store/builder';
