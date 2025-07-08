@@ -1,11 +1,10 @@
-import { javascript } from '@codemirror/lang-javascript';
-import CodeMirror from '@uiw/react-codemirror';
 import { useBuilder } from '@windbase/engine';
 import {
 	Button,
 	Dialog,
 	DialogContent,
 	DialogDescription,
+	DialogFooter,
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger
@@ -13,13 +12,14 @@ import {
 import { htmlToBuilderElements } from '@windbase/utils';
 import { ArrowBigDown } from 'lucide-react';
 import { useCallback, useState } from 'react';
+import CodeEditor from '../shared/code-editor';
 
 function ImportButton() {
 	const [value, setValue] = useState('');
 	const { loadTemplate } = useBuilder();
 
-	const onChange = useCallback((value: string) => {
-		setValue(value);
+	const onChange = useCallback((value: string | undefined) => {
+		setValue(value || '');
 	}, []);
 
 	return (
@@ -30,7 +30,7 @@ function ImportButton() {
 					Import
 				</Button>
 			</DialogTrigger>
-			<DialogContent className="animate-slide-down">
+			<DialogContent className="animate-slide-down max-w-3xl">
 				<DialogHeader>
 					<DialogTitle>Import from Code</DialogTitle>
 					<DialogDescription>
@@ -38,13 +38,16 @@ function ImportButton() {
 					</DialogDescription>
 				</DialogHeader>
 				<div className="space-y-4">
-					<CodeMirror
+					<CodeEditor
+						defaultLanguage="html"
+						defaultValue={value}
 						value={value}
-						height="300px"
-						extensions={[javascript({ jsx: true })]}
 						onChange={onChange}
+						className="h-[300px] w-full"
 					/>
+				</div>
 
+				<DialogFooter className="mr-auto">
 					<Button
 						onClick={() => {
 							loadTemplate(htmlToBuilderElements(value));
@@ -52,7 +55,7 @@ function ImportButton() {
 					>
 						Import
 					</Button>
-				</div>
+				</DialogFooter>
 			</DialogContent>
 		</Dialog>
 	);
