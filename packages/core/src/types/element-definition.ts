@@ -1,4 +1,4 @@
-import type { ElementCategory } from '../elementTypes';
+import type { ElementCategory } from '../element-system/element-types';
 
 /**
  * Attribute input configuration for the element property panel
