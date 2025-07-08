@@ -16,8 +16,7 @@ Open-source, visual builder for TailwindCSS with several in-built plugins. Suppo
 > [!WARNING]
 > This project is currently in early development, expect breaking changes with each commit.
 
-![screenshot](https://github.com/user-attachments/assets/9c011ef2-0ea9-4713-9a68-c0af4d70e6c1)
-
+<img width="1026" alt="image" src="https://github.com/user-attachments/assets/48d0df66-ad08-4a54-a543-4cbc124fad39" />
 
 Windbase is a visual builder for TailwindCSS. It is built with React, TailwindCSS, and TypeScript. You can 
 run it locally with using a single command and start building your UI.
