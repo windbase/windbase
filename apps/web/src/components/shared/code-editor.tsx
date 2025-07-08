@@ -1,6 +1,6 @@
 import Editor, { type Monaco } from '@monaco-editor/react';
 import type { editor } from 'monaco-editor';
-import { parseTmTheme } from 'monaco-themes';
+import Dracula from 'monaco-themes/themes/Dracula.json';
 import { useRef } from 'react';
 
 type DefaultLanguage = 'html' | 'css' | 'javascript' | 'typescript';
@@ -24,25 +24,16 @@ const CodeEditor = (props: CodeEditorProps) => {
 		editorRef.current = editor;
 
 		try {
-			// Import Night Owl theme and convert it using parseTmTheme
-			const nightOwlTheme = await import('monaco-themes/themes/Dawn.json');
-			const convertedTheme = parseTmTheme(
-				JSON.stringify(nightOwlTheme.default)
-			);
-
-			monaco.editor.defineTheme('dawn', convertedTheme);
+			// biome-ignore lint/suspicious/noExplicitAny: it's valid
+			monaco.editor.defineTheme('dracula', Dracula as any);
+			monaco.editor.setTheme('dracula');
 		} catch (error) {
-			console.warn('Failed to load Night Owl theme:', error);
+			console.warn('Failed to load:', error);
 		}
-	};
-
-	const getTheme = () => {
-		return 'vs-dark';
 	};
 
 	return (
 		<Editor
-			theme={getTheme()}
 			onMount={onMount}
 			defaultLanguage={defaultLanguage}
 			defaultValue={defaultValue}
