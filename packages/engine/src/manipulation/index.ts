@@ -1,23 +1,18 @@
-import type { EditorElement } from '@windbase/core';
-import type { StateCreator } from 'zustand';
-import { findElementById, removeElementById } from '../store/helpers';
-import type { BuilderStore, ManipulationSlice } from '../store/types';
+import type { EditorElement } from "@windbase/core";
+import type { StateCreator } from "zustand";
+import { findElementById, removeElementById } from "../store/helpers";
+import type { BuilderStore, ManipulationSlice } from "../store/types";
 
-export const createManipulationSlice: StateCreator<
-	BuilderStore,
-	[],
-	[],
-	ManipulationSlice
-> = (set, get) => ({
+export const createManipulationSlice: StateCreator<BuilderStore, [], [], ManipulationSlice> = (set, get) => ({
 	elements: [],
-	responsiveMode: 'desktop',
+	responsiveMode: "desktop",
 
 	// Add element
-	addElement: (element: Omit<EditorElement, 'id'>, parentId?: string) => {
+	addElement: (element: Omit<EditorElement, "id">, parentId?: string) => {
 		const newElement: EditorElement = {
 			...element,
 			id: crypto.randomUUID(),
-			parent: parentId
+			parent: parentId,
 		};
 
 		set((state) => {
@@ -28,13 +23,13 @@ export const createManipulationSlice: StateCreator<
 						if (el.id === parentId) {
 							return {
 								...el,
-								children: [...el.children, newElement]
+								children: [...el.children, newElement],
 							};
 						}
 						if (el.children.length > 0) {
 							return {
 								...el,
-								children: addToParent(el.children)
+								children: addToParent(el.children),
 							};
 						}
 						return el;
@@ -42,12 +37,12 @@ export const createManipulationSlice: StateCreator<
 				};
 
 				return {
-					elements: addToParent(state.elements)
+					elements: addToParent(state.elements),
 				};
 			} else {
 				// Add to root
 				return {
-					elements: [...state.elements, newElement]
+					elements: [...state.elements, newElement],
 				};
 			}
 		});
@@ -67,15 +62,22 @@ export const createManipulationSlice: StateCreator<
 					if (el.children.length > 0) {
 						return {
 							...el,
-							children: updateInElements(el.children)
+							children: updateInElements(el.children),
 						};
 					}
 					return el;
 				});
 			};
 
+			const updatedElements = updateInElements(state.elements);
+
+			// If the selected element is being updated, refresh it
+			const updatedSelectedElement =
+				state.selectedElement?.id === id ? findElementById(updatedElements, id) : state.selectedElement;
+
 			return {
-				elements: updateInElements(state.elements)
+				elements: updatedElements,
+				selectedElement: updatedSelectedElement,
 			};
 		});
 
@@ -92,16 +94,16 @@ export const createManipulationSlice: StateCreator<
 				if (parentId) {
 					return {
 						elements: updatedElements,
-						selectedElement: findElementById(updatedElements, parentId)
+						selectedElement: findElementById(updatedElements, parentId),
 					};
 				}
 				return {
 					elements: updatedElements,
-					selectedElement: null
+					selectedElement: null,
 				};
 			}
 			return {
-				elements: updatedElements
+				elements: updatedElements,
 			};
 		});
 
@@ -137,7 +139,7 @@ export const createManipulationSlice: StateCreator<
 			};
 
 			return {
-				elements: addToNewParent(elementsWithoutMoved)
+				elements: addToNewParent(elementsWithoutMoved),
 			};
 		});
 
@@ -158,7 +160,7 @@ export const createManipulationSlice: StateCreator<
 			const updatedElement = { ...elementToMove, parent: undefined };
 
 			return {
-				elements: [...elementsWithoutMoved, updatedElement]
+				elements: [...elementsWithoutMoved, updatedElement],
 			};
 		});
 
@@ -175,22 +177,16 @@ export const createManipulationSlice: StateCreator<
 			const parentId = elementToMove.parent;
 			if (!parentId) {
 				// Moving within root elements
-				const elementsWithoutMoved = state.elements.filter(
-					(el) => el.id !== elementId
-				);
+				const elementsWithoutMoved = state.elements.filter((el) => el.id !== elementId);
 				elementsWithoutMoved.splice(position, 0, elementToMove);
 				return { elements: elementsWithoutMoved };
 			}
 
 			// Moving within parent
-			const updateParentChildren = (
-				elements: EditorElement[]
-			): EditorElement[] => {
+			const updateParentChildren = (elements: EditorElement[]): EditorElement[] => {
 				return elements.map((el) => {
 					if (el.id === parentId) {
-						const childrenWithoutMoved = el.children.filter(
-							(child) => child.id !== elementId
-						);
+						const childrenWithoutMoved = el.children.filter((child) => child.id !== elementId);
 						childrenWithoutMoved.splice(position, 0, elementToMove);
 						return { ...el, children: childrenWithoutMoved };
 					}
@@ -202,7 +198,7 @@ export const createManipulationSlice: StateCreator<
 			};
 
 			return {
-				elements: updateParentChildren(state.elements)
+				elements: updateParentChildren(state.elements),
 			};
 		});
 
@@ -216,7 +212,7 @@ export const createManipulationSlice: StateCreator<
 	},
 
 	// Set responsive mode
-	setResponsiveMode: (mode: 'desktop' | 'mobile') => {
+	setResponsiveMode: (mode: "desktop" | "mobile") => {
 		set({ responsiveMode: mode });
-	}
+	},
 });
