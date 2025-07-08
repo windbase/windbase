@@ -245,6 +245,9 @@ function ElementLayers() {
 									if (e.key === 'Enter' || e.key === ' ') {
 										selectElement(item.index.toString());
 									}
+									if (e.key === 'Backspace' || e.key === 'Delete') {
+										deleteElement(item.index.toString());
+									}
 								}}
 								className={`flex w-full items-center gap-2 px-2 py-2.5 cursor-pointer ${
 									context.isSelected
