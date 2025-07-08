@@ -41,6 +41,10 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+body {
+	font-family: 'Ubuntu', sans-serif;
+}
+
 :root {
   --radius: 0.825rem;
   --background: oklch(1 0 0);
