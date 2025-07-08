@@ -85,11 +85,25 @@ export const createManipulationSlice: StateCreator<
 
 	// Delete element
 	deleteElement: (id: string) => {
-		set((state) => ({
-			elements: removeElementById(state.elements, id),
-			selectedElement:
-				state.selectedElement?.id === id ? null : state.selectedElement,
-		}));
+		set((state) => {
+			const updatedElements = removeElementById(state.elements, id);
+			if (state.selectedElement?.id === id) {
+				const parentId = state.selectedElement?.parent;
+				if (parentId) {
+					return {
+						elements: updatedElements,
+						selectedElement: findElementById(updatedElements, parentId),
+					};
+				}
+				return {
+					elements: updatedElements,
+					selectedElement: null,
+				};
+			}
+			return {
+				elements: updatedElements,
+			};
+		});
 
 		// Save to history after deleting
 		setTimeout(() => get().saveToHistory(), 0);
