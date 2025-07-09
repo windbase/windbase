@@ -1,3 +1,15 @@
+## 0.2.0 (2025-07-09)
+
+### 🚀 Features
+
+- add GitHub Actions workflow for building and releasing assets ([e5ec4a3](https://github.com/windbase/windbase/commit/e5ec4a3))
+- add VERSION constant from package.json to Vite config and declare in globals.d.ts ([59ebe41](https://github.com/windbase/windbase/commit/59ebe41))
+- implement ToolbarMenu component with dropdown functionality for project management ([fbef377](https://github.com/windbase/windbase/commit/fbef377))
+
+### ❤️ Thank You
+
+- mxvsh @mxvsh
+
 ## 0.1.0 (2025-07-09)
 
 ### 🚀 Features
