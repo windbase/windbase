@@ -8,7 +8,10 @@ import {
 	CommandGroup,
 	CommandInput,
 	CommandItem,
-	CommandList
+	CommandList,
+	Tooltip,
+	TooltipContent,
+	TooltipTrigger
 } from '@windbase/ui';
 import {
 	Box,
@@ -48,9 +51,21 @@ function ElementPicker() {
 
 	return (
 		<>
-			<Button variant={'outline'} size={'icon'} onClick={() => setOpen(true)}>
-				<Plus />
-			</Button>
+			<Tooltip delayDuration={200}>
+				<TooltipTrigger asChild>
+					<Button
+						variant={'outline'}
+						size={'icon'}
+						onClick={() => setOpen(true)}
+					>
+						<Plus />
+					</Button>
+				</TooltipTrigger>
+				<TooltipContent>
+					<p>Add element</p>
+				</TooltipContent>
+			</Tooltip>
+
 			<CommandDialog open={open} onOpenChange={setOpen}>
 				<CommandInput placeholder="Search for an element..." />
 				<CommandList>

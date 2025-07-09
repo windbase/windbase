@@ -31,14 +31,8 @@ function Toolbar() {
 				<div className="mx-auto flex items-center col-span-2 gap-2"></div>
 
 				<div className="flex items-center gap-1.5 ml-auto col-span-3">
-					<Tooltip delayDuration={200}>
-						<TooltipTrigger>
-							<ElementPicker />
-						</TooltipTrigger>
-						<TooltipContent>
-							<p>Add element</p>
-						</TooltipContent>
-					</Tooltip>
+					<ElementPicker />
+
 					<Tooltip delayDuration={200}>
 						<TooltipTrigger asChild>
 							<Button variant={'outline'} size={'icon'}>
@@ -83,7 +77,7 @@ function Toolbar() {
 					</Tooltip>
 
 					<Tooltip delayDuration={200}>
-						<TooltipTrigger>
+						<TooltipTrigger asChild>
 							<ExportButton />
 						</TooltipTrigger>
 						<TooltipContent>
@@ -111,7 +105,7 @@ function Toolbar() {
 									const htmlContent = exportHtml();
 									const previewWindow = window.open('', '_blank');
 									if (previewWindow) {
-										previewWindow.document.write(htmlContent);
+										previewWindow.document.writeln(htmlContent);
 										previewWindow.document.close();
 									}
 								}}
