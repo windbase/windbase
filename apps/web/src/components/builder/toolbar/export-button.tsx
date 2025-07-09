@@ -1,7 +1,7 @@
 import { useBuilder } from '@windbase/engine';
 import { exportArrayToHtml } from '@windbase/exporters';
-import { Button } from '@windbase/ui';
-import { Download } from 'lucide-react';
+import { Button, Tooltip, TooltipContent, TooltipTrigger } from '@windbase/ui';
+import { Upload } from 'lucide-react';
 
 function ExportButton() {
 	const { elements } = useBuilder();
@@ -33,10 +33,18 @@ function ExportButton() {
 		a.download = `export-${Date.now()}.html`;
 		a.click();
 	};
+
 	return (
-		<Button variant="outline" size="icon" onClick={handleExport}>
-			<Download />
-		</Button>
+		<Tooltip delayDuration={200}>
+			<TooltipTrigger asChild>
+				<Button variant="outline" size="icon" onClick={handleExport}>
+					<Upload />
+				</Button>
+			</TooltipTrigger>
+			<TooltipContent>
+				<p>Export</p>
+			</TooltipContent>
+		</Tooltip>
 	);
 }
 
