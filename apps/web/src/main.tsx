@@ -1,3 +1,4 @@
+import './lib/analytics';
 import { ThemeProvider } from '@windbase/ui';
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
