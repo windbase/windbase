@@ -2,6 +2,7 @@
 
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
+import pkgJson from '@windbase/core/package.json' with { type: 'json' };
 import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
@@ -24,5 +25,8 @@ export default defineConfig(() => ({
 		commonjsOptions: {
 			transformMixedEsModules: true
 		}
+	},
+	define: {
+		VERSION: JSON.stringify(pkgJson.version)
 	}
 }));
