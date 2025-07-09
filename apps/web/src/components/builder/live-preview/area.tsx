@@ -1,6 +1,6 @@
 import { useBuilder } from '@windbase/engine';
-import LivePreview from './live-preview';
-import LivePreviewToolbar from './live-preview-toolbar';
+import LivePreview from './preview';
+import LivePreviewToolbar from './toolbar';
 
 function LivePreviewArea() {
 	const { responsiveMode } = useBuilder();

@@ -3,9 +3,9 @@ import { templates } from '@windbase/templates';
 import { Button } from '@windbase/ui';
 import { htmlToBuilderElements } from '@windbase/utils';
 import { Search } from 'lucide-react';
-import ImportButton from '../core-builder/import-button';
+import ImportButton from './import-button';
 
-function DefaultSidebar() {
+function Sidebar() {
 	const { loadTemplate } = useBuilder();
 
 	return (
@@ -40,4 +40,4 @@ function DefaultSidebar() {
 	);
 }
 
-export default DefaultSidebar;
+export default Sidebar;

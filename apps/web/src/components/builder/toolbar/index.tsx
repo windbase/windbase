@@ -8,7 +8,7 @@ import {
 	TooltipTrigger
 } from '@windbase/ui';
 import { ChevronDown, Code, Eye, Grid, Redo, Undo } from 'lucide-react';
-import ElementPicker from '../element-management/element-picker';
+import ElementPicker from '../../elements/picker';
 import DarkModeButton from './dark-mode-button';
 import ExportButton from './export-button';
 

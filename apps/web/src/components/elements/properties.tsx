@@ -1,9 +1,9 @@
 import { useBuilder } from '@windbase/engine';
 import { Separator } from '@windbase/ui';
 import { memo } from 'react';
-import AdvancedPanel from './panels/advanced-panel';
-import BasicPanel from './panels/basic-panel';
-import ColorPanel from './panels/color-panel';
+import AdvancedPanel from './panels/advanced';
+import BasicPanel from './panels/basic';
+import ColorPanel from './panels/color';
 
 const ElementProperties = memo(() => {
 	const { selectedElement } = useBuilder();
