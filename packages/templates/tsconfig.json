@@ -1,7 +1,16 @@
 {
 	"files": [],
 	"include": [],
+	"compilerOptions": {
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["./src/*"]
+		}
+	},
 	"references": [
+		{
+			"path": "../utils"
+		},
 		{
 			"path": "../exporters"
 		},

@@ -1,8 +1,10 @@
 /// <reference types='vitest' />
-import { defineConfig } from 'vite';
+
+import * as path from 'node:path';
 import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
-import * as path from 'path';
+import viteTsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig(() => ({
 	root: __dirname,
@@ -12,7 +14,8 @@ export default defineConfig(() => ({
 		dts({
 			entryRoot: 'src',
 			tsconfigPath: path.join(__dirname, 'tsconfig.lib.json')
-		})
+		}),
+		viteTsconfigPaths()
 	],
 	// Uncomment this if you are using workers.
 	// worker: {

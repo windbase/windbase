@@ -1,5 +1,4 @@
-import { defineLegacyTemplate } from '../../definitions/define-template';
-import type { LegacyTemplate } from '../../definitions/types';
+import { defineBlock } from '@/definitions/define-template';
 
 const cta01HTML = `<div class="bg-white">
   <div class="mx-auto max-w-7xl py-24 sm:px-6 sm:py-32 lg:px-8">
@@ -32,12 +31,11 @@ const cta01HTML = `<div class="bg-white">
 </div>
 `;
 
-export const CTA01: LegacyTemplate = defineLegacyTemplate({
+export const CTA01 = defineBlock({
 	id: 'cta-01',
 	name: 'App Promotion CTA',
-	description:
-		'A modern call-to-action section with gradient background, perfect for promoting your app or product',
-	category: 'cta',
+	category: 'call-to-action',
+	componentType: 'block',
 	tags: ['cta', 'app-promotion', 'gradient', 'modern', 'tailwind'],
 	preview:
 		'https://tailwindcss.com/plus-assets/img/component-images/dark-project-app-screenshot.png',

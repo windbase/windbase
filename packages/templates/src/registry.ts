@@ -1,14 +1,12 @@
-import type { CoreElement } from '@windbase/core';
 import type {
-	LegacyTemplate,
+	Block,
+	BlockCategory,
+	ComponentType,
 	Template,
 	TemplateCategory,
 	TemplateFilter,
 	TemplateRegistryEntry
-} from '../definitions/types';
-
-// Union type for templates
-type AnyTemplate = Template | LegacyTemplate;
+} from './definitions/types';
 
 /**
  * Template Registry for managing templates
@@ -17,66 +15,26 @@ export class TemplateRegistry {
 	private templates: Map<string, TemplateRegistryEntry> = new Map();
 
 	/**
-	 * Register a template (Template or LegacyTemplate)
+	 * Register a template
 	 */
 	register(
-		template: AnyTemplate,
+		template: Template | Block,
 		options: {
 			featured?: boolean;
 			popular?: boolean;
 			deprecated?: boolean;
 		} = {}
 	): void {
-		// Convert LegacyTemplate to Template if needed
-		const normalizedTemplate: Template = this.normalizeTemplate(template);
-
-		this.templates.set(normalizedTemplate.id, {
-			template: normalizedTemplate,
+		this.templates.set(template.id, {
+			template,
 			...options
 		});
 	}
 
 	/**
-	 * Normalize template to ensure it has all required fields
-	 */
-	private normalizeTemplate(template: AnyTemplate): Template {
-		if ('elements' in template && template.elements) {
-			// Already a proper Template
-			return template as Template;
-		}
-
-		// Convert LegacyTemplate to Template
-		const legacyTemplate = template as LegacyTemplate;
-		return {
-			...legacyTemplate,
-			elements:
-				legacyTemplate.elements || this.htmlToBasicElements(legacyTemplate.html)
-		};
-	}
-
-	/**
-	 * Convert HTML to basic elements structure
-	 */
-	private htmlToBasicElements(html: string): CoreElement[] {
-		return [
-			{
-				id: crypto.randomUUID(),
-				tag: 'div',
-				classes: ['template-container'],
-				content: '',
-				attributes: {
-					'data-template-html': 'true',
-					'data-html': html
-				},
-				children: []
-			}
-		];
-	}
-
-	/**
 	 * Get template by ID
 	 */
-	getById(id: string): Template | null {
+	getById(id: string): Template | Block | null {
 		const entry = this.templates.get(id);
 		return entry?.template || null;
 	}
@@ -84,23 +42,43 @@ export class TemplateRegistry {
 	/**
 	 * Get all templates
 	 */
-	getAll(): Template[] {
+	getAll(): (Template | Block)[] {
 		return Array.from(this.templates.values())
 			.filter((entry) => !entry.deprecated)
 			.map((entry) => entry.template);
 	}
 
 	/**
+	 * Get all blocks
+	 */
+	getBlocks(): Block[] {
+		return this.getAll().filter(
+			(template) => template.componentType === 'block'
+		) as Block[];
+	}
+
+	/**
+	 * Get all templates (full page templates)
+	 */
+	getTemplates(): Template[] {
+		return this.getAll().filter(
+			(template) => template.componentType === 'template'
+		);
+	}
+
+	/**
 	 * Get templates by category
 	 */
-	getByCategory(category: TemplateCategory): Template[] {
+	getByCategory(
+		category: TemplateCategory | BlockCategory
+	): (Template | Block)[] {
 		return this.getAll().filter((template) => template.category === category);
 	}
 
 	/**
 	 * Get featured templates
 	 */
-	getFeatured(): Template[] {
+	getFeatured(): (Template | Block)[] {
 		return Array.from(this.templates.values())
 			.filter((entry) => entry.featured && !entry.deprecated)
 			.map((entry) => entry.template);
@@ -109,7 +87,7 @@ export class TemplateRegistry {
 	/**
 	 * Get popular templates
 	 */
-	getPopular(): Template[] {
+	getPopular(): (Template | Block)[] {
 		return Array.from(this.templates.values())
 			.filter((entry) => entry.popular && !entry.deprecated)
 			.map((entry) => entry.template);
@@ -118,8 +96,15 @@ export class TemplateRegistry {
 	/**
 	 * Search templates with filters
 	 */
-	search(filter: TemplateFilter): Template[] {
+	search(filter: TemplateFilter): (Template | Block)[] {
 		let results = this.getAll();
+
+		// Filter by component type
+		if (filter.componentType) {
+			results = results.filter(
+				(template) => template.componentType === filter.componentType
+			);
+		}
 
 		// Filter by category
 		if (filter.category) {
@@ -158,7 +143,7 @@ export class TemplateRegistry {
 			results = results.filter(
 				(template) =>
 					template.name.toLowerCase().includes(searchTerm) ||
-					template.description.toLowerCase().includes(searchTerm) ||
+					template.description?.toLowerCase().includes(searchTerm) ||
 					template.tags.some((tag) => tag.toLowerCase().includes(searchTerm))
 			);
 		}
@@ -169,8 +154,8 @@ export class TemplateRegistry {
 	/**
 	 * Get available categories
 	 */
-	getCategories(): TemplateCategory[] {
-		const categories = new Set<TemplateCategory>();
+	getCategories(): (TemplateCategory | BlockCategory)[] {
+		const categories = new Set<TemplateCategory | BlockCategory>();
 		this.getAll().forEach((template) => categories.add(template.category));
 		return Array.from(categories);
 	}
@@ -226,6 +211,7 @@ export class TemplateRegistry {
 	getStats(): {
 		total: number;
 		byCategory: Record<TemplateCategory, number>;
+		byComponentType: Record<ComponentType, number>;
 		featured: number;
 		popular: number;
 		deprecated: number;
@@ -233,15 +219,21 @@ export class TemplateRegistry {
 		const all = Array.from(this.templates.values());
 		const active = all.filter((entry) => !entry.deprecated);
 
-		const byCategory = {} as Record<TemplateCategory, number>;
+		const byCategory = {} as Record<TemplateCategory | BlockCategory, number>;
+		const byComponentType = {} as Record<ComponentType, number>;
+
 		active.forEach((entry) => {
 			const category = entry.template.category;
+			const componentType = entry.template.componentType;
 			byCategory[category] = (byCategory[category] || 0) + 1;
+			byComponentType[componentType] =
+				(byComponentType[componentType] || 0) + 1;
 		});
 
 		return {
 			total: active.length,
 			byCategory,
+			byComponentType,
 			featured: all.filter((entry) => entry.featured && !entry.deprecated)
 				.length,
 			popular: all.filter((entry) => entry.popular && !entry.deprecated).length,

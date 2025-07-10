@@ -2,17 +2,17 @@
 
 import { useBuilder } from '@windbase/engine';
 import { useEffect, useRef, useState } from 'react';
-import ElementProperties from '@/components/elements/properties';
 import { useKeyboardShortcuts } from '@/components/shared/keyboard-shortcuts';
 import LivePreviewArea from './live-preview/area';
 import Sidebar from './sidebar';
+import SidebarRight from './sidebar-right';
 import Toolbar from './toolbar';
 
 function VisualBuilder() {
 	const canvasRef = useRef<HTMLDivElement>(null);
 	const builderRef = useRef<HTMLDivElement>(null);
 	const [isBuilderFocused, setIsBuilderFocused] = useState(false);
-	const { selectedElement, selectElement } = useBuilder();
+	const { selectElement } = useBuilder();
 
 	// Enable keyboard shortcuts when builder is focused
 	useKeyboardShortcuts(isBuilderFocused);
@@ -76,7 +76,7 @@ function VisualBuilder() {
 					<LivePreviewArea />
 				</div>
 				<div className="w-60 min-w-60 h-full border-l overflow-auto">
-					{selectedElement && <ElementProperties />}
+					<SidebarRight />
 				</div>
 			</div>
 		</div>

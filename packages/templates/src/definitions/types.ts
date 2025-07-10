@@ -1,22 +1,15 @@
-import type { CoreElement } from '@windbase/core';
+import type { blockCategories, templateCategories } from './categories';
+
+/**
+ * Component type for distinguishing between templates and blocks
+ */
+export type ComponentType = 'template' | 'block';
 
 /**
  * Template categories for organization
  */
-export type TemplateCategory =
-	| 'cta' // Call-to-action sections
-	| 'hero' // Hero sections
-	| 'features' // Feature sections
-	| 'testimonials' // Testimonial sections
-	| 'pricing' // Pricing sections
-	| 'footer' // Footer sections
-	| 'header' // Header/navigation sections
-	| 'content' // Content sections
-	| 'forms' // Form sections
-	| 'gallery' // Gallery/media sections
-	| 'team' // Team sections
-	| 'blog' // Blog/article sections
-	| 'other'; // Other/misc sections
+export type BlockCategory = (typeof blockCategories)[number];
+export type TemplateCategory = (typeof templateCategories)[number];
 
 /**
  * Template metadata for display
@@ -24,9 +17,10 @@ export type TemplateCategory =
 export interface TemplateMetadata {
 	id: string;
 	name: string;
-	description: string;
-	category: TemplateCategory;
+	componentType: ComponentType;
 	tags: string[];
+	html: string;
+	description?: string;
 	preview?: string; // Preview image URL
 	author?: string;
 	version?: string;
@@ -34,27 +28,24 @@ export interface TemplateMetadata {
 	updatedAt?: Date;
 }
 
+export interface Block extends TemplateMetadata {
+	componentType: 'block';
+	category: BlockCategory;
+}
+
 /**
  * Template structure with elements
  */
 export interface Template extends TemplateMetadata {
-	elements: CoreElement[]; // The actual template structure
-	html?: string; // Optional HTML representation
-}
-
-/**
- * Template with legacy HTML support (for migration)
- */
-export interface LegacyTemplate extends TemplateMetadata {
-	html: string; // Legacy HTML string
-	elements?: CoreElement[]; // Optional elements for new format
+	componentType: 'template';
+	category: TemplateCategory;
 }
 
 /**
  * Template registry entry
  */
 export interface TemplateRegistryEntry {
-	template: Template;
+	template: Template | Block;
 	featured?: boolean;
 	popular?: boolean;
 	deprecated?: boolean;
@@ -65,6 +56,7 @@ export interface TemplateRegistryEntry {
  */
 export interface TemplateFilter {
 	category?: TemplateCategory;
+	componentType?: ComponentType;
 	tags?: string[];
 	author?: string;
 	featured?: boolean;
