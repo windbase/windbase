@@ -1,10 +1,12 @@
 import type {
+	Block,
+	BlockCategory,
 	ComponentType,
 	Template,
 	TemplateCategory,
 	TemplateFilter,
 	TemplateRegistryEntry
-} from '../definitions/types';
+} from './definitions/types';
 
 /**
  * Template Registry for managing templates
@@ -16,7 +18,7 @@ export class TemplateRegistry {
 	 * Register a template
 	 */
 	register(
-		template: Template,
+		template: Template | Block,
 		options: {
 			featured?: boolean;
 			popular?: boolean;
@@ -32,7 +34,7 @@ export class TemplateRegistry {
 	/**
 	 * Get template by ID
 	 */
-	getById(id: string): Template | null {
+	getById(id: string): Template | Block | null {
 		const entry = this.templates.get(id);
 		return entry?.template || null;
 	}
@@ -40,7 +42,7 @@ export class TemplateRegistry {
 	/**
 	 * Get all templates
 	 */
-	getAll(): Template[] {
+	getAll(): (Template | Block)[] {
 		return Array.from(this.templates.values())
 			.filter((entry) => !entry.deprecated)
 			.map((entry) => entry.template);
@@ -49,28 +51,32 @@ export class TemplateRegistry {
 	/**
 	 * Get all blocks
 	 */
-	getBlocks(): Template[] {
-		return this.getAll().filter((template) => template.componentType === 'block');
+	getBlocks(): Block[] {
+		return this.getAll().filter(
+			(template) => template.componentType === 'block'
+		) as Block[];
 	}
 
 	/**
 	 * Get all templates (full page templates)
 	 */
 	getTemplates(): Template[] {
-		return this.getAll().filter((template) => template.componentType === 'template');
+		return this.getAll().filter(
+			(template) => template.componentType === 'template'
+		);
 	}
 
 	/**
 	 * Get templates by category
 	 */
-	getByCategory(category: TemplateCategory): Template[] {
+	getByCategory(category: TemplateCategory | BlockCategory): (Template | Block)[] {
 		return this.getAll().filter((template) => template.category === category);
 	}
 
 	/**
 	 * Get featured templates
 	 */
-	getFeatured(): Template[] {
+	getFeatured(): (Template | Block)[] {
 		return Array.from(this.templates.values())
 			.filter((entry) => entry.featured && !entry.deprecated)
 			.map((entry) => entry.template);
@@ -79,7 +85,7 @@ export class TemplateRegistry {
 	/**
 	 * Get popular templates
 	 */
-	getPopular(): Template[] {
+	getPopular(): (Template | Block)[] {
 		return Array.from(this.templates.values())
 			.filter((entry) => entry.popular && !entry.deprecated)
 			.map((entry) => entry.template);
@@ -88,7 +94,7 @@ export class TemplateRegistry {
 	/**
 	 * Search templates with filters
 	 */
-	search(filter: TemplateFilter): Template[] {
+	search(filter: TemplateFilter): (Template | Block)[] {
 		let results = this.getAll();
 
 		// Filter by component type
@@ -146,8 +152,8 @@ export class TemplateRegistry {
 	/**
 	 * Get available categories
 	 */
-	getCategories(): TemplateCategory[] {
-		const categories = new Set<TemplateCategory>();
+	getCategories(): (TemplateCategory | BlockCategory)[] {
+		const categories = new Set<TemplateCategory | BlockCategory>();
 		this.getAll().forEach((template) => categories.add(template.category));
 		return Array.from(categories);
 	}
@@ -211,14 +217,15 @@ export class TemplateRegistry {
 		const all = Array.from(this.templates.values());
 		const active = all.filter((entry) => !entry.deprecated);
 
-		const byCategory = {} as Record<TemplateCategory, number>;
+		const byCategory = {} as Record<TemplateCategory | BlockCategory, number>;
 		const byComponentType = {} as Record<ComponentType, number>;
-		
+
 		active.forEach((entry) => {
 			const category = entry.template.category;
 			const componentType = entry.template.componentType;
 			byCategory[category] = (byCategory[category] || 0) + 1;
-			byComponentType[componentType] = (byComponentType[componentType] || 0) + 1;
+			byComponentType[componentType] =
+				(byComponentType[componentType] || 0) + 1;
 		});
 
 		return {

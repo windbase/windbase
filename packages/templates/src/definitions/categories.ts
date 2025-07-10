@@ -1,4 +1,4 @@
-export const categories = [
+export const blockCategories = [
 	'call-to-action',
 	'hero',
 	'features',
@@ -9,4 +9,14 @@ export const categories = [
 	'content',
 	'forms',
 	'gallery'
+] as const;
+
+
+export const templateCategories = [
+	'landing-page',
+	'blog',
+	'portfolio',
+	'product',
+	'service',
+	'other'
 ] as const;

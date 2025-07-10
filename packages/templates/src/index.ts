@@ -1,6 +1,9 @@
-export * from './components';
-export * from './definitions/categories';
+// Import to ensure blocks/templates are registered
+import './register-blocks';
+import './register-templates';
+
 // Template definitions
+export * from './definitions/categories';
 export * from './definitions/define-template';
 export type {
 	ComponentType,
@@ -8,37 +11,20 @@ export type {
 	TemplateCategory
 } from './definitions/types';
 // Template registry
-export * from './registry/template-registry';
+export * from './registry';
 
-// Legacy support - export all templates as an array (for backward compatibility)
-import { templateRegistry } from './registry/template-registry';
-import './categories'; // Import to ensure templates are registered
 import type { TemplateCategory } from './definitions/types';
 
-/**
- * Get all templates (legacy support)
- */
-export const templates = templateRegistry.getAll();
+import { templateRegistry } from './registry';
 
 /**
- * Get template by ID (legacy support)
- */
-export const getTemplate = (id: string) => templateRegistry.getById(id);
-
-/**
- * Search templates (legacy support - searches all components)
- */
-export const searchTemplates = (query: string) =>
-	templateRegistry.search({ search: query });
-
-/**
- * Get templates by category (legacy support - gets all components in category)
+ * Get templates by category
  */
 export const getTemplatesByCategory = (category: string) =>
 	templateRegistry.getByCategory(category as TemplateCategory);
 
 /**
- * Get featured templates (legacy support)
+ * Get featured templates 
  */
 export const getFeaturedTemplates = () => templateRegistry.getFeatured();
 
@@ -85,4 +71,4 @@ export const getOnlyTemplatesByCategory = (category: string) =>
 /**
  * Template registry instance for advanced usage
  */
-export { templateRegistry } from './registry/template-registry';
+export { templateRegistry } from './registry';

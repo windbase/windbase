@@ -1,4 +1,4 @@
-import type { categories } from './categories';
+import type { blockCategories, templateCategories } from './categories';
 
 /**
  * Component type for distinguishing between templates and blocks
@@ -8,7 +8,8 @@ export type ComponentType = 'template' | 'block';
 /**
  * Template categories for organization
  */
-export type TemplateCategory = (typeof categories)[number];
+export type BlockCategory = (typeof blockCategories)[number];
+export type TemplateCategory = (typeof templateCategories)[number];
 
 /**
  * Template metadata for display
@@ -16,8 +17,9 @@ export type TemplateCategory = (typeof categories)[number];
 export interface TemplateMetadata {
 	id: string;
 	name: string;
-	category: TemplateCategory;
+	componentType: ComponentType;
 	tags: string[];
+	html: string;
 	description?: string;
 	preview?: string; // Preview image URL
 	author?: string;
@@ -26,19 +28,24 @@ export interface TemplateMetadata {
 	updatedAt?: Date;
 }
 
+export interface Block extends TemplateMetadata {
+	componentType: 'block';
+	category: BlockCategory;
+}
+
 /**
  * Template structure with elements
  */
 export interface Template extends TemplateMetadata {
-	componentType: ComponentType;
-	html: string;
+	componentType: 'template';
+	category: TemplateCategory;
 }
 
 /**
  * Template registry entry
  */
 export interface TemplateRegistryEntry {
-	template: Template;
+	template: Template | Block;
 	featured?: boolean;
 	popular?: boolean;
 	deprecated?: boolean;
