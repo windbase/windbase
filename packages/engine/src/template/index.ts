@@ -24,7 +24,7 @@ export const createTemplateSlice: StateCreator<
 		const editorElements = coreElements.map((coreElement) =>
 			coreToEditor(coreElement)
 		);
-		
+
 		const targetPageId = pageId || get().currentPageId;
 		if (!targetPageId) return;
 

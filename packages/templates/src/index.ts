@@ -24,7 +24,7 @@ export const getTemplatesByCategory = (category: string) =>
 	templateRegistry.getByCategory(category as TemplateCategory);
 
 /**
- * Get featured templates 
+ * Get featured templates
  */
 export const getFeaturedTemplates = () => templateRegistry.getFeatured();
 

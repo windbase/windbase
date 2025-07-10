@@ -23,7 +23,7 @@ export function defineBlock(block: Block): Block {
 		createdAt: block.createdAt || new Date(),
 		updatedAt: block.updatedAt || new Date(),
 		version: block.version || '1.0.0'
-	}
+	};
 }
 
 /**

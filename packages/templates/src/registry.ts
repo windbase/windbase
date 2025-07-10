@@ -69,7 +69,9 @@ export class TemplateRegistry {
 	/**
 	 * Get templates by category
 	 */
-	getByCategory(category: TemplateCategory | BlockCategory): (Template | Block)[] {
+	getByCategory(
+		category: TemplateCategory | BlockCategory
+	): (Template | Block)[] {
 		return this.getAll().filter((template) => template.category === category);
 	}
 

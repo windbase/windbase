@@ -11,7 +11,6 @@ export const blockCategories = [
 	'gallery'
 ] as const;
 
-
 export const templateCategories = [
 	'landing-page',
 	'blog',
