@@ -3,6 +3,7 @@ import type {
 	CoreElement,
 	EditorElement
 } from '@windbase/core';
+import type { PagesSlice } from '../pages';
 
 // History slice
 export interface HistorySlice {
@@ -19,17 +20,17 @@ export interface HistorySlice {
 export interface SelectionSlice {
 	selectedElement: EditorElement | null;
 	hoveredElement: EditorElement | null;
-	sidebarView: 'default' | 'layers';
+	sidebarView: 'pages' | 'layers';
 	selectElement: (id: string | null) => void;
 	hoverElement: (id: string | null) => void;
-	setSidebarView: (view: 'default' | 'layers') => void;
+	setSidebarView: (view: 'pages' | 'layers') => void;
 	getParentIds: (elementId: string) => string[];
 }
 
 // Manipulation slice
 export interface ManipulationSlice {
-	elements: EditorElement[];
 	responsiveMode: 'desktop' | 'mobile';
+	getCurrentPageElements: () => EditorElement[];
 	addElement: (element: Omit<EditorElement, 'id'>, parentId?: string) => void;
 	updateElement: (id: string, updates: Partial<EditorElement>) => void;
 	deleteElement: (id: string) => void;
@@ -57,7 +58,8 @@ export interface BuilderStore
 	extends HistorySlice,
 		SelectionSlice,
 		ManipulationSlice,
-		TemplateSlice {}
+		TemplateSlice,
+		PagesSlice {}
 
 // Legacy types for backward compatibility - will be removed in Phase 4
 export interface BuilderElement {

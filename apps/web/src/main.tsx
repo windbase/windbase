@@ -3,6 +3,7 @@ import { ThemeProvider } from '@windbase/ui';
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
+import DialogInputOverlay from './components/shared/dialog-input';
 import Router from './router';
 
 import './styles.css';
@@ -18,6 +19,7 @@ const root = ReactDOM.createRoot(
 
 root.render(
 	<StrictMode>
+		<DialogInputOverlay />
 		<BrowserRouter>
 			<ThemeProvider>
 				<Router />

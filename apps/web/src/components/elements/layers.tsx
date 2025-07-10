@@ -20,7 +20,7 @@ import {
 
 function ElementLayers() {
 	const {
-		elements,
+		getCurrentPageElements,
 		selectedElement,
 		selectElement,
 		moveElement,
@@ -31,6 +31,8 @@ function ElementLayers() {
 	const [focusedItem, setFocusedItem] = useState<TreeItemIndex>();
 	const [expandedItems, setExpandedItems] = useState<TreeItemIndex[]>(['root']);
 	const [selectedItems, setSelectedItems] = useState<TreeItemIndex[]>([]);
+
+	const elements = getCurrentPageElements();
 
 	// Update selected items when selectedElement changes
 	useEffect(() => {

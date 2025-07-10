@@ -11,23 +11,25 @@ export const createSelectionSlice: StateCreator<
 > = (set, get) => ({
 	selectedElement: null,
 	hoveredElement: null,
-	sidebarView: 'default',
+	sidebarView: 'layers',
 
 	// Selection actions
 	selectElement: (id: string | null) => {
-		set({ selectedElement: id ? findElementById(get().elements, id) : null });
+		const elements = get().getCurrentPageElements();
+		set({ selectedElement: id ? findElementById(elements, id) : null });
 	},
 
 	hoverElement: (id: string | null) => {
-		set({ hoveredElement: id ? findElementById(get().elements, id) : null });
+		const elements = get().getCurrentPageElements();
+		set({ hoveredElement: id ? findElementById(elements, id) : null });
 	},
 
-	setSidebarView: (view: 'default' | 'layers') => {
+	setSidebarView: (view: 'pages' | 'layers') => {
 		set({ sidebarView: view });
 	},
 
 	getParentIds: (elementId: string) => {
-		const elements = get().elements;
+		const elements = get().getCurrentPageElements();
 		const findParents = (
 			elements: EditorElement[],
 			targetId: string,

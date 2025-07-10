@@ -8,13 +8,15 @@ function LivePreview() {
 	const [isIframeLoaded, setIsIframeLoaded] = useState(false);
 	const isEditingInIframe = useRef(false);
 	const {
-		elements,
+		getCurrentPageElements,
 		selectedElement,
 		hoverElement,
 		selectElement,
 		hoveredElement,
 		updateElement
 	} = useBuilder();
+
+	const elements = getCurrentPageElements();
 
 	// Initialize iframe with basic HTML structure once
 	useEffect(() => {
@@ -80,7 +82,7 @@ function LivePreview() {
 				`;
 
 				doc.open();
-				doc.write(htmlContent);
+				doc.writeln(htmlContent);
 				doc.close();
 			}
 		}

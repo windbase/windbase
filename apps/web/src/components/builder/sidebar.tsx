@@ -1,42 +1,41 @@
 import { useBuilder } from '@windbase/engine';
-import { templates } from '@windbase/templates';
-import { Button } from '@windbase/ui';
-import { htmlToBuilderElements } from '@windbase/utils';
-import { Search } from 'lucide-react';
-import ImportButton from './import-button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@windbase/ui';
+import ElementLayers from '../elements/layers';
+import Pages from './pages';
 
 function Sidebar() {
-	const { loadTemplate } = useBuilder();
+	const { sidebarView, setSidebarView } = useBuilder();
 
 	return (
-		<>
-			<div className="px-3 py-2 flex items-center gap-1">
-				<ImportButton />
-				<Button variant="outline">
-					<Search />
-				</Button>
-			</div>
-
-			<div className="p-2">
-				<h2 className="text-xs uppercase font-medium">Templates</h2>
-				<div className="flex flex-col gap-1 mt-3">
-					{templates.map((template) => (
-						<button
-							key={template.id}
-							type="button"
-							className="cursor-pointer w-full"
-							onClick={() => {
-								loadTemplate(htmlToBuilderElements(template.html || ''));
-							}}
-						>
-							<div className="w-full flex items-center justify-center h-20 bg-gray-200 rounded-md">
-								<p className="text-xs text-gray-500">{template.name}</p>
-							</div>
-						</button>
-					))}
-				</div>
-			</div>
-		</>
+		<div>
+			<Tabs
+				value={sidebarView}
+				onValueChange={(value) => {
+					setSidebarView(value as 'pages' | 'layers');
+				}}
+			>
+				<TabsList className="relative justify-start h-auto w-full gap-0.5 bg-transparent p-0 before:absolute before:inset-x-0 before:bottom-0 before:h-px before:bg-border">
+					<TabsTrigger
+						value="pages"
+						className="overflow-hidden w-full rounded-none border-none bg-muted py-2 data-[state=active]:z-10 data-[state=active]:shadow-none"
+					>
+						Pages
+					</TabsTrigger>
+					<TabsTrigger
+						value="layers"
+						className="overflow-hidden w-full rounded-none border-none bg-muted py-2 data-[state=active]:z-10 data-[state=active]:shadow-none"
+					>
+						Layers
+					</TabsTrigger>
+				</TabsList>
+				<TabsContent value="pages">
+					<Pages />
+				</TabsContent>
+				<TabsContent value="layers">
+					<ElementLayers />
+				</TabsContent>
+			</Tabs>
+		</div>
 	);
 }
 

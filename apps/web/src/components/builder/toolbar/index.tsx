@@ -7,7 +7,7 @@ import {
 	TooltipProvider,
 	TooltipTrigger
 } from '@windbase/ui';
-import { Code, Eye, Grid, Redo, Undo } from 'lucide-react';
+import { Code, Eye, Redo, Undo } from 'lucide-react';
 import ElementPicker from '../../elements/picker';
 import DarkModeButton from './dark-mode-button';
 import ExportButton from './export-button';
@@ -106,10 +106,6 @@ function Toolbar() {
 							<p>Dark Mode</p>
 						</TooltipContent>
 					</Tooltip>
-
-					<Button>
-						<Grid /> Templates
-					</Button>
 				</div>
 			</div>
 		</TooltipProvider>
