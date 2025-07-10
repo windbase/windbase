@@ -1,5 +1,5 @@
 import type { CoreElement } from '@windbase/core';
-import type { LegacyTemplate, Template, TemplateCategory } from './types';
+import type { ComponentType, Template, TemplateCategory } from './types';
 
 /**
  * Enhanced template definition utility
@@ -7,18 +7,7 @@ import type { LegacyTemplate, Template, TemplateCategory } from './types';
 export function defineTemplate(template: Template): Template {
 	return {
 		...template,
-		createdAt: template.createdAt || new Date(),
-		updatedAt: template.updatedAt || new Date(),
-		version: template.version || '1.0.0'
-	};
-}
-
-/**
- * Define template with legacy HTML support
- */
-export function defineLegacyTemplate(template: LegacyTemplate): LegacyTemplate {
-	return {
-		...template,
+		componentType: template.componentType || 'block',
 		createdAt: template.createdAt || new Date(),
 		updatedAt: template.updatedAt || new Date(),
 		version: template.version || '1.0.0'
@@ -85,7 +74,7 @@ export class TemplateBuilder {
 			id,
 			name,
 			tags: [],
-			elements: []
+			html: ''
 		};
 	}
 
@@ -96,6 +85,11 @@ export class TemplateBuilder {
 
 	category(cat: TemplateCategory): this {
 		this.template.category = cat;
+		return this;
+	}
+
+	componentType(type: ComponentType): this {
+		this.template.componentType = type;
 		return this;
 	}
 
@@ -114,23 +108,19 @@ export class TemplateBuilder {
 		return this;
 	}
 
-	elements(elements: CoreElement[]): this {
-		this.template.elements = elements;
-		return this;
-	}
-
 	html(htmlString: string): this {
 		this.template.html = htmlString;
 		return this;
 	}
 
 	build(): Template {
-		if (
-			!this.template.description ||
-			!this.template.category ||
-			!this.template.elements
-		) {
-			throw new Error('Template must have description, category, and elements');
+		if (!this.template.description || !this.template.category || !this.template.html) {
+			throw new Error('Template must have description, category, and html');
+		}
+
+		// Set default componentType if not provided
+		if (!this.template.componentType) {
+			this.template.componentType = 'block';
 		}
 
 		return defineTemplate(this.template as Template);

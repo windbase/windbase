@@ -1,14 +1,10 @@
-import type { CoreElement } from '@windbase/core';
 import type {
-	LegacyTemplate,
+	ComponentType,
 	Template,
 	TemplateCategory,
 	TemplateFilter,
 	TemplateRegistryEntry
 } from '../definitions/types';
-
-// Union type for templates
-type AnyTemplate = Template | LegacyTemplate;
 
 /**
  * Template Registry for managing templates
@@ -17,60 +13,20 @@ export class TemplateRegistry {
 	private templates: Map<string, TemplateRegistryEntry> = new Map();
 
 	/**
-	 * Register a template (Template or LegacyTemplate)
+	 * Register a template
 	 */
 	register(
-		template: AnyTemplate,
+		template: Template,
 		options: {
 			featured?: boolean;
 			popular?: boolean;
 			deprecated?: boolean;
 		} = {}
 	): void {
-		// Convert LegacyTemplate to Template if needed
-		const normalizedTemplate: Template = this.normalizeTemplate(template);
-
-		this.templates.set(normalizedTemplate.id, {
-			template: normalizedTemplate,
+		this.templates.set(template.id, {
+			template,
 			...options
 		});
-	}
-
-	/**
-	 * Normalize template to ensure it has all required fields
-	 */
-	private normalizeTemplate(template: AnyTemplate): Template {
-		if ('elements' in template && template.elements) {
-			// Already a proper Template
-			return template as Template;
-		}
-
-		// Convert LegacyTemplate to Template
-		const legacyTemplate = template as LegacyTemplate;
-		return {
-			...legacyTemplate,
-			elements:
-				legacyTemplate.elements || this.htmlToBasicElements(legacyTemplate.html)
-		};
-	}
-
-	/**
-	 * Convert HTML to basic elements structure
-	 */
-	private htmlToBasicElements(html: string): CoreElement[] {
-		return [
-			{
-				id: crypto.randomUUID(),
-				tag: 'div',
-				classes: ['template-container'],
-				content: '',
-				attributes: {
-					'data-template-html': 'true',
-					'data-html': html
-				},
-				children: []
-			}
-		];
 	}
 
 	/**
@@ -88,6 +44,20 @@ export class TemplateRegistry {
 		return Array.from(this.templates.values())
 			.filter((entry) => !entry.deprecated)
 			.map((entry) => entry.template);
+	}
+
+	/**
+	 * Get all blocks
+	 */
+	getBlocks(): Template[] {
+		return this.getAll().filter((template) => template.componentType === 'block');
+	}
+
+	/**
+	 * Get all templates (full page templates)
+	 */
+	getTemplates(): Template[] {
+		return this.getAll().filter((template) => template.componentType === 'template');
 	}
 
 	/**
@@ -120,6 +90,13 @@ export class TemplateRegistry {
 	 */
 	search(filter: TemplateFilter): Template[] {
 		let results = this.getAll();
+
+		// Filter by component type
+		if (filter.componentType) {
+			results = results.filter(
+				(template) => template.componentType === filter.componentType
+			);
+		}
 
 		// Filter by category
 		if (filter.category) {
@@ -158,7 +135,7 @@ export class TemplateRegistry {
 			results = results.filter(
 				(template) =>
 					template.name.toLowerCase().includes(searchTerm) ||
-					template.description.toLowerCase().includes(searchTerm) ||
+					template.description?.toLowerCase().includes(searchTerm) ||
 					template.tags.some((tag) => tag.toLowerCase().includes(searchTerm))
 			);
 		}
@@ -226,6 +203,7 @@ export class TemplateRegistry {
 	getStats(): {
 		total: number;
 		byCategory: Record<TemplateCategory, number>;
+		byComponentType: Record<ComponentType, number>;
 		featured: number;
 		popular: number;
 		deprecated: number;
@@ -234,14 +212,19 @@ export class TemplateRegistry {
 		const active = all.filter((entry) => !entry.deprecated);
 
 		const byCategory = {} as Record<TemplateCategory, number>;
+		const byComponentType = {} as Record<ComponentType, number>;
+		
 		active.forEach((entry) => {
 			const category = entry.template.category;
+			const componentType = entry.template.componentType;
 			byCategory[category] = (byCategory[category] || 0) + 1;
+			byComponentType[componentType] = (byComponentType[componentType] || 0) + 1;
 		});
 
 		return {
 			total: active.length,
 			byCategory,
+			byComponentType,
 			featured: all.filter((entry) => entry.featured && !entry.deprecated)
 				.length,
 			popular: all.filter((entry) => entry.popular && !entry.deprecated).length,

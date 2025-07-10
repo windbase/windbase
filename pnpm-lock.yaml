@@ -255,6 +255,9 @@ importers:
       '@windbase/exporters':
         specifier: workspace:*
         version: link:../exporters
+      '@windbase/utils':
+        specifier: workspace:*
+        version: link:../utils
 
   packages/ui:
     dependencies:

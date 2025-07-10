@@ -16,6 +16,7 @@
 	},
 	"dependencies": {
 		"@windbase/core": "workspace:*",
-		"@windbase/exporters": "workspace:*"
+		"@windbase/exporters": "workspace:*",
+		"@windbase/utils": "workspace:*"
 	}
 }

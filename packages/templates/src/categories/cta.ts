@@ -1,13 +1,10 @@
-import { CTA01 } from '../components/cta/cta-01';
+import { CTA01 } from '@/components/blocks/cta/cta-01';
+import { CTA02 } from '@/components/blocks/cta/cta-02';
 import { templateRegistry } from '../registry/template-registry';
 
-// Register all CTA templates
+// Register all CTA blocks
 templateRegistry.register(CTA01, { featured: true, popular: true });
+templateRegistry.register(CTA02, { featured: true });
 
-// Export CTA templates for direct import
-export const CTATemplates = {
-	CTA01
-};
-
-// Export helper for getting all CTA templates
-export const getCTATemplates = () => templateRegistry.getByCategory('cta');
+// Export helper for getting all CTA blocks
+export const getCTATemplates = () => templateRegistry.getByCategory('call-to-action');
