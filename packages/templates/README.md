@@ -17,23 +17,23 @@ We welcome contributions of new blocks and templates! Here's how to add them:
 
 1. **Create the component file** in the appropriate category folder:
    ```
-   packages/templates/src/components/[category]/[block-name].tsx
+   packages/templates/src/components/blocks/[category]/[block-name].tsx
    ```
 
-2. **Define your block** using the `defineLegacyTemplate` function:
+2. **Define your block** using the `defineBlock` function:
    ```typescript
-   import { defineLegacyTemplate } from '../../definitions/define-template';
-   import type { LegacyTemplate } from '../../definitions/types';
+   import { defineBlock } from '@/definitions/define-template';
+   import type { Block } from '@/definitions/types';
 
    const myBlockHTML = `<div class="...">
      <!-- Your HTML content here -->
    </div>`;
 
-   export const MyBlock: LegacyTemplate = defineLegacyTemplate({
+   export const MyBlock: Block = defineBlock({
      id: 'my-block-id',
      name: 'My Block Name',
      description: 'A brief description of what this block does',
-     category: 'cta', // or appropriate category
+     category: 'call-to-action', // or appropriate category
      componentType: 'block',
      tags: ['relevant', 'tags', 'here'],
      author: 'Your Name',
@@ -41,18 +41,12 @@ We welcome contributions of new blocks and templates! Here's how to add them:
    });
    ```
 
-3. **Register the block** in the category file:
+3. **Register the block** in `register-blocks.ts`:
    ```typescript
-   // In packages/templates/src/categories/[category].ts
-   import { MyBlock } from '../components/[category]/[block-name]';
+   // In packages/templates/src/register-blocks.ts
+   import { MyBlock } from '@/components/blocks/[category]/[block-name]';
    
    templateRegistry.register(MyBlock, { featured: true });
-   ```
-
-4. **Export the block** in the main index file:
-   ```typescript
-   // In packages/templates/src/index.ts
-   export * from './components/[category]/[block-name]';
    ```
 
 ### Creating a New Template
@@ -62,18 +56,42 @@ We welcome contributions of new blocks and templates! Here's how to add them:
    packages/templates/src/components/templates/[template-name].tsx
    ```
 
-2. **Define your template** (similar to blocks but with `componentType: 'template'`):
+2. **Define your template** using the `defineTemplate` function:
    ```typescript
-   export const MyTemplate: LegacyTemplate = defineLegacyTemplate({
+   import { defineTemplate } from '@/definitions/define-template';
+   import type { Template } from '@/definitions/types';
+
+   const completePageHTML = `<!DOCTYPE html>
+   <html lang="en">
+   <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Your Template</title>
+     <script src="https://cdn.tailwindcss.com"></script>
+   </head>
+   <body>
+     <!-- Your complete page content here -->
+   </body>
+   </html>`;
+
+   export const MyTemplate: Template = defineTemplate({
      id: 'my-template-id',
      name: 'My Template Name',
      description: 'A complete page template with multiple sections',
-     category: 'other',
+     category: 'landing-page', // or appropriate category
      componentType: 'template', // Important: mark as template
      tags: ['landing-page', 'complete', 'layout'],
      author: 'Your Name',
      html: completePageHTML
    });
+   ```
+
+3. **Register the template** in `register-templates.ts`:
+   ```typescript
+   // In packages/templates/src/register-templates.ts
+   import { MyTemplate } from '@/components/templates/[template-name]';
+   
+   templateRegistry.register(MyTemplate, { featured: true });
    ```
 
 ### Guidelines
@@ -126,8 +144,8 @@ Your pull request should include:
 
 ### Categories
 
-Choose the most appropriate category:
-- `cta` - Call-to-action sections
+**Block Categories:**
+- `call-to-action` - Call-to-action sections
 - `hero` - Hero sections
 - `features` - Feature sections
 - `testimonials` - Testimonial sections
@@ -137,9 +155,14 @@ Choose the most appropriate category:
 - `content` - Content sections
 - `forms` - Form sections
 - `gallery` - Gallery/media sections
-- `team` - Team sections
-- `blog` - Blog/article sections
-- `other` - Other/misc sections
+
+**Template Categories:**
+- `landing-page` - Landing page templates
+- `blog` - Blog/article templates
+- `portfolio` - Portfolio templates
+- `product` - Product page templates
+- `service` - Service page templates
+- `other` - Other/misc templates
 
 ### Questions?
 
