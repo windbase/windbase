@@ -8,6 +8,27 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
 		<link rel="stylesheet" href="/src/styles.css" />
+		<script>
+			(function() {
+				try {
+					const storageKey = 'windbase-ui-theme';
+					const theme = localStorage.getItem(storageKey) || 'system';
+					const root = document.documentElement;
+					
+					root.classList.remove('light', 'dark');
+					
+					if (theme === 'system') {
+						const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+						root.classList.add(systemTheme);
+					} else {
+						root.classList.add(theme);
+					}
+				} catch (e) {
+					// Fallback to light theme if anything goes wrong
+					document.documentElement.classList.add('light');
+				}
+			})();
+		</script>
 	</head>
 	<body>
 		<div id="root"></div>
