@@ -63,7 +63,7 @@ You can track the progress of v1.0 [here](https://github.com/windbase/windbase/m
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a pull request.
+Please refer to the [CONTRIBUTING.md](CONTRIBUTING.md) file for more information.
 
 ## License
 
