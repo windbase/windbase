@@ -17,6 +17,7 @@
   "dependencies": {
     "@windbase/core": "workspace:*",
     "@windbase/exporters": "workspace:*",
+    "@windbase/utils": "workspace:*",
     "zustand": "^5.0.6"
   }
 }
