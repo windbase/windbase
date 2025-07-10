@@ -12,7 +12,7 @@ function VisualBuilder() {
 	const canvasRef = useRef<HTMLDivElement>(null);
 	const builderRef = useRef<HTMLDivElement>(null);
 	const [isBuilderFocused, setIsBuilderFocused] = useState(false);
-	const { selectedElement, selectElement, setSidebarView } = useBuilder();
+	const { selectedElement, selectElement } = useBuilder();
 
 	// Enable keyboard shortcuts when builder is focused
 	useKeyboardShortcuts(isBuilderFocused);
@@ -36,14 +36,6 @@ function VisualBuilder() {
 			}
 		};
 	}, [selectElement]);
-
-	useEffect(() => {
-		if (selectedElement) {
-			setSidebarView('layers');
-		} else {
-			setSidebarView('pages');
-		}
-	}, [selectedElement, setSidebarView]);
 
 	// Handle focus state for the builder (without actual DOM focus)
 	useEffect(() => {
