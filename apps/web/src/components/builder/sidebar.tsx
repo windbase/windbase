@@ -1,11 +1,19 @@
+import { useBuilder } from '@windbase/engine';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@windbase/ui';
-import Layers from '../elements/layers';
+import ElementLayers from '../elements/layers';
 import Pages from './pages';
 
 function Sidebar() {
+	const { sidebarView, setSidebarView } = useBuilder();
+
 	return (
 		<div>
-			<Tabs defaultValue="pages">
+			<Tabs
+				value={sidebarView}
+				onValueChange={(value) => {
+					setSidebarView(value as 'pages' | 'layers');
+				}}
+			>
 				<TabsList className="relative justify-start h-auto w-full gap-0.5 bg-transparent p-0 before:absolute before:inset-x-0 before:bottom-0 before:h-px before:bg-border">
 					<TabsTrigger
 						value="pages"
@@ -24,7 +32,7 @@ function Sidebar() {
 					<Pages />
 				</TabsContent>
 				<TabsContent value="layers">
-					<Layers />
+					<ElementLayers />
 				</TabsContent>
 			</Tabs>
 		</div>
