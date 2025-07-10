@@ -1,4 +1,4 @@
-import { defineTemplate } from '@/definitions/define-template';
+import { defineBlock } from '@/definitions/define-template';
 
 const navbar01HTML = `
   <nav class="bg-white">
@@ -19,7 +19,7 @@ const navbar01HTML = `
   </nav>
   `;
 
-export const Navbar01 = defineTemplate({
+export const Navbar01 = defineBlock({
 	id: 'navbar-01',
 	name: 'Navbar 01',
 	category: 'header',

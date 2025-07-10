@@ -1,5 +1,4 @@
-import { defineTemplate } from '@/definitions/define-template';
-import type { Template } from '@/definitions/types';
+import { defineBlock } from '@/definitions/define-template';
 
 const cta01HTML = `<div class="bg-white">
   <div class="mx-auto max-w-7xl py-24 sm:px-6 sm:py-32 lg:px-8">
@@ -32,7 +31,7 @@ const cta01HTML = `<div class="bg-white">
 </div>
 `;
 
-export const CTA01: Template = defineTemplate({
+export const CTA01 = defineBlock({
 	id: 'cta-01',
 	name: 'App Promotion CTA',
 	category: 'call-to-action',
