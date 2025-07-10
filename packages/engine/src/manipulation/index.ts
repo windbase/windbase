@@ -9,8 +9,13 @@ export const createManipulationSlice: StateCreator<
 	[],
 	ManipulationSlice
 > = (set, get) => ({
-	elements: [],
 	responsiveMode: 'desktop',
+
+	// Get current page elements
+	getCurrentPageElements: () => {
+		const currentPage = get().getCurrentPage();
+		return currentPage?.elements || [];
+	},
 
 	// Add element
 	addElement: (element: Omit<EditorElement, 'id'>, parentId?: string) => {
@@ -20,37 +25,36 @@ export const createManipulationSlice: StateCreator<
 			parent: parentId
 		};
 
-		set((state) => {
-			if (parentId) {
-				// Add to specific parent
-				const addToParent = (elements: EditorElement[]): EditorElement[] => {
-					return elements.map((el) => {
-						if (el.id === parentId) {
-							return {
-								...el,
-								children: [...el.children, newElement]
-							};
-						}
-						if (el.children.length > 0) {
-							return {
-								...el,
-								children: addToParent(el.children)
-							};
-						}
-						return el;
-					});
-				};
+		const currentPage = get().getCurrentPage();
+		if (!currentPage) return;
 
-				return {
-					elements: addToParent(state.elements)
-				};
-			} else {
-				// Add to root
-				return {
-					elements: [...state.elements, newElement]
-				};
-			}
-		});
+		if (parentId) {
+			// Add to specific parent
+			const addToParent = (elements: EditorElement[]): EditorElement[] => {
+				return elements.map((el) => {
+					if (el.id === parentId) {
+						return {
+							...el,
+							children: [...el.children, newElement]
+						};
+					}
+					if (el.children.length > 0) {
+						return {
+							...el,
+							children: addToParent(el.children)
+						};
+					}
+					return el;
+				});
+			};
+
+			const updatedElements = addToParent(currentPage.elements);
+			get().updatePage(currentPage.id, { elements: updatedElements });
+		} else {
+			// Add to root
+			const updatedElements = [...currentPage.elements, newElement];
+			get().updatePage(currentPage.id, { elements: updatedElements });
+		}
 
 		// Save to history after adding
 		setTimeout(() => get().saveToHistory(), 0);
@@ -58,34 +62,35 @@ export const createManipulationSlice: StateCreator<
 
 	// Update element
 	updateElement: (id: string, updates: Partial<EditorElement>) => {
+		const currentPage = get().getCurrentPage();
+		if (!currentPage) return;
+
+		const updateInElements = (elements: EditorElement[]): EditorElement[] => {
+			return elements.map((el) => {
+				if (el.id === id) {
+					return { ...el, ...updates };
+				}
+				if (el.children.length > 0) {
+					return {
+						...el,
+						children: updateInElements(el.children)
+					};
+				}
+				return el;
+			});
+		};
+
+		const updatedElements = updateInElements(currentPage.elements);
+		get().updatePage(currentPage.id, { elements: updatedElements });
+
+		// If the selected element is being updated, refresh it
 		set((state) => {
-			const updateInElements = (elements: EditorElement[]): EditorElement[] => {
-				return elements.map((el) => {
-					if (el.id === id) {
-						return { ...el, ...updates };
-					}
-					if (el.children.length > 0) {
-						return {
-							...el,
-							children: updateInElements(el.children)
-						};
-					}
-					return el;
-				});
-			};
-
-			const updatedElements = updateInElements(state.elements);
-
-			// If the selected element is being updated, refresh it
-			const updatedSelectedElement =
-				state.selectedElement?.id === id
-					? findElementById(updatedElements, id)
-					: state.selectedElement;
-
-			return {
-				elements: updatedElements,
-				selectedElement: updatedSelectedElement
-			};
+			if (state.selectedElement?.id === id) {
+				return {
+					selectedElement: findElementById(updatedElements, id)
+				};
+			}
+			return state;
 		});
 
 		// Save to history after updating
@@ -94,24 +99,25 @@ export const createManipulationSlice: StateCreator<
 
 	// Delete element
 	deleteElement: (id: string) => {
+		const currentPage = get().getCurrentPage();
+		if (!currentPage) return;
+
+		const updatedElements = removeElementById(currentPage.elements, id);
+		get().updatePage(currentPage.id, { elements: updatedElements });
+
 		set((state) => {
-			const updatedElements = removeElementById(state.elements, id);
 			if (state.selectedElement?.id === id) {
 				const parentId = state.selectedElement?.parent;
 				if (parentId) {
 					return {
-						elements: updatedElements,
 						selectedElement: findElementById(updatedElements, parentId)
 					};
 				}
 				return {
-					elements: updatedElements,
 					selectedElement: null
 				};
 			}
-			return {
-				elements: updatedElements
-			};
+			return state;
 		});
 
 		// Save to history after deleting
@@ -120,35 +126,35 @@ export const createManipulationSlice: StateCreator<
 
 	// Move element to new parent
 	moveElement: (elementId: string, newParentId: string, position: number) => {
-		set((state) => {
-			const elementToMove = findElementById(state.elements, elementId);
-			if (!elementToMove) return state;
+		const currentPage = get().getCurrentPage();
+		if (!currentPage) return;
 
-			// Remove from current position
-			const elementsWithoutMoved = removeElementById(state.elements, elementId);
+		const elementToMove = findElementById(currentPage.elements, elementId);
+		if (!elementToMove) return;
 
-			// Update parent reference
-			const updatedElement = { ...elementToMove, parent: newParentId };
+		// Remove from current position
+		const elementsWithoutMoved = removeElementById(currentPage.elements, elementId);
 
-			// Add to new position
-			const addToNewParent = (elements: EditorElement[]): EditorElement[] => {
-				return elements.map((el) => {
-					if (el.id === newParentId) {
-						const newChildren = [...el.children];
-						newChildren.splice(position, 0, updatedElement);
-						return { ...el, children: newChildren };
-					}
-					if (el.children.length > 0) {
-						return { ...el, children: addToNewParent(el.children) };
-					}
-					return el;
-				});
-			};
+		// Update parent reference
+		const updatedElement = { ...elementToMove, parent: newParentId };
 
-			return {
-				elements: addToNewParent(elementsWithoutMoved)
-			};
-		});
+		// Add to new position
+		const addToNewParent = (elements: EditorElement[]): EditorElement[] => {
+			return elements.map((el) => {
+				if (el.id === newParentId) {
+					const newChildren = [...el.children];
+					newChildren.splice(position, 0, updatedElement);
+					return { ...el, children: newChildren };
+				}
+				if (el.children.length > 0) {
+					return { ...el, children: addToNewParent(el.children) };
+				}
+				return el;
+			});
+		};
+
+		const updatedElements = addToNewParent(elementsWithoutMoved);
+		get().updatePage(currentPage.id, { elements: updatedElements });
 
 		// Save to history after moving
 		setTimeout(() => get().saveToHistory(), 0);
@@ -156,20 +162,20 @@ export const createManipulationSlice: StateCreator<
 
 	// Move element to top level
 	moveElementToTop: (elementId: string) => {
-		set((state) => {
-			const elementToMove = findElementById(state.elements, elementId);
-			if (!elementToMove) return state;
+		const currentPage = get().getCurrentPage();
+		if (!currentPage) return;
 
-			// Remove from current position
-			const elementsWithoutMoved = removeElementById(state.elements, elementId);
+		const elementToMove = findElementById(currentPage.elements, elementId);
+		if (!elementToMove) return;
 
-			// Update parent reference and add to top
-			const updatedElement = { ...elementToMove, parent: undefined };
+		// Remove from current position
+		const elementsWithoutMoved = removeElementById(currentPage.elements, elementId);
 
-			return {
-				elements: [...elementsWithoutMoved, updatedElement]
-			};
-		});
+		// Update parent reference and add to top
+		const updatedElement = { ...elementToMove, parent: undefined };
+		const updatedElements = [...elementsWithoutMoved, updatedElement];
+		
+		get().updatePage(currentPage.id, { elements: updatedElements });
 
 		// Save to history after moving
 		setTimeout(() => get().saveToHistory(), 0);
@@ -177,20 +183,23 @@ export const createManipulationSlice: StateCreator<
 
 	// Move element within parent
 	moveElementInParent: (elementId: string, position: number) => {
-		set((state) => {
-			const elementToMove = findElementById(state.elements, elementId);
-			if (!elementToMove) return state;
+		const currentPage = get().getCurrentPage();
+		if (!currentPage) return;
 
-			const parentId = elementToMove.parent;
-			if (!parentId) {
-				// Moving within root elements
-				const elementsWithoutMoved = state.elements.filter(
-					(el) => el.id !== elementId
-				);
-				elementsWithoutMoved.splice(position, 0, elementToMove);
-				return { elements: elementsWithoutMoved };
-			}
+		const elementToMove = findElementById(currentPage.elements, elementId);
+		if (!elementToMove) return;
 
+		const parentId = elementToMove.parent;
+		let updatedElements: EditorElement[];
+
+		if (!parentId) {
+			// Moving within root elements
+			const elementsWithoutMoved = currentPage.elements.filter(
+				(el) => el.id !== elementId
+			);
+			elementsWithoutMoved.splice(position, 0, elementToMove);
+			updatedElements = elementsWithoutMoved;
+		} else {
 			// Moving within parent
 			const updateParentChildren = (
 				elements: EditorElement[]
@@ -210,10 +219,10 @@ export const createManipulationSlice: StateCreator<
 				});
 			};
 
-			return {
-				elements: updateParentChildren(state.elements)
-			};
-		});
+			updatedElements = updateParentChildren(currentPage.elements);
+		}
+
+		get().updatePage(currentPage.id, { elements: updatedElements });
 
 		// Save to history after moving
 		setTimeout(() => get().saveToHistory(), 0);
