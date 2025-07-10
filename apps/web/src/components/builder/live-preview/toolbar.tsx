@@ -1,6 +1,11 @@
+import { useBuilder } from '@windbase/engine';
 import { TooltipProvider } from '@windbase/ui';
 
 function LivePreviewToolbar() {
+	const { getCurrentPage } = useBuilder();
+
+	const currentPage = getCurrentPage();
+
 	return (
 		<TooltipProvider>
 			<div
@@ -13,7 +18,9 @@ function LivePreviewToolbar() {
 					<div className="h-3 w-3 rounded-full bg-green-500" />
 				</div>
 				<div className="flex items-center gap-1 justify-center text-center text-sm text-muted-foreground">
-					<span>index.html</span>
+					<span>
+						{currentPage?.name.replace(/\s+/g, '-').toLowerCase()}.html
+					</span>
 				</div>
 				<div className="ml-auto flex items-center gap-2.5"></div>
 			</div>
