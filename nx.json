@@ -75,12 +75,12 @@
 			}
 		}
 	},
-  "release": {
-    "changelog": {
-      "workspaceChangelog": {
-        "file": false,
-        "createRelease": "github"
-      }
-    }
-  }
+	"release": {
+		"changelog": {
+			"workspaceChangelog": {
+				"file": false,
+				"createRelease": "github"
+			}
+		}
+	}
 }

@@ -18,16 +18,20 @@ export const useBuilder = create<BuilderStore>()(
 		}),
 		{
 			name: 'builder-store',
-      
+
 			storage: {
 				getItem: (name: string) => {
 					if (typeof window === 'undefined') return null;
 					const str = window.localStorage.getItem(name);
 					if (!str) return null;
-					
+
 					const parsed = JSON.parse(str);
 					// Convert plain object back to Map
-					if (parsed.state?.pages && typeof parsed.state.pages === 'object' && !(parsed.state.pages instanceof Map)) {
+					if (
+						parsed.state?.pages &&
+						typeof parsed.state.pages === 'object' &&
+						!(parsed.state.pages instanceof Map)
+					) {
 						parsed.state.pages = new Map(Object.entries(parsed.state.pages));
 					}
 					return parsed;
@@ -35,15 +39,16 @@ export const useBuilder = create<BuilderStore>()(
 				// biome-ignore lint/suspicious/noExplicitAny: we don't know the type of the value
 				setItem: (name: string, value: any) => {
 					if (typeof window === 'undefined') return;
-					
+
 					// Convert Map to plain object for serialization
 					const serializedState = {
 						...value,
 						state: {
 							...value.state,
-							pages: value.state.pages instanceof Map 
-								? Object.fromEntries(value.state.pages) 
-								: value.state.pages
+							pages:
+								value.state.pages instanceof Map
+									? Object.fromEntries(value.state.pages)
+									: value.state.pages
 						}
 					};
 					window.localStorage.setItem(name, JSON.stringify(serializedState));
@@ -53,7 +58,7 @@ export const useBuilder = create<BuilderStore>()(
 					window.localStorage.removeItem(name);
 				}
 			}
-		},
+		}
 	)
 );
 

@@ -6,7 +6,7 @@ export interface Page {
 	id: string;
 	name: string;
 	elements: EditorElement[];
-  htmlName?: string;
+	htmlName?: string;
 	createdAt: number;
 	updatedAt: number;
 }
@@ -14,7 +14,7 @@ export interface Page {
 export interface PagesSlice {
 	pages: Map<string, Page> | undefined;
 	currentPageId: string | null;
-  getCurrentPageElements: () => EditorElement[];
+	getCurrentPageElements: () => EditorElement[];
 	createPage: (name: string) => string;
 	deletePage: (pageId: string) => void;
 	updatePage: (
@@ -41,9 +41,11 @@ export const createPagesSlice: StateCreator<PagesSlice> = (set, get) => {
 	};
 
 	// Helper function to ensure pages is always a Map with at least the default page
-	const ensurePagesMap = (pages: Map<string, Page> | Record<string, Page> | undefined): Map<string, Page> => {
+	const ensurePagesMap = (
+		pages: Map<string, Page> | Record<string, Page> | undefined
+	): Map<string, Page> => {
 		let map: Map<string, Page>;
-		
+
 		if (pages instanceof Map) {
 			map = pages;
 		} else if (pages && typeof pages === 'object') {
@@ -56,12 +58,12 @@ export const createPagesSlice: StateCreator<PagesSlice> = (set, get) => {
 			// If pages is undefined or null, create a new Map
 			map = new Map<string, Page>();
 		}
-		
+
 		// Always ensure we have at least the default index page
 		if (!map.has('index')) {
 			map.set('index', defaultPage);
 		}
-		
+
 		return map;
 	};
 
@@ -71,13 +73,13 @@ export const createPagesSlice: StateCreator<PagesSlice> = (set, get) => {
 	return {
 		pages: initialPages,
 		currentPageId: 'index',
-    getCurrentPageElements: () => {
-      const { pages, currentPageId } = get();
-      const pagesMap = ensurePagesMap(pages);
-      if (!currentPageId) return [];
-      const currentPage = pagesMap.get(currentPageId);
-      return currentPage?.elements || [];
-    },
+		getCurrentPageElements: () => {
+			const { pages, currentPageId } = get();
+			const pagesMap = ensurePagesMap(pages);
+			if (!currentPageId) return [];
+			const currentPage = pagesMap.get(currentPageId);
+			return currentPage?.elements || [];
+		},
 		createPage: (name: string) => {
 			const pageId = generateId();
 			const newPage: Page = {
@@ -144,18 +146,18 @@ export const createPagesSlice: StateCreator<PagesSlice> = (set, get) => {
 			set({ currentPageId: pageId });
 		},
 
-					getCurrentPage: () => {
+		getCurrentPage: () => {
 			const { pages, currentPageId } = get();
 			const pagesMap = ensurePagesMap(pages);
-			
+
 			// If pages were empty or didn't have the proper structure, update the state
 			if (pages !== pagesMap) {
 				set({ pages: pagesMap });
 			}
-			
+
 			// If no current page is set, default to index
 			const activePageId = currentPageId || 'index';
-			
+
 			// If the current page ID doesn't exist, fall back to index
 			const page = pagesMap.get(activePageId);
 			if (!page && activePageId !== 'index') {
@@ -163,12 +165,12 @@ export const createPagesSlice: StateCreator<PagesSlice> = (set, get) => {
 				set({ currentPageId: 'index' });
 				return pagesMap.get('index') || null;
 			}
-			
+
 			// If currentPageId was null, update it to index
 			if (!currentPageId) {
 				set({ currentPageId: 'index' });
 			}
-			
+
 			return page || null;
 		},
 
@@ -181,12 +183,12 @@ export const createPagesSlice: StateCreator<PagesSlice> = (set, get) => {
 		getAllPages: () => {
 			const { pages } = get();
 			const pagesMap = ensurePagesMap(pages);
-			
+
 			// If pages were empty or didn't have the proper structure, update the state
 			if (pages !== pagesMap) {
 				set({ pages: pagesMap });
 			}
-			
+
 			return Array.from(pagesMap.values());
 		},
 
@@ -220,10 +222,12 @@ export const createPagesSlice: StateCreator<PagesSlice> = (set, get) => {
 			set((state) => {
 				const pagesMap = ensurePagesMap(state.pages);
 				const currentPageId = state.currentPageId || 'index';
-				
+
 				// Ensure current page exists, otherwise default to index
-				const finalCurrentPageId = pagesMap.has(currentPageId) ? currentPageId : 'index';
-				
+				const finalCurrentPageId = pagesMap.has(currentPageId)
+					? currentPageId
+					: 'index';
+
 				return {
 					pages: pagesMap,
 					currentPageId: finalCurrentPageId
@@ -239,8 +243,14 @@ export const createPagesSlice: StateCreator<PagesSlice> = (set, get) => {
 				isMap: pages instanceof Map,
 				isObject: pages && typeof pages === 'object' && !(pages instanceof Map),
 				isUndefined: pages === undefined,
-				keys: pages instanceof Map ? Array.from(pages.keys()) : Object.keys(pages || {}),
-				values: pages instanceof Map ? Array.from(pages.values()) : Object.values(pages || {})
+				keys:
+					pages instanceof Map
+						? Array.from(pages.keys())
+						: Object.keys(pages || {}),
+				values:
+					pages instanceof Map
+						? Array.from(pages.values())
+						: Object.values(pages || {})
 			});
 		}
 	};

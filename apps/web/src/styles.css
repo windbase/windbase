@@ -2,6 +2,6 @@
 
 @source "../../../packages/ui/src";
 
-::-webkit-scrollbar { 
-  display: none;  /* Older Safari and Chromium */
+::-webkit-scrollbar {
+	display: none; /* Older Safari and Chromium */
 }

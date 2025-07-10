@@ -15,7 +15,9 @@ export const createHistorySlice: StateCreator<
 	// Helper method to save current state to history (called after actions)
 	saveToHistory: () => {
 		const state = get();
-		const currentElements = JSON.parse(JSON.stringify(state.getCurrentPageElements()));
+		const currentElements = JSON.parse(
+			JSON.stringify(state.getCurrentPageElements())
+		);
 
 		// Don't save if the current state is the same as the last saved state
 		if (

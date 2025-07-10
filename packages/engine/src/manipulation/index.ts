@@ -133,7 +133,10 @@ export const createManipulationSlice: StateCreator<
 		if (!elementToMove) return;
 
 		// Remove from current position
-		const elementsWithoutMoved = removeElementById(currentPage.elements, elementId);
+		const elementsWithoutMoved = removeElementById(
+			currentPage.elements,
+			elementId
+		);
 
 		// Update parent reference
 		const updatedElement = { ...elementToMove, parent: newParentId };
@@ -169,12 +172,15 @@ export const createManipulationSlice: StateCreator<
 		if (!elementToMove) return;
 
 		// Remove from current position
-		const elementsWithoutMoved = removeElementById(currentPage.elements, elementId);
+		const elementsWithoutMoved = removeElementById(
+			currentPage.elements,
+			elementId
+		);
 
 		// Update parent reference and add to top
 		const updatedElement = { ...elementToMove, parent: undefined };
 		const updatedElements = [...elementsWithoutMoved, updatedElement];
-		
+
 		get().updatePage(currentPage.id, { elements: updatedElements });
 
 		// Save to history after moving
