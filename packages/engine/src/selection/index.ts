@@ -11,7 +11,7 @@ export const createSelectionSlice: StateCreator<
 > = (set, get) => ({
 	selectedElement: null,
 	hoveredElement: null,
-	sidebarView: 'layers',
+	sidebarView: 'pages',
 
 	// Selection actions
 	selectElement: (id: string | null) => {
