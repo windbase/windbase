@@ -15,7 +15,7 @@ export const createHistorySlice: StateCreator<
 	// Helper method to save current state to history (called after actions)
 	saveToHistory: () => {
 		const state = get();
-		const currentElements = JSON.parse(JSON.stringify(state.elements));
+		const currentElements = JSON.parse(JSON.stringify(state.getCurrentPageElements()));
 
 		// Don't save if the current state is the same as the last saved state
 		if (
@@ -50,8 +50,13 @@ export const createHistorySlice: StateCreator<
 			const newIndex = state.historyIndex - 1;
 			const elementsToRestore = state.history[newIndex];
 
+			// Restore elements to current page
+			const currentPage = state.getCurrentPage();
+			if (currentPage) {
+				state.updatePage(currentPage.id, { elements: elementsToRestore });
+			}
+
 			set({
-				elements: elementsToRestore,
 				historyIndex: newIndex,
 				canUndo: newIndex > 0,
 				canRedo: true,
@@ -67,8 +72,13 @@ export const createHistorySlice: StateCreator<
 			const newIndex = state.historyIndex + 1;
 			const elementsToRestore = state.history[newIndex];
 
+			// Restore elements to current page
+			const currentPage = state.getCurrentPage();
+			if (currentPage) {
+				state.updatePage(currentPage.id, { elements: elementsToRestore });
+			}
+
 			set({
-				elements: elementsToRestore,
 				historyIndex: newIndex,
 				canUndo: true,
 				canRedo: newIndex < state.history.length - 1,
