@@ -47,10 +47,10 @@ export interface ManipulationSlice {
 
 // Template slice
 export interface TemplateSlice {
-	loadTemplate: (template: EditorElement[]) => void;
-	loadFromCore: (coreElements: CoreElement[]) => void;
-	exportToCore: () => CoreElement[];
-	exportHtml: () => string;
+	loadTemplate: (template: EditorElement[], pageId?: string) => void;
+	loadFromCore: (coreElements: CoreElement[], pageId?: string) => void;
+	exportToCore: (pageId?: string) => CoreElement[];
+	exportHtml: (pageId?: string) => string;
 }
 
 // Complete store interface
