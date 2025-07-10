@@ -29,11 +29,14 @@
 	],
 	"include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"],
 	"references": [
-		{
-			"path": "../exporters/tsconfig.lib.json"
-		},
-		{
-			"path": "../core/tsconfig.lib.json"
-		}
-	]
+    {
+      "path": "../utils/tsconfig.lib.json"
+    },
+    {
+      "path": "../exporters/tsconfig.lib.json"
+    },
+    {
+      "path": "../core/tsconfig.lib.json"
+    }
+  ]
 }

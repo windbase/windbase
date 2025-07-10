@@ -2,15 +2,18 @@
 	"files": [],
 	"include": [],
 	"references": [
-		{
-			"path": "../exporters"
-		},
-		{
-			"path": "../core"
-		},
-		{
-			"path": "./tsconfig.lib.json"
-		}
-	],
+    {
+      "path": "../utils"
+    },
+    {
+      "path": "../exporters"
+    },
+    {
+      "path": "../core"
+    },
+    {
+      "path": "./tsconfig.lib.json"
+    }
+  ],
 	"extends": "../../tsconfig.base.json"
 }
