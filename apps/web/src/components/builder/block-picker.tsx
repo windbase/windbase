@@ -1,5 +1,5 @@
 import { useBuilder } from '@windbase/engine';
-import { categories, getBlocks, type Template } from '@windbase/templates';
+import { blockCategories, getBlocks, type Template } from '@windbase/templates';
 import {
 	Button,
 	CommandDialog,
@@ -60,7 +60,7 @@ function BlockPicker() {
 			<CommandDialog open={open} onOpenChange={setOpen} className="w-[500px]">
 				<CommandInput placeholder="Search for a block..." />
 				<div className="flex flex-wrap gap-2 p-3">
-					{categories.map((category) => (
+					{blockCategories.map((category) => (
 						<button
 							key={category}
 							type="button"
