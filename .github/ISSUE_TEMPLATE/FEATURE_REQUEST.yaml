@@ -29,4 +29,4 @@ body:
         - Medium
         - High
         - Critical
-      default: Medium
+      default: 1
