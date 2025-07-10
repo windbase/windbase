@@ -21,6 +21,17 @@ Open-source, visual builder for TailwindCSS with several in-built plugins. Suppo
 Windbase is a visual builder for TailwindCSS. It is built with React, TailwindCSS, and TypeScript. You can 
 run it locally with using a single command and start building your UI.
 
+## Table of Contents
+
+- [Table of Contents](#table-of-contents)
+- [Features](#features)
+- [Usage](#usage)
+  - [Run locally](#run-locally)
+  - [Visit the editor](#visit-the-editor)
+- [Roadmap](#roadmap)
+- [Contributing](#contributing)
+- [License](#license)
+
 ## Features
 
 - Visual builder for TailwindCSS
@@ -44,6 +55,11 @@ npx windbase
 
 You can visit [editor.windbase.dev](https://editor.windbase.dev) to get started.
 
+## Roadmap
+
+Since this project is still in early development, features are being added and bugs are being fixed.
+
+You can track the progress of v1.0 [here](https://github.com/windbase/windbase/milestone/1).
 
 ## Contributing
 
