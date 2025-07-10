@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Discussions
+    url: https://github.com/windbase/windbase/discussions
+    about: Ask questions and share your ideas here.
+  - name: Discord
+    url: https://discord.gg/wHMpedAzhT
+    about: Join our Discord server for real-time support.
