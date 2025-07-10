@@ -22,7 +22,7 @@ export interface SelectionSlice {
 	sidebarView: 'default' | 'layers';
 	selectElement: (id: string | null) => void;
 	hoverElement: (id: string | null) => void;
-	setSidebarView: (view: 'default' | 'layers') => void;
+	setSidebarView: (view: 'pages' | 'layers') => void;
 	getParentIds: (elementId: string) => string[];
 }
 

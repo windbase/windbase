@@ -2,7 +2,6 @@
 
 import { useBuilder } from '@windbase/engine';
 import { useEffect, useRef, useState } from 'react';
-import ElementLayers from '@/components/elements/layers';
 import ElementProperties from '@/components/elements/properties';
 import { useKeyboardShortcuts } from '@/components/shared/keyboard-shortcuts';
 import LivePreviewArea from './live-preview/area';
@@ -13,8 +12,7 @@ function VisualBuilder() {
 	const canvasRef = useRef<HTMLDivElement>(null);
 	const builderRef = useRef<HTMLDivElement>(null);
 	const [isBuilderFocused, setIsBuilderFocused] = useState(false);
-	const { sidebarView, selectedElement, selectElement, setSidebarView } =
-		useBuilder();
+	const { selectedElement, selectElement, setSidebarView } = useBuilder();
 
 	// Enable keyboard shortcuts when builder is focused
 	useKeyboardShortcuts(isBuilderFocused);
@@ -43,7 +41,7 @@ function VisualBuilder() {
 		if (selectedElement) {
 			setSidebarView('layers');
 		} else {
-			setSidebarView('default');
+			setSidebarView('pages');
 		}
 	}, [selectedElement, setSidebarView]);
 
@@ -77,7 +75,7 @@ function VisualBuilder() {
 			<Toolbar />
 			<div className="flex-1 flex overflow-hidden">
 				<div className="w-56 min-w-56 h-full border-r overflow-auto">
-					{sidebarView === 'default' ? <Sidebar /> : <ElementLayers />}
+					<Sidebar />
 				</div>
 				<div
 					ref={canvasRef}
