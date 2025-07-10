@@ -8,8 +8,9 @@ import {
 	TooltipTrigger
 } from '@windbase/ui';
 import { Code, Eye, Redo, Undo } from 'lucide-react';
-import BlockPicker from '../../elements/block-picker';
 import ElementPicker from '../../elements/picker';
+import BlockPicker from '../block-picker';
+import TemplatePicker from '../template-picker';
 import DarkModeButton from './dark-mode-button';
 import ExportButton from './export-button';
 import ToolbarMenu from './menu';
@@ -28,6 +29,7 @@ function Toolbar() {
 				<div className="flex items-center gap-1.5 ml-auto col-span-3">
 					<ElementPicker />
 					<BlockPicker />
+					<TemplatePicker />
 
 					<Separator orientation="vertical" className="h-4 mx-2" />
 
