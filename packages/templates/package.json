@@ -18,5 +18,8 @@
 		"@windbase/core": "workspace:*",
 		"@windbase/exporters": "workspace:*",
 		"@windbase/utils": "workspace:*"
+	},
+	"devDependencies": {
+		"vite-tsconfig-paths": "^5.1.4"
 	}
 }
