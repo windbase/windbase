@@ -33,6 +33,21 @@ function ToolbarMenu() {
 				<DropdownMenuItem>Open Project</DropdownMenuItem>
 				<DropdownMenuSeparator />
 				<DropdownMenuItem>Export Project</DropdownMenuItem>
+				<DropdownMenuSeparator />
+				<DropdownMenuItem
+					className="text-destructive"
+					onClick={() => {
+						// Confirm the action
+						if (!confirm('Are you sure you want to delete this project?'))
+							return;
+
+						// Delete the project
+						window.localStorage.removeItem('builder-store');
+						window.location.reload();
+					}}
+				>
+					Delete Project
+				</DropdownMenuItem>
 			</DropdownMenuContent>
 		</DropdownMenu>
 	);
