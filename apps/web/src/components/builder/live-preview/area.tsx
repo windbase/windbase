@@ -1,9 +1,12 @@
 import { useBuilder } from '@windbase/engine';
+import EmptyElements from '@/components/shared/empty-elements';
 import LivePreview from './preview';
 import LivePreviewToolbar from './toolbar';
 
 function LivePreviewArea() {
-	const { responsiveMode } = useBuilder();
+	const { getCurrentPageElements, responsiveMode } = useBuilder();
+
+	const elements = getCurrentPageElements();
 
 	return (
 		<div
@@ -17,7 +20,7 @@ function LivePreviewArea() {
 		>
 			<LivePreviewToolbar />
 			<div className="flex-1 overflow-auto rounded-b-xl">
-				<LivePreview />
+				{elements.length > 0 ? <LivePreview /> : <EmptyElements />}
 			</div>
 		</div>
 	);
