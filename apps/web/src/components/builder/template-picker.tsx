@@ -13,6 +13,7 @@ import {
 import { htmlToBuilderElements } from '@windbase/utils';
 import { Layers2 } from 'lucide-react';
 import { useState } from 'react';
+import { toast } from 'sonner';
 import {
 	useFilteredTemplates,
 	useTemplateCategories,
@@ -39,18 +40,23 @@ function TemplatePicker() {
 	} = useFilteredTemplates(selectedCategory, searchTerm);
 
 	const handleTemplateSelect = async (template: ApiTemplateResponse) => {
-		const html = await getTemplateHtml(template.id);
+		try {
+			const html = await getTemplateHtml(template.id);
 
-		setOpen(false);
+			setOpen(false);
 
-		// Convert the template HTML to proper element structure with children
-		const templateChildren = htmlToBuilderElements(html);
+			// Convert the template HTML to proper element structure with children
+			const templateChildren = htmlToBuilderElements(html);
 
-		if (templateChildren.length > 0) {
-			const [firstChild] = templateChildren;
-			addElement(firstChild);
-			selectElement(firstChild.id);
-			setSidebarView('layers');
+			if (templateChildren.length > 0) {
+				const [firstChild] = templateChildren;
+				addElement(firstChild);
+				selectElement(firstChild.id);
+				setSidebarView('layers');
+			}
+		} catch (error) {
+			toast.error('Error loading template');
+			console.error(error);
 		}
 	};
 
