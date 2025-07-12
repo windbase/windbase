@@ -12,7 +12,7 @@ function VisualBuilder() {
 	const canvasRef = useRef<HTMLDivElement>(null);
 	const builderRef = useRef<HTMLDivElement>(null);
 	const [isBuilderFocused, setIsBuilderFocused] = useState(false);
-	const { selectElement } = useBuilder();
+	const { selectElement, selectedElement, setSidebarView } = useBuilder();
 
 	// Enable keyboard shortcuts when builder is focused
 	useKeyboardShortcuts(isBuilderFocused);
@@ -61,6 +61,12 @@ function VisualBuilder() {
 			}
 		};
 	}, []);
+
+	useEffect(() => {
+		if (selectedElement !== null) {
+			setSidebarView('layers');
+		}
+	}, [selectedElement, setSidebarView]);
 
 	return (
 		<div ref={builderRef} className="h-screen overflow-hidden flex flex-col">
