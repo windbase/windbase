@@ -194,6 +194,8 @@ function ElementLayers() {
 						selectedItems
 					}
 				}}
+				canSearch={false}
+				canSearchByStartingTyping={false}
 				onFocusItem={(item) => setFocusedItem(item.index)}
 				onExpandItem={(item) =>
 					setExpandedItems([...expandedItems, item.index])
