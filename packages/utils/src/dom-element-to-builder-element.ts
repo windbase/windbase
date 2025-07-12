@@ -20,7 +20,7 @@ export const domElementToBuilderElement = (
 
 	// Extract attributes (excluding class since we handle it separately)
 	const attributes: Record<string, string> = {};
-	for (const attr of element.attributes) {
+	for (const attr of Array.from(element.attributes)) {
 		if (attr.name !== 'class') {
 			attributes[attr.name] = attr.value;
 		}
@@ -31,7 +31,7 @@ export const domElementToBuilderElement = (
 
 	// Convert child elements
 	const children: EditorElement[] = [];
-	for (const child of element.children) {
+	for (const child of Array.from(element.children)) {
 		children.push(domElementToBuilderElement(child, id));
 	}
 
