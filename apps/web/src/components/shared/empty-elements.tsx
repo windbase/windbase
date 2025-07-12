@@ -1,4 +1,4 @@
-import { Layers, MousePointer, Plus } from 'lucide-react';
+import { Blocks, Layers, MousePointer, Plus } from 'lucide-react';
 
 export default function EmptyElements() {
 	return (
@@ -29,15 +29,15 @@ export default function EmptyElements() {
 			<div className="mt-8 flex flex-col sm:flex-row gap-4 text-sm text-muted-foreground">
 				<div className="flex items-center gap-2">
 					<div className="w-6 h-6 bg-blue-100 rounded flex items-center justify-center">
-						<Plus className="w-3 h-3 text-blue-600" />
+						<Blocks className="w-3 h-3 text-blue-600" />
 					</div>
-					<span>Add from toolbar</span>
+					<span>Insert blocks</span>
 				</div>
 				<div className="flex items-center gap-2">
 					<div className="w-6 h-6 bg-green-100 rounded flex items-center justify-center">
 						<Layers className="w-3 h-3 text-green-600" />
 					</div>
-					<span>Browse components</span>
+					<span>Browse templates</span>
 				</div>
 			</div>
 		</div>
