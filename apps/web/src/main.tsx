@@ -1,6 +1,6 @@
 import './lib/analytics';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ThemeProvider } from '@windbase/ui';
+import { ThemeProvider, Toaster } from '@windbase/ui';
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
@@ -36,6 +36,7 @@ const root = ReactDOM.createRoot(
 root.render(
 	<StrictMode>
 		<QueryClientProvider client={queryClient}>
+			<Toaster />
 			<DialogInputOverlay />
 			<BrowserRouter>
 				<ThemeProvider>
