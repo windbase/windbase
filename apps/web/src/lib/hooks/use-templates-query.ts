@@ -6,7 +6,7 @@ import type { ApiBlock, ApiTemplateResponse } from '../types';
 /**
  * Base API configuration
  */
-const API_BASE_URL = 'https://windbase.github.io/templates/api';
+const API_BASE_URL = 'https://templates.windbase.dev/api';
 
 /**
  * Fetch API
