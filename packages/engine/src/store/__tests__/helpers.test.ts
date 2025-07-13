@@ -5,7 +5,7 @@ import {
 	findElementById,
 	removeElementById,
 	updateParentReferences
-} from './helpers.js';
+} from '../helpers.js';
 
 // Mock EditorElement data for testing
 const createMockElement = (
@@ -17,9 +17,8 @@ const createMockElement = (
 	tag: 'div',
 	classes: [],
 	content: 'Mock Element',
-	attributes: {},
-	parent: undefined,
-	children
+	children,
+	parent: undefined
 });
 
 describe('Store Helpers', () => {
