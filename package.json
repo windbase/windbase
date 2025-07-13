@@ -4,7 +4,8 @@
 	"license": "MIT",
 	"scripts": {
 		"dev": "nx dev web",
-		"format": "biome format --write"
+		"format": "biome format --write",
+		"test": "nx run-many --target=test"
 	},
 	"private": true,
 	"devDependencies": {

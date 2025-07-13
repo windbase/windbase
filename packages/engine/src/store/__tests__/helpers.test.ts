@@ -5,7 +5,7 @@ import {
 	findElementById,
 	removeElementById,
 	updateParentReferences
-} from './helpers.js';
+} from '../helpers.js';
 
 // Mock EditorElement data for testing
 const createMockElement = (
