@@ -139,7 +139,7 @@ function BlockPicker() {
 
 									<div className="absolute top-2 right-2"></div>
 
-									<div className="absolute flex items-center bottom-0 left-0 right-0 p-2 text-white from-black/50 to-black/0 bg-gradient-to-t">
+									<div className="absolute flex items-center bottom-0 left-0 right-0 p-2 text-white from-black/50 to-black/0 bg-gradient-to-t rounded-b-md">
 										<h4 className="text-sm font-medium">{block.name}</h4>
 										<div className="ml-auto">
 											<Button
