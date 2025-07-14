@@ -16,6 +16,12 @@ export interface HistorySlice {
 	redo: () => void;
 }
 
+// Global config slice
+export interface GlobalConfigSlice {
+	tailwindCSSConfig: string;
+	setTailwindCSSConfig: (config: string) => void;
+}
+
 // Selection slice
 export interface SelectionSlice {
 	selectedElement: EditorElement | null;
@@ -59,7 +65,8 @@ export interface BuilderStore
 		SelectionSlice,
 		ManipulationSlice,
 		TemplateSlice,
-		PagesSlice {}
+		PagesSlice,
+		GlobalConfigSlice {}
 
 // Legacy types for backward compatibility - will be removed in Phase 4
 export interface BuilderElement {

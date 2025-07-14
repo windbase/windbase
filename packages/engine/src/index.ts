@@ -3,6 +3,7 @@
 export type {
 	BuilderElement,
 	BuilderStore,
+	GlobalConfigSlice,
 	HistorySlice,
 	ManipulationSlice,
 	SelectionSlice,

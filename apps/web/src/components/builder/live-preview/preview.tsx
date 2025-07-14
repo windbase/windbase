@@ -13,7 +13,8 @@ function LivePreview() {
 		hoverElement,
 		selectElement,
 		hoveredElement,
-		updateElement
+		updateElement,
+		tailwindCSSConfig
 	} = useBuilder();
 
 	const elements = getCurrentPageElements();
@@ -23,6 +24,8 @@ function LivePreview() {
 		if (iframeRef.current && !isIframeLoaded) {
 			const doc = iframeRef.current.contentDocument;
 
+			console.log('re-render');
+
 			if (doc) {
 				const htmlContent = `
 					<!DOCTYPE html>
@@ -31,44 +34,12 @@ function LivePreview() {
 						<meta charset="UTF-8">
 						<meta name="viewport" content="width=device-width, initial-scale=1.0">
 						<title>Live Preview</title>
-						<script src="https://cdn.tailwindcss.com"></script>
-						<style>
-							body {
-								margin: 0;
-								padding: 0;
-								font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-							}
-							[data-element-id] {
-								position: relative;
-							}
-							.container {
-								max-width: 1200px;
-								margin: 0 auto;
-								padding: 0 16px;
-							}
-							.empty-state {
-								display: flex;
-								align-items: center;
-								justify-content: center;
-								height: 100vh;
-								font-family: system-ui, -apple-system, sans-serif;
-								color: #666;
-							}
-							.empty-state-content {
-								text-align: center;
-							}
-							.empty-state h2 {
-								margin: 0 0 8px 0;
-								font-size: 24px;
-								font-weight: 600;
-							}
-							.empty-state p {
-								margin: 0;
-								font-size: 16px;
-							}
+						<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+						<style type="text/tailwindcss">
+							${tailwindCSSConfig}
 						</style>
 					</head>
-					<body class="bg-white dark:bg-neutral-950 dark:text-white">
+					<body>
 						<div id="preview-container"></div>
 						<div id="empty-state" class="empty-state">
 							<div class="empty-state-content">
@@ -86,7 +57,7 @@ function LivePreview() {
 				doc.close();
 			}
 		}
-	}, [isIframeLoaded]);
+	}, [isIframeLoaded, tailwindCSSConfig]);
 
 	// Handle iframe ready and send initial elements
 	useEffect(() => {
@@ -130,6 +101,17 @@ function LivePreview() {
 			);
 		}
 	}, [isIframeLoaded, elements]);
+
+	// Send tailwind config to iframe
+	useEffect(() => {
+		if (isIframeLoaded && iframeRef.current) {
+			const iframe = iframeRef.current;
+			iframe.contentWindow?.postMessage(
+				{ type: 'tailwind-config', data: { config: tailwindCSSConfig } },
+				'*'
+			);
+		}
+	}, [isIframeLoaded, tailwindCSSConfig]);
 
 	// Handle content updates from properties panel
 	const prevSelectedElementContent = useRef<string | undefined>(undefined);

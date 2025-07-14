@@ -44,6 +44,7 @@ export const createTemplateSlice: StateCreator<
 
 	exportHtml: (pageId?: string) => {
 		const coreElements = get().exportToCore(pageId);
-		return exportToFullHtml(coreElements);
+		const tailwindCSSConfig = get().tailwindCSSConfig;
+		return exportToFullHtml(coreElements, 'Windbase Page', tailwindCSSConfig);
 	}
 });

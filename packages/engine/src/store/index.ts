@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { createGlobalConfigSlice } from '../global-config';
 import { createHistorySlice } from '../history';
 import { createManipulationSlice } from '../manipulation';
 import { createPagesSlice } from '../pages';
@@ -14,7 +15,8 @@ export const useBuilder = create<BuilderStore>()(
 			...createSelectionSlice(...a),
 			...createManipulationSlice(...a),
 			...createTemplateSlice(...a),
-			...createPagesSlice(...a)
+			...createPagesSlice(...a),
+			...createGlobalConfigSlice(...a)
 		}),
 		{
 			name: 'builder-store',
@@ -68,6 +70,7 @@ export type { Page, PagesSlice } from '../pages';
 export type {
 	BuilderElement,
 	BuilderStore,
+	GlobalConfigSlice,
 	HistorySlice,
 	ManipulationSlice,
 	SelectionSlice,
