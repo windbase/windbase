@@ -1,29 +1,29 @@
 {
-	"name": "@windbase/engine",
-	"version": "0.3.0",
-	"type": "module",
-	"main": "./dist/index.js",
-	"module": "./dist/index.js",
-	"types": "./dist/index.d.ts",
-	"scripts": {
-		"test": "vitest run",
-		"test:watch": "vitest",
-		"test:coverage": "vitest run --coverage",
-		"test:ui": "vitest --ui"
-	},
-	"exports": {
-		"./package.json": "./package.json",
-		".": {
-			"development": "./src/index.ts",
-			"types": "./dist/index.d.ts",
-			"import": "./dist/index.js",
-			"default": "./dist/index.js"
-		}
-	},
-	"dependencies": {
-		"@windbase/core": "workspace:*",
-		"@windbase/exporters": "workspace:*",
-		"@windbase/utils": "workspace:*",
-		"zustand": "^5.0.6"
-	}
+  "name": "@windbase/engine",
+  "version": "0.3.1",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "development": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "dependencies": {
+    "@windbase/core": "workspace:*",
+    "@windbase/exporters": "workspace:*",
+    "@windbase/utils": "workspace:*",
+    "zustand": "^5.0.6"
+  }
 }
