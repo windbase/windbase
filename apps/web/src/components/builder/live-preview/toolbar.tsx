@@ -9,7 +9,7 @@ function LivePreviewToolbar() {
 	return (
 		<TooltipProvider>
 			<div
-				className="grid grid-cols-3 h-8 items-center px-3 border-b bg-neutral-50 dark:bg-muted/20 rounded-t-xl"
+				className="grid grid-cols-3 h-8 items-center px-3 border-b bg-background dark:bg-muted/20 rounded-t-xl"
 				id="live-preview-toolbar"
 			>
 				<div className="flex items-center gap-1.5">
