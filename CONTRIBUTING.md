@@ -98,7 +98,6 @@ windbase/
 1. **@windbase/core**: Contains element definitions, types, and transformers
 2. **@windbase/engine**: Handles state management, history, and manipulation logic
 3. **@windbase/exporters**: Provides export functionality for different formats
-4. **@windbase/templates**: Pre-built component templates and registry
 5. **@windbase/ui**: Shared UI components and design system
 6. **@windbase/utils**: Utility functions used across packages
 

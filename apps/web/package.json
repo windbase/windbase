@@ -24,7 +24,6 @@
 		"@windbase/core": "workspace:*",
 		"@windbase/engine": "workspace:*",
 		"@windbase/exporters": "workspace:*",
-		"@windbase/templates": "workspace:*",
 		"@windbase/ui": "workspace:*",
 		"@windbase/utils": "workspace:*",
 		"@zip.js/zip.js": "^2.7.63",
