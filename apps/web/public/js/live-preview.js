@@ -108,6 +108,9 @@ window.addEventListener('message', (event) => {
 		case 'update-attributes':
 			updateElementAttributes(data.elementId, data.attributes);
 			break;
+		case 'tailwind-config':
+			updateTailwindConfig(data.config);
+			break;
 	}
 });
 
@@ -410,6 +413,20 @@ function updateElementAttributes(elementId, attributes) {
 			if (!element.hasAttribute('xmlns')) {
 				element.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
 			}
+		}
+	}
+}
+
+function updateTailwindConfig(config) {
+	// Find the existing style tag with TailwindCSS
+	const styleTag = document.querySelector('style[type="text/tailwindcss"]');
+	if (styleTag) {
+		// Update the style tag content with the new config
+		styleTag.textContent = config;
+		
+		// Force TailwindCSS to reprocess styles
+		if (window.tailwind) {
+			window.tailwind.process();
 		}
 	}
 }

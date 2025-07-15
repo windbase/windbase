@@ -24,8 +24,6 @@ function LivePreview() {
 		if (iframeRef.current && !isIframeLoaded) {
 			const doc = iframeRef.current.contentDocument;
 
-			console.log('re-render');
-
 			if (doc) {
 				const htmlContent = `
 					<!DOCTYPE html>
