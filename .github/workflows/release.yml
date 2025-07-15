@@ -11,6 +11,9 @@ jobs:
       contents: write
       packages: write
 
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -80,9 +83,30 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload build artifacts
-        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: windbase-build-${{ steps.version.outputs.version }}
           path: apps/web/dist/
-          retention-days: 30 
+          retention-days: 30
+
+  deploy-to-netlify:
+    needs: build-and-upload-assets
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: windbase-build-${{ needs.build-and-upload-assets.outputs.version }}
+          path: web-dist
+
+      - name: Install Netlify CLI
+        run: npm install -g netlify-cli
+
+      - name: Deploy to Netlify
+        run: |
+          netlify deploy \
+            --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} \
+            --site ${{ secrets.NETLIFY_SITE_ID }} \
+            --prod \
+            --dir=web-dist
