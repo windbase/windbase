@@ -17,7 +17,7 @@ import {
 	useBlockCategories,
 	useBlockHtml,
 	useFilteredBlocks
-} from '@/lib/hooks/use-templates-query';
+} from '@/lib/hooks/use-components-query';
 import type { ApiBlock } from '@/lib/types';
 
 function BlockPicker() {
@@ -129,8 +129,7 @@ function BlockPicker() {
 								<div className="relative">
 									<img
 										src={
-											block.preview ||
-											`https://windbase.github.io/templates/api/blocks/${block.id}-preview.png` ||
+											`https://windbase.github.io/components/blocks/${block.id}.png` ||
 											'https://placehold.co/150'
 										}
 										alt={block.name}

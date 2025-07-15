@@ -5,31 +5,31 @@
 
 export type ComponentType = 'template' | 'block';
 
-export interface ApiTemplate {
+// Updated API response structure for individual components
+export interface ComponentMetadata {
 	id: string;
 	name: string;
-	description?: string;
-	category: string;
-	componentType: ComponentType;
-	tags: string[];
-	author?: string;
-	version?: string;
-	createdAt?: string;
-	updatedAt?: string;
-	html?: string;
-	preview?: string;
-	featured?: boolean;
-	popular?: boolean;
-	deprecated?: boolean;
+	categories: string[];
+	author: string;
 }
 
-export interface ApiBlock extends ApiTemplate {
+export interface ApiBlock extends ComponentMetadata {
 	componentType: 'block';
 }
 
-export interface ApiTemplateResponse extends ApiTemplate {
+export interface ApiTemplateResponse extends ComponentMetadata {
 	componentType: 'template';
 }
+
+// New paginated API response structure
+export interface PaginatedApiResponse<T> {
+	items: T[];
+	page: number;
+	hasNextPage: boolean;
+}
+
+export interface ApiBlocksResponse extends PaginatedApiResponse<ApiBlock> {}
+export interface ApiTemplatesResponse extends PaginatedApiResponse<ApiTemplateResponse> {}
 
 export interface ApiCollection {
 	templates?: ApiTemplateResponse[];
@@ -39,4 +39,10 @@ export interface ApiCollection {
 export interface ApiError {
 	message: string;
 	code?: number;
+}
+
+// Configuration for GitHub Pages API
+export interface ApiConfig {
+	baseUrl: string;
+	username: string;
 }

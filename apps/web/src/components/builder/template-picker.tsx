@@ -18,7 +18,7 @@ import {
 	useFilteredTemplates,
 	useTemplateCategories,
 	useTemplateHtml
-} from '@/lib/hooks/use-templates-query';
+} from '@/lib/hooks/use-components-query';
 import type { ApiTemplateResponse } from '@/lib/types';
 
 function TemplatePicker() {
@@ -136,8 +136,7 @@ function TemplatePicker() {
 								<div className="relative">
 									<img
 										src={
-											template.preview ||
-											`https://windbase.github.io/templates/api/templates/${template.id}-preview.png` ||
+											`https://windbase.github.io/components/templates/${template.id}.png` ||
 											'https://placehold.co/500x300/2563eb/ffffff?text=Template'
 										}
 										alt={template.name}
@@ -152,7 +151,7 @@ function TemplatePicker() {
 												{template.name}
 											</h4>
 											<p className="text-xs text-white/70 mt-1 max-w-[300px]">
-												{template.description}
+												by {template.author}
 											</p>
 										</div>
 										<div className="ml-auto">
