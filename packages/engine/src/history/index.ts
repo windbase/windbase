@@ -2,90 +2,142 @@ import type { StateCreator } from 'zustand';
 import type { BuilderStore, HistorySlice } from '../store/types';
 
 export const createHistorySlice: StateCreator<
-	BuilderStore,
-	[],
-	[],
-	HistorySlice
-> = (set, get) => ({
-	history: [[]], // Initialize with empty state
-	historyIndex: 0,
-	canUndo: false,
-	canRedo: false,
+  BuilderStore,
+  [],
+  [],
+  HistorySlice
+> = (set, get) => {
+  // Debounce timer for word-based history saving
+  let saveTimer: NodeJS.Timeout | null = null;
 
-	// Helper method to save current state to history (called after actions)
-	saveToHistory: () => {
-		const state = get();
-		const currentElements = JSON.parse(
-			JSON.stringify(state.getCurrentPageElements())
-		);
+  return {
+    history: [[]], // Initialize with empty state
+    historyIndex: 0,
+    canUndo: false,
+    canRedo: false,
 
-		// Don't save if the current state is the same as the last saved state
-		if (
-			state.history.length > 0 &&
-			JSON.stringify(state.history[state.history.length - 1]) ===
-				JSON.stringify(currentElements)
-		) {
-			return;
-		}
+    // Helper method to save current state to history (called after actions)
+    saveToHistory: () => {
+      // Clear any existing timer
+      if (saveTimer) {
+        clearTimeout(saveTimer);
+      }
 
-		// Remove any future history if we're not at the end
-		const newHistory = state.history.slice(0, state.historyIndex + 1);
-		newHistory.push(currentElements);
+      // Set a new timer to save after a brief pause (word completion)
+      saveTimer = setTimeout(() => {
+        const state = get();
+        const currentElements = JSON.parse(
+          JSON.stringify(state.getCurrentPageElements())
+        );
 
-		// Limit history to 50 entries
-		if (newHistory.length > 50) {
-			newHistory.shift();
-		}
+        // Don't save if the current state is the same as the last saved state
+        if (
+          state.history.length > 0 &&
+          JSON.stringify(state.history[state.history.length - 1]) ===
+          JSON.stringify(currentElements)
+        ) {
+          return;
+        }
 
-		set({
-			history: newHistory,
-			historyIndex: newHistory.length - 1,
-			canUndo: newHistory.length > 1,
-			canRedo: false
-		});
-	},
+        // Remove any future history if we're not at the end
+        const newHistory = state.history.slice(0, state.historyIndex + 1);
+        newHistory.push(currentElements);
 
-	// Undo action
-	undo: () => {
-		const state = get();
-		if (state.historyIndex > 0) {
-			const newIndex = state.historyIndex - 1;
-			const elementsToRestore = state.history[newIndex];
+        // Limit history to 50 entries
+        if (newHistory.length > 50) {
+          newHistory.shift();
+        }
 
-			// Restore elements to current page
-			const currentPage = state.getCurrentPage();
-			if (currentPage) {
-				state.updatePage(currentPage.id, { elements: elementsToRestore });
-			}
+        set({
+          history: newHistory,
+          historyIndex: newHistory.length - 1,
+          canUndo: newHistory.length > 1,
+          canRedo: false
+        });
+      }, 500); // Wait 500ms after last change before saving
+    },
 
-			set({
-				historyIndex: newIndex,
-				canUndo: newIndex > 0,
-				canRedo: true,
-				selectedElement: null // Clear selection after undo
-			});
-		}
-	},
+    // Immediate save to history (for non-text changes like add/delete elements)
+    saveToHistoryImmediate: () => {
+      // Clear any pending debounced save
+      if (saveTimer) {
+        clearTimeout(saveTimer);
+        saveTimer = null;
+      }
 
-	// Redo action
-	redo: () => {
-		const state = get();
-		if (state.historyIndex < state.history.length - 1) {
-			const newIndex = state.historyIndex + 1;
-			const elementsToRestore = state.history[newIndex];
+      const state = get();
+      const currentElements = JSON.parse(
+        JSON.stringify(state.getCurrentPageElements())
+      );
 
-			// Restore elements to current page
-			const currentPage = state.getCurrentPage();
-			if (currentPage) {
-				state.updatePage(currentPage.id, { elements: elementsToRestore });
-			}
+      // Don't save if the current state is the same as the last saved state
+      if (
+        state.history.length > 0 &&
+        JSON.stringify(state.history[state.history.length - 1]) ===
+        JSON.stringify(currentElements)
+      ) {
+        return;
+      }
 
-			set({
-				historyIndex: newIndex,
-				canUndo: true,
-				canRedo: newIndex < state.history.length - 1,
-				selectedElement: null // Clear selection after redo
-			});
-		}
-	}
-});
+      // Remove any future history if we're not at the end
+      const newHistory = state.history.slice(0, state.historyIndex + 1);
+      newHistory.push(currentElements);
+
+      // Limit history to 50 entries
+      if (newHistory.length > 50) {
+        newHistory.shift();
+      }
+
+      set({
+        history: newHistory,
+        historyIndex: newHistory.length - 1,
+        canUndo: newHistory.length > 1,
+        canRedo: false
+      });
+    },
+
+    // Undo action
+    undo: () => {
+      const state = get();
+      if (state.historyIndex > 0) {
+        const newIndex = state.historyIndex - 1;
+        const elementsToRestore = state.history[newIndex];
+
+        // Restore elements to current page
+        const currentPage = state.getCurrentPage();
+        if (currentPage) {
+          state.updatePage(currentPage.id, { elements: elementsToRestore });
+        }
+
+        set({
+          historyIndex: newIndex,
+          canUndo: newIndex > 0,
+          canRedo: true,
+          selectedElement: null // Clear selection after undo
+        });
+      }
+    },
+
+    // Redo action
+    redo: () => {
+      const state = get();
+      if (state.historyIndex < state.history.length - 1) {
+        const newIndex = state.historyIndex + 1;
+        const elementsToRestore = state.history[newIndex];
+
+        // Restore elements to current page
+        const currentPage = state.getCurrentPage();
+        if (currentPage) {
+          state.updatePage(currentPage.id, { elements: elementsToRestore });
+        }
+
+        set({
+          historyIndex: newIndex,
+          canUndo: true,
+          canRedo: newIndex < state.history.length - 1,
+          selectedElement: null // Clear selection after redo
+        });
+      }
+    }
+  };
+};
