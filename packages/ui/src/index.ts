@@ -4,6 +4,7 @@ export * from './components/collapsible';
 export * from './components/command';
 export * from './components/dialog';
 export * from './components/dropdown-menu';
+export * from './components/hover-card';
 export * from './components/input';
 export * from './components/label';
 export * from './components/popover';
