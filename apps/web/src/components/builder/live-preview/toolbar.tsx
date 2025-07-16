@@ -19,7 +19,7 @@ function LivePreviewToolbar() {
 				</div>
 				<div className="flex items-center gap-1 justify-center text-center text-sm text-muted-foreground">
 					<span>
-						{currentPage?.name.replace(/\s+/g, '-').toLowerCase()}.html
+						{currentPage?.name.replace(/\s+/g, '-').toLowerCase()}
 					</span>
 				</div>
 				<div className="ml-auto flex items-center gap-2.5"></div>
