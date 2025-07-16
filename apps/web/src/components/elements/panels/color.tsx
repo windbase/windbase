@@ -90,8 +90,33 @@ const getColorFamilies = (): string[] => {
 const getBreakpointPrefix = (breakpoint: Breakpoint): string =>
 	breakpoint === 'ALL' ? '' : `${breakpoint.toLowerCase()}:`;
 
+// Helper function to get all available CSS color variables from the document
+const getCustomColors = (): string[] => {
+	if (typeof document === 'undefined') return [];
+
+	try {
+		const styles = getComputedStyle(document.documentElement);
+		const customColors: string[] = [];
+
+		// Get all CSS custom properties that start with --color-
+		for (let i = 0; i < styles.length; i++) {
+			const property = styles.item(i);
+			if (property.startsWith('--color-')) {
+				// Extract color name (e.g., --color-primary -> primary)
+				const colorName = property.replace('--color-', '');
+				customColors.push(colorName);
+			}
+		}
+
+		return customColors;
+	} catch (error) {
+		console.warn('Error getting custom colors from CSS:', error);
+		return [];
+	}
+};
+
 // Helper function to check if a class is a color class
-const isColorClass = (className: string, prefix: string): boolean => {
+const isColorClass = (className: string, prefix: string, customColors: string[] = []): boolean => {
 	if (!className.startsWith(prefix)) return false;
 
 	const colorValue = className.replace(prefix, '');
@@ -99,6 +124,11 @@ const isColorClass = (className: string, prefix: string): boolean => {
 	// Check for special color values
 	const specialColors = ['inherit', 'white', 'black', 'transparent'];
 	if (specialColors.includes(colorValue)) {
+		return true;
+	}
+
+	// Check for custom colors from Tailwind config
+	if (customColors.includes(colorValue)) {
 		return true;
 	}
 
@@ -123,7 +153,8 @@ const isColorClass = (className: string, prefix: string): boolean => {
 const extractColorValue = (
 	classes: string[],
 	prefix: string,
-	breakpoint: Breakpoint
+	breakpoint: Breakpoint,
+	customColors: string[] = []
 ): string => {
 	const breakpointPrefix = getBreakpointPrefix(breakpoint);
 	const colorFamilies = getColorFamilies();
@@ -140,6 +171,11 @@ const extractColorValue = (
 		// Check for special color values
 		const specialColors = ['inherit', 'white', 'black', 'transparent'];
 		if (specialColors.includes(colorValue)) {
+			return colorValue;
+		}
+
+		// Check for custom colors from Tailwind config
+		if (customColors.includes(colorValue)) {
 			return colorValue;
 		}
 
@@ -204,7 +240,8 @@ const createEmptyColorState = (): ColorState => ({
 });
 
 const parseElementClasses = (
-	classes: string[]
+	classes: string[],
+	customColors: string[] = []
 ): Record<Breakpoint, ColorState> => {
 	const state: Record<Breakpoint, ColorState> = {} as Record<
 		Breakpoint,
@@ -213,10 +250,10 @@ const parseElementClasses = (
 
 	BREAKPOINTS.forEach((breakpoint) => {
 		state[breakpoint] = {
-			bgColor: extractColorValue(classes, 'bg-', breakpoint),
-			textColor: extractColorValue(classes, 'text-', breakpoint),
-			borderColor: extractColorValue(classes, 'border-', breakpoint),
-			accentColor: extractColorValue(classes, 'accent-', breakpoint),
+			bgColor: extractColorValue(classes, 'bg-', breakpoint, customColors),
+			textColor: extractColorValue(classes, 'text-', breakpoint, customColors),
+			borderColor: extractColorValue(classes, 'border-', breakpoint, customColors),
+			accentColor: extractColorValue(classes, 'accent-', breakpoint, customColors),
 			shadow: extractShadowValue(classes, breakpoint),
 			textDecoration: extractTextDecorationValue(classes, breakpoint)
 		};
@@ -416,6 +453,12 @@ const ColorPanel = memo(() => {
 				BREAKPOINTS.map((bp) => [bp, createEmptyColorState()])
 			) as Record<Breakpoint, ColorState>
 	);
+	const [customColors, setCustomColors] = useState<string[]>([]);
+
+	// Get custom colors from CSS variables
+	useEffect(() => {
+		setCustomColors(getCustomColors());
+	}, []);
 
 	// Sync state with selected element
 	useEffect(() => {
@@ -429,9 +472,9 @@ const ColorPanel = memo(() => {
 		}
 
 		const elementClasses = selectedElement.classes || [];
-		const parsedState = parseElementClasses(elementClasses);
+		const parsedState = parseElementClasses(elementClasses, customColors);
 		setColorState(parsedState);
-	}, [selectedElement]);
+	}, [selectedElement, customColors]);
 
 	// Update element classes using the store's updateClasses method
 	const updateElementClasses = useCallback(
@@ -481,14 +524,14 @@ const ColorPanel = memo(() => {
 			const filteredClasses = currentClasses.filter((cls) => {
 				if (selectedBreakpoint === 'ALL') {
 					// For ALL breakpoint, remove color classes that don't have breakpoint prefix
-					if (!cls.includes(':') && isColorClass(cls, config.prefix)) {
+					if (!cls.includes(':') && isColorClass(cls, config.prefix, customColors)) {
 						return false;
 					}
 				} else {
 					// For specific breakpoints, remove color classes that match breakpoint and prefix
 					if (
 						cls.startsWith(breakpointPrefix) &&
-						isColorClass(cls.replace(breakpointPrefix, ''), config.prefix)
+						isColorClass(cls.replace(breakpointPrefix, ''), config.prefix, customColors)
 					) {
 						return false;
 					}
@@ -512,7 +555,7 @@ const ColorPanel = memo(() => {
 				}
 			}));
 		},
-		[selectedBreakpoint, selectedElement, updateElementClasses]
+		[selectedBreakpoint, selectedElement, updateElementClasses, customColors]
 	);
 
 	// Handle shadow changes
