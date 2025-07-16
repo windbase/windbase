@@ -2,7 +2,7 @@ import { css } from '@codemirror/lang-css';
 import { oneDark } from '@codemirror/theme-one-dark';
 import CodeMirror from '@uiw/react-codemirror';
 import { useBuilder } from '@windbase/engine';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@windbase/ui';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@windbase/ui';
 
 type TailwindCSSConfigProps = {
 	open: boolean;
@@ -20,7 +20,10 @@ function TailwindCSSConfig({ open, setOpen }: TailwindCSSConfigProps) {
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogContent className="min-w-[800px]">
 				<DialogHeader>
-					<DialogTitle>TailwindCSS Config</DialogTitle>
+					<DialogTitle>Theme Config</DialogTitle>
+					<DialogDescription>
+						Customize your theme with TailwindCSS. Changes are saved automatically.
+					</DialogDescription>
 				</DialogHeader>
 
 				<CodeMirror
