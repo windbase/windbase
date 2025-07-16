@@ -50,6 +50,7 @@ export interface ManipulationSlice {
 	moveElementInParent: (elementId: string, position: number) => void;
 	updateClasses: (id: string, classes: string[]) => void;
 	setResponsiveMode: (mode: 'desktop' | 'mobile') => void;
+	duplicateElement: (element: EditorElement) => string | null;
 }
 
 // Template slice
@@ -63,11 +64,11 @@ export interface TemplateSlice {
 // Complete store interface
 export interface BuilderStore
 	extends HistorySlice,
-		SelectionSlice,
-		ManipulationSlice,
-		TemplateSlice,
-		PagesSlice,
-		GlobalConfigSlice {}
+	SelectionSlice,
+	ManipulationSlice,
+	TemplateSlice,
+	PagesSlice,
+	GlobalConfigSlice { }
 
 // Legacy types for backward compatibility - will be removed in Phase 4
 export interface BuilderElement {

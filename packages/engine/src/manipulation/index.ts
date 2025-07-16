@@ -254,5 +254,15 @@ export const createManipulationSlice: StateCreator<
 	// Set responsive mode
 	setResponsiveMode: (mode: 'desktop' | 'mobile') => {
 		set({ responsiveMode: mode });
+	},
+
+	// Duplicate element
+	duplicateElement: (element: EditorElement) => {
+		const newElement: EditorElement = {
+			...element,
+			id: crypto.randomUUID()
+		};
+		get().addElement(newElement);
+		return newElement.id;
 	}
 });
