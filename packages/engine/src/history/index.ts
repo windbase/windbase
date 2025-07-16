@@ -1,4 +1,5 @@
 import type { StateCreator } from 'zustand';
+import { findElementById } from '../store/helpers';
 import type { BuilderStore, HistorySlice } from '../store/types';
 
 export const createHistorySlice: StateCreator<
@@ -34,7 +35,7 @@ export const createHistorySlice: StateCreator<
 				if (
 					state.history.length > 0 &&
 					JSON.stringify(state.history[state.history.length - 1]) ===
-						JSON.stringify(currentElements)
+					JSON.stringify(currentElements)
 				) {
 					return;
 				}
@@ -74,7 +75,7 @@ export const createHistorySlice: StateCreator<
 			if (
 				state.history.length > 0 &&
 				JSON.stringify(state.history[state.history.length - 1]) ===
-					JSON.stringify(currentElements)
+				JSON.stringify(currentElements)
 			) {
 				return;
 			}
@@ -109,11 +110,20 @@ export const createHistorySlice: StateCreator<
 					state.updatePage(currentPage.id, { elements: elementsToRestore });
 				}
 
+				// Check if selected element still exists in restored state
+				let selectedElement = state.selectedElement;
+				if (selectedElement) {
+					const selectedStillExists = findElementById(elementsToRestore, selectedElement.id);
+					if (!selectedStillExists) {
+						selectedElement = null;
+					}
+				}
+
 				set({
 					historyIndex: newIndex,
 					canUndo: newIndex > 0,
 					canRedo: true,
-					selectedElement: null // Clear selection after undo
+					selectedElement
 				});
 			}
 		},
@@ -131,11 +141,20 @@ export const createHistorySlice: StateCreator<
 					state.updatePage(currentPage.id, { elements: elementsToRestore });
 				}
 
+				// Check if selected element still exists in restored state
+				let selectedElement = state.selectedElement;
+				if (selectedElement) {
+					const selectedStillExists = findElementById(elementsToRestore, selectedElement.id);
+					if (!selectedStillExists) {
+						selectedElement = null;
+					}
+				}
+
 				set({
 					historyIndex: newIndex,
 					canUndo: true,
 					canRedo: newIndex < state.history.length - 1,
-					selectedElement: null // Clear selection after redo
+					selectedElement
 				});
 			}
 		}
