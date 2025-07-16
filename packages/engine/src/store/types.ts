@@ -26,9 +26,14 @@ export interface GlobalConfigSlice {
 // Selection slice
 export interface SelectionSlice {
 	selectedElement: EditorElement | null;
+	selectedElements: EditorElement[];
 	hoveredElement: EditorElement | null;
 	sidebarView: 'pages' | 'layers';
 	selectElement: (id: string | null) => void;
+	selectElements: (ids: string[]) => void;
+	selectElementsRange: (startId: string, endId: string) => void;
+	toggleElementSelection: (id: string) => void;
+	clearSelection: () => void;
 	hoverElement: (id: string | null) => void;
 	setSidebarView: (view: 'pages' | 'layers') => void;
 	getParentIds: (elementId: string) => string[];
@@ -41,8 +46,14 @@ export interface ManipulationSlice {
 	addElement: (element: Omit<EditorElement, 'id'>, parentId?: string) => void;
 	updateElement: (id: string, updates: Partial<EditorElement>) => void;
 	deleteElement: (id: string) => void;
+	deleteElements: (ids: string[]) => void;
 	moveElement: (
 		elementId: string,
+		newParentId: string,
+		position: number
+	) => void;
+	moveElements: (
+		elementIds: string[],
 		newParentId: string,
 		position: number
 	) => void;

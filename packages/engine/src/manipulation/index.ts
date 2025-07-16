@@ -124,6 +124,34 @@ export const createManipulationSlice: StateCreator<
 		setTimeout(() => get().saveToHistoryImmediate(), 0);
 	},
 
+	// Delete multiple elements
+	deleteElements: (ids: string[]) => {
+		const currentPage = get().getCurrentPage();
+		if (!currentPage) return;
+
+		let updatedElements = currentPage.elements;
+
+		// Delete each element
+		for (const id of ids) {
+			updatedElements = removeElementById(updatedElements, id);
+		}
+
+		get().updatePage(currentPage.id, { elements: updatedElements });
+
+		// Clear selection if any selected elements were deleted
+		const currentSelected = get().selectedElements || [];
+		const remainingSelected = currentSelected.filter(
+			el => !ids.includes(el.id)
+		);
+
+		if (remainingSelected.length !== currentSelected.length) {
+			get().selectElements(remainingSelected.map(el => el.id));
+		}
+
+		// Save to history after deleting
+		setTimeout(() => get().saveToHistoryImmediate(), 0);
+	},
+
 	// Move element to new parent
 	moveElement: (elementId: string, newParentId: string, position: number) => {
 		const currentPage = get().getCurrentPage();
@@ -254,6 +282,63 @@ export const createManipulationSlice: StateCreator<
 	// Set responsive mode
 	setResponsiveMode: (mode: 'desktop' | 'mobile') => {
 		set({ responsiveMode: mode });
+	},
+
+	// Move multiple elements to new parent
+	moveElements: (elementIds: string[], newParentId: string, position: number) => {
+		const currentPage = get().getCurrentPage();
+		if (!currentPage) return;
+
+		// Get all elements to move
+		const allElements = get().getCurrentPageElements();
+		const elementsToMove = elementIds.map(id =>
+			findElementById(allElements, id)
+		).filter(Boolean) as EditorElement[];
+
+		if (elementsToMove.length === 0) return;
+
+		// Remove all elements from their current positions
+		let updatedElements = currentPage.elements;
+		for (const elementId of elementIds) {
+			updatedElements = removeElementById(updatedElements, elementId);
+		}
+
+		// Add elements to new parent
+		const addElementsToParent = (elements: EditorElement[]): EditorElement[] => {
+			return elements.map((el) => {
+				if (el.id === newParentId) {
+					// Insert all elements at the specified position
+					const newChildren = [...el.children];
+					elementsToMove.forEach((elementToMove, index) => {
+						const updatedElement = { ...elementToMove, parent: newParentId };
+						newChildren.splice(position + index, 0, updatedElement);
+					});
+					return { ...el, children: newChildren };
+				}
+				if (el.children.length > 0) {
+					return { ...el, children: addElementsToParent(el.children) };
+				}
+				return el;
+			});
+		};
+
+		if (newParentId === 'root') {
+			// Add to root level
+			const newElements = [...updatedElements];
+			elementsToMove.forEach((elementToMove, index) => {
+				const updatedElement = { ...elementToMove, parent: undefined };
+				newElements.splice(position + index, 0, updatedElement);
+			});
+			updatedElements = newElements;
+		} else {
+			// Add to specific parent
+			updatedElements = addElementsToParent(updatedElements);
+		}
+
+		get().updatePage(currentPage.id, { elements: updatedElements });
+
+		// Save to history after moving
+		setTimeout(() => get().saveToHistoryImmediate(), 0);
 	},
 
 	// Duplicate element

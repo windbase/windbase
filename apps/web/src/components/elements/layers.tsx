@@ -21,41 +21,35 @@ import {
 function ElementLayers() {
 	const {
 		getCurrentPageElements,
-		selectedElement,
+		selectedElements,
 		selectElement,
+		selectElementsRange,
+		toggleElementSelection,
 		moveElement,
+		moveElements,
 		hoverElement,
 		getParentIds,
-		deleteElement
+		deleteElement,
+		deleteElements
 	} = useBuilder();
 	const [focusedItem, setFocusedItem] = useState<TreeItemIndex>();
 	const [expandedItems, setExpandedItems] = useState<TreeItemIndex[]>(['root']);
-	const [selectedItems, setSelectedItems] = useState<TreeItemIndex[]>([]);
 
 	const elements = getCurrentPageElements();
 
-	// Update selected items when selectedElement changes
-	useEffect(() => {
-		if (selectedElement) {
-			setSelectedItems([selectedElement.id as TreeItemIndex]);
-		} else {
-			setSelectedItems([]);
-		}
-	}, [selectedElement]);
+	// Note: We handle selection directly in click/key handlers
+	// The tree component's visual selection state is managed by our custom styling
 
-	// Update selected element when tree selection changes
+	// Expand parent layers when elements are selected
 	useEffect(() => {
-		const item = selectedItems[0];
-		if (item && item !== 'root') {
-			selectElement(item as string);
-		}
-	}, [selectedItems, selectElement]);
+		if (selectedElements.length > 0) {
+			const allParentIds = ['root'];
 
-	// Expand parent layers when an element is selected
-	useEffect(() => {
-		if (selectedElement) {
-			const parentIds = getParentIds(selectedElement.id);
-			const allParentIds = ['root', ...parentIds];
+			// Collect parent IDs for all selected elements
+			for (const element of selectedElements) {
+				const parentIds = getParentIds(element.id);
+				allParentIds.push(...parentIds);
+			}
 
 			// Add parent IDs to expanded items
 			setExpandedItems((prev) => {
@@ -63,7 +57,7 @@ function ElementLayers() {
 				return newExpandedItems;
 			});
 		}
-	}, [selectedElement, getParentIds]);
+	}, [selectedElements, getParentIds]);
 
 	// Create data provider for react-complex-tree
 	const dataProvider = useMemo(() => {
@@ -101,8 +95,8 @@ function ElementLayers() {
 
 	// Handle drag and drop
 	const handleDrop = (items: TreeItem<string>[], target: DraggingPosition) => {
-		const itemId = items[0]?.index;
-		if (!itemId || itemId === 'root') return;
+		const itemIds = items.map(item => item.index.toString()).filter(id => id !== 'root');
+		if (itemIds.length === 0) return;
 
 		let newParentId = 'root';
 		let position = 0;
@@ -116,9 +110,17 @@ function ElementLayers() {
 		}
 
 		// Don't allow dropping on self or children
-		if (newParentId === itemId) return;
+		if (itemIds.includes(newParentId)) return;
 
-		moveElement(itemId.toString(), newParentId, position);
+		// If we're dragging multiple selected elements, use moveElements
+		// Otherwise, use single element move
+		if (selectedElements.length > 1 && itemIds.every(id => selectedElements.some(el => el.id === id))) {
+			moveElements(selectedElements.map(el => el.id), newParentId, position);
+		} else if (itemIds.length === 1) {
+			moveElement(itemIds[0], newParentId, position);
+		} else {
+			moveElements(itemIds, newParentId, position);
+		}
 	};
 
 	// Get icon based on element type
@@ -178,8 +180,13 @@ function ElementLayers() {
 
 	return (
 		<>
-			<h1 className="sticky top-0 z-10 bg-background text-xs font-medium px-3 py-3 uppercase text-muted-foreground flex items-center gap-2">
+			<h1 className="sticky h-10 top-0 z-10 bg-background text-xs font-medium px-3 py-3 uppercase text-muted-foreground flex items-center gap-2">
 				<Layers size={16} /> Layers
+				{selectedElements.length > 1 && (
+					<span className="ml-auto text-[10px] bg-primary text-primary-foreground px-2 py-1 rounded">
+						{selectedElements.length} selected
+					</span>
+				)}
 			</h1>
 
 			<ControlledTreeEnvironment
@@ -191,7 +198,7 @@ function ElementLayers() {
 					'element-tree': {
 						focusedItem,
 						expandedItems,
-						selectedItems
+						selectedItems: selectedElements.map(el => el.id as TreeItemIndex)
 					}
 				}}
 				canSearch={false}
@@ -208,7 +215,15 @@ function ElementLayers() {
 					)
 				}
 				onSelectItems={(items) => {
-					setSelectedItems(items);
+					// Allow tree to handle selection changes for drag and drop operations
+					// but don't sync back to store to avoid infinite loops
+					if (items.length === 1 && items[0] !== 'root') {
+						// Only update store for single selections that aren't from our multi-select logic
+						const itemId = items[0] as string;
+						if (!selectedElements.some(el => el.id === itemId)) {
+							selectElement(itemId);
+						}
+					}
 				}}
 				onDrop={handleDrop}
 				getItemTitle={(item) => item.data}
@@ -247,25 +262,61 @@ function ElementLayers() {
 							<button
 								onKeyDown={(e) => {
 									if (e.key === 'Enter' || e.key === ' ') {
-										selectElement(item.index.toString());
+										if (e.shiftKey && selectedElements.length > 0) {
+											// Range selection
+											e.preventDefault();
+											e.stopPropagation();
+											const lastSelected = selectedElements[selectedElements.length - 1];
+											selectElementsRange(lastSelected.id, item.index.toString());
+										} else if (e.ctrlKey || e.metaKey) {
+											// Toggle selection
+											e.preventDefault();
+											e.stopPropagation();
+											toggleElementSelection(item.index.toString());
+										} else {
+											// Single selection - let tree handle it
+											selectElement(item.index.toString());
+										}
 									}
 									if (e.key === 'Backspace' || e.key === 'Delete') {
-										deleteElement(item.index.toString());
+										e.preventDefault();
+										e.stopPropagation();
+										if (selectedElements.length > 1) {
+											deleteElements(selectedElements.map(el => el.id));
+										} else {
+											deleteElement(item.index.toString());
+										}
 									}
 								}}
-								className={`flex w-full items-center gap-2 px-2 py-2.5 cursor-pointer ${
-									context.isSelected
-										? 'bg-primary text-primary-foreground'
-										: 'hover:bg-muted/50'
-								} flex items-center group`}
+								className={`flex w-full items-center gap-2 px-2 py-2.5 cursor-pointer ${selectedElements.some(el => el.id === item.index.toString())
+									? 'bg-primary text-primary-foreground'
+									: 'hover:bg-muted/50'
+									} flex items-center group`}
 								style={{
 									paddingLeft: `${(depth + 1) * 12}px`
 								}}
 								{...context.itemContainerWithoutChildrenProps}
 								{...context.interactiveElementProps}
-								onClick={() => {
+								onClick={(e) => {
+									// Don't interfere with drag operations
+									if (e.detail === 0) return; // Ignore programmatic clicks
+
 									if (item.index !== 'root') {
-										selectElement(item.index.toString());
+										if (e.shiftKey && selectedElements.length > 0) {
+											// Range selection
+											e.preventDefault();
+											e.stopPropagation();
+											const lastSelected = selectedElements[selectedElements.length - 1];
+											selectElementsRange(lastSelected.id, item.index.toString());
+										} else if (e.ctrlKey || e.metaKey) {
+											// Toggle selection
+											e.preventDefault();
+											e.stopPropagation();
+											toggleElementSelection(item.index.toString());
+										} else {
+											// Single selection - let the tree handle it normally
+											selectElement(item.index.toString());
+										}
 									}
 								}}
 								type="button"
@@ -279,7 +330,11 @@ function ElementLayers() {
 										size={16}
 										onClick={(e) => {
 											e.stopPropagation();
-											deleteElement(item.index.toString());
+											if (selectedElements.length > 1 && selectedElements.some(el => el.id === item.index.toString())) {
+												deleteElements(selectedElements.map(el => el.id));
+											} else {
+												deleteElement(item.index.toString());
+											}
 										}}
 									/>
 								</div>
@@ -304,10 +359,10 @@ function ElementLayers() {
 							right: '0',
 							top:
 								draggingPosition.targetType === 'between-items' &&
-								draggingPosition.linePosition === 'top'
+									draggingPosition.linePosition === 'top'
 									? '0px'
 									: draggingPosition.targetType === 'between-items' &&
-											draggingPosition.linePosition === 'bottom'
+										draggingPosition.linePosition === 'bottom'
 										? '-4px'
 										: '-2px',
 							left: `${draggingPosition.depth * 12}px`,
