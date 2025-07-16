@@ -115,6 +115,51 @@ const getCustomColors = (): string[] => {
 	}
 };
 
+// Helper function to get theme colors for a specific property
+const getThemeColorsForProperty = (property: ColorProperty): { name: string; value: string }[] => {
+	if (typeof document === 'undefined') return [];
+
+	try {
+		const styles = getComputedStyle(document.documentElement);
+		const themeColors: { name: string; value: string }[] = [];
+		const prefix = PROPERTY_CONFIG[property].prefix;
+
+		// Get all CSS custom properties that start with --color-
+		for (let i = 0; i < styles.length; i++) {
+			const cssProperty = styles.item(i);
+			if (cssProperty.startsWith('--color-')) {
+				const colorName = cssProperty.replace('--color-', '');
+				const colorValue = styles.getPropertyValue(cssProperty).trim();
+
+				// Only include colors that would make sense for this property type
+				// For example, include 'primary', 'secondary', 'accent', but exclude specific tailwind colors
+				if (isThemeColor(colorName)) {
+					themeColors.push({
+						name: colorName,
+						value: colorValue
+					});
+				}
+			}
+		}
+
+		return themeColors;
+	} catch (error) {
+		console.warn('Error getting theme colors:', error);
+		return [];
+	}
+};
+
+// Helper function to determine if a color is a theme color (not a standard Tailwind color)
+const isThemeColor = (colorName: string): boolean => {
+	// Standard Tailwind color patterns to exclude
+	const tailwindColorPatterns = [
+		/^(red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose|slate|gray|zinc|neutral|stone)-\d+$/,
+		/^(black|white|transparent|inherit)$/
+	];
+
+	return !tailwindColorPatterns.some(pattern => pattern.test(colorName));
+};
+
 // Helper function to check if a class is a color class
 const isColorClass = (className: string, prefix: string, customColors: string[] = []): boolean => {
 	if (!className.startsWith(prefix)) return false;
@@ -292,13 +337,16 @@ const ColorPopover = memo(
 	({
 		value,
 		onChange,
-		label
+		label,
+		property
 	}: {
 		value: string;
 		onChange: (value: string) => void;
 		label: string;
+		property: ColorProperty;
 	}) => {
 		const colorFamilies = getColorFamilies();
+		const themeColors = useMemo(() => getThemeColorsForProperty(property), [property]);
 
 		const getDisplayInfo = useCallback(
 			(colorValue: string) => {
@@ -314,6 +362,12 @@ const ColorPopover = memo(
 
 				if (specialColors[colorValue as keyof typeof specialColors]) {
 					return specialColors[colorValue as keyof typeof specialColors];
+				}
+
+				// Handle theme colors
+				const themeColor = themeColors.find(tc => tc.name === colorValue);
+				if (themeColor) {
+					return { color: themeColor.value, label: colorValue };
 				}
 
 				// Handle regular color families
@@ -333,7 +387,7 @@ const ColorPopover = memo(
 				}
 				return { color: '#e5e7eb', label: colorValue || 'None' };
 			},
-			[colorFamilies]
+			[colorFamilies, themeColors]
 		);
 
 		const displayInfo = useMemo(
@@ -360,7 +414,7 @@ const ColorPopover = memo(
 							{displayInfo.label}
 						</Button>
 					</PopoverTrigger>
-					<PopoverContent className="w-[120px] h-[200px] overflow-y-auto p-2">
+					<PopoverContent className="w-[140px] h-[250px] overflow-y-auto p-2">
 						{/* None option */}
 						<div className="space-y-2">
 							<span className="text-xs font-medium">None</span>
@@ -374,8 +428,26 @@ const ColorPopover = memo(
 							</div>
 						</div>
 
+						{/* Theme colors */}
+						{themeColors.length > 0 && (
+							<div className="space-y-2">
+								<span className="text-xs font-medium">Theme</span>
+								<div className="grid grid-cols-4 gap-1">
+									{themeColors.map(({ name, value: colorValue }) => (
+										<ColorSwatch
+											key={name}
+											color={colorValue}
+											colorName={name}
+											onClick={() => onChange(name)}
+											isSelected={value === name}
+										/>
+									))}
+								</div>
+							</div>
+						)}
+
 						{/* Special color values */}
-						<div>
+						<div className="space-y-2">
 							<span className="text-xs font-medium">Special</span>
 							<div className="grid grid-cols-4 gap-1">
 								<ColorSwatch
@@ -657,6 +729,7 @@ const ColorPanel = memo(() => {
 								handleColorChange(property as ColorProperty, value)
 							}
 							label={config.label}
+							property={property as ColorProperty}
 						/>
 					))}
 
