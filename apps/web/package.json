@@ -34,6 +34,7 @@
 		"lucide-react": "^0.525.0",
 		"monaco-editor": "^0.52.2",
 		"monaco-themes": "^0.4.5",
+		"prettier": "^3.6.2",
 		"react": "19.0.0",
 		"react-complex-tree": "^2.6.0",
 		"react-dom": "19.0.0",

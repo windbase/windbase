@@ -7,13 +7,14 @@ import {
 	TooltipProvider,
 	TooltipTrigger
 } from '@windbase/ui';
-import { Code, Eye, Redo, Undo } from 'lucide-react';
+import { Eye, Redo, Undo } from 'lucide-react';
 import ElementPicker from '../../elements/picker';
 import BlockPicker from '../block-picker';
 import TemplatePicker from '../template-picker';
 import DarkModeButton from './dark-mode-button';
 import ExportButton from './export-button';
 import ToolbarMenu from './menu';
+import ViewCodeButton from './view-code';
 
 function Toolbar() {
 	const { undo, redo, canUndo, canRedo, exportHtml } = useBuilder();
@@ -69,16 +70,7 @@ function Toolbar() {
 
 					<ExportButton />
 
-					<Tooltip delayDuration={200}>
-						<TooltipTrigger asChild>
-							<Button variant="outline" size="icon">
-								<Code />
-							</Button>
-						</TooltipTrigger>
-						<TooltipContent>
-							<p>View code</p>
-						</TooltipContent>
-					</Tooltip>
+					<ViewCodeButton />
 
 					<Tooltip delayDuration={200}>
 						<TooltipTrigger asChild>
