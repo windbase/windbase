@@ -2,6 +2,8 @@
 
 @source "../../../packages/ui/src";
 
+@plugin "@iconify/tailwind4";
+
 ::-webkit-scrollbar {
 	display: none; /* Older Safari and Chromium */
 }
