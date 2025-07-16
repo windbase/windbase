@@ -116,13 +116,12 @@ const getCustomColors = (): string[] => {
 };
 
 // Helper function to get theme colors for a specific property
-const getThemeColorsForProperty = (property: ColorProperty): { name: string; value: string }[] => {
+const getThemeColorsForProperty = (): { name: string; value: string }[] => {
 	if (typeof document === 'undefined') return [];
 
 	try {
 		const styles = getComputedStyle(document.documentElement);
 		const themeColors: { name: string; value: string }[] = [];
-		const prefix = PROPERTY_CONFIG[property].prefix;
 
 		// Get all CSS custom properties that start with --color-
 		for (let i = 0; i < styles.length; i++) {
@@ -338,7 +337,6 @@ const ColorPopover = memo(
 		value,
 		onChange,
 		label,
-		property
 	}: {
 		value: string;
 		onChange: (value: string) => void;
@@ -346,7 +344,7 @@ const ColorPopover = memo(
 		property: ColorProperty;
 	}) => {
 		const colorFamilies = getColorFamilies();
-		const themeColors = useMemo(() => getThemeColorsForProperty(property), [property]);
+		const themeColors = useMemo(() => getThemeColorsForProperty(), []);
 
 		const getDisplayInfo = useCallback(
 			(colorValue: string) => {
