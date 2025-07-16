@@ -3,23 +3,23 @@
 	"compileOnSave": false,
 	"files": [],
 	"references": [
-    {
-      "path": "./apps/web"
-    },
-    {
-      "path": "./packages/core"
-    },
-    {
-      "path": "./packages/engine"
-    },
-    {
-      "path": "./packages/exporters"
-    },
-    {
-      "path": "./packages/utils"
-    },
-    {
-      "path": "./packages/ui"
-    }
-  ]
+		{
+			"path": "./apps/web"
+		},
+		{
+			"path": "./packages/core"
+		},
+		{
+			"path": "./packages/engine"
+		},
+		{
+			"path": "./packages/exporters"
+		},
+		{
+			"path": "./packages/utils"
+		},
+		{
+			"path": "./packages/ui"
+		}
+	]
 }

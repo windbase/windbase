@@ -423,7 +423,7 @@ function updateTailwindConfig(config) {
 	if (styleTag) {
 		// Update the style tag content with the new config
 		styleTag.textContent = config;
-		
+
 		// Force TailwindCSS to reprocess styles
 		if (window.tailwind) {
 			window.tailwind.process();

@@ -9,7 +9,7 @@ describe('Error Handling', () => {
 	it('should handle invalid JSON in localStorage', () => {
 		// Test that the store handles invalid JSON gracefully
 		localStorageMock.getItem.mockReturnValue('invalid json');
-		
+
 		// The store should still work even with invalid JSON
 		const store = useBuilder.getState();
 		expect(store).toBeDefined();
@@ -27,9 +27,9 @@ describe('Error Handling', () => {
 					currentPageId: 'page1'
 				}
 			};
-			
+
 			storage.setItem('test-key', testData);
-			
+
 			// Verify localStorage was called
 			expect(localStorageMock.setItem).toHaveBeenCalledWith(
 				'test-key',
@@ -49,7 +49,7 @@ describe('Error Handling', () => {
 	it('should handle empty state gracefully', () => {
 		// Test that the store handles empty/undefined state properly
 		useBuilder.setState({});
-		
+
 		const store = useBuilder.getState();
 		expect(store).toBeDefined();
 		expect(typeof store.selectElement).toBe('function');
@@ -58,17 +58,24 @@ describe('Error Handling', () => {
 	it('should handle null element updates', () => {
 		// Test that setting elements to null works correctly
 		useBuilder.setState({
-			selectedElement: { id: 'test', type: 'layout', tag: 'div', classes: [], content: '', children: [] }
+			selectedElement: {
+				id: 'test',
+				type: 'layout',
+				tag: 'div',
+				classes: [],
+				content: '',
+				children: []
+			}
 		});
-		
+
 		expect(useBuilder.getState().selectedElement).toBeTruthy();
-		
+
 		// Now set back to null
 		useBuilder.setState({
 			selectedElement: null,
 			hoveredElement: null
 		});
-		
+
 		const store = useBuilder.getState();
 		expect(store.selectedElement).toBeNull();
 		expect(store.hoveredElement).toBeNull();
@@ -79,15 +86,26 @@ describe('Error Handling', () => {
 		useBuilder.setState({
 			pages: undefined
 		});
-		
+
 		const store = useBuilder.getState();
 		expect(store.pages).toBeUndefined();
-		
+
 		// Should still be able to set it back to a Map
 		useBuilder.setState({
-			pages: new Map([['page1', { id: 'page1', name: 'Test', elements: [], createdAt: Date.now(), updatedAt: Date.now() }]])
+			pages: new Map([
+				[
+					'page1',
+					{
+						id: 'page1',
+						name: 'Test',
+						elements: [],
+						createdAt: Date.now(),
+						updatedAt: Date.now()
+					}
+				]
+			])
 		});
-		
+
 		const updatedStore = useBuilder.getState();
 		expect(updatedStore.pages).toBeInstanceOf(Map);
 		expect(updatedStore.pages?.has('page1')).toBe(true);
@@ -98,16 +116,25 @@ describe('Error Handling', () => {
 		useBuilder.setState({
 			history: []
 		});
-		
+
 		expect(useBuilder.getState().history).toEqual([]);
-		
+
 		// Update with valid array
 		useBuilder.setState({
 			history: [
-				[{ id: 'element1', type: 'layout', tag: 'div', classes: [], content: '', children: [] }]
+				[
+					{
+						id: 'element1',
+						type: 'layout',
+						tag: 'div',
+						classes: [],
+						content: '',
+						children: []
+					}
+				]
 			]
 		});
-		
+
 		const store = useBuilder.getState();
 		expect(store.history).toHaveLength(1);
 		expect(store.history[0]).toHaveLength(1);
@@ -118,14 +145,14 @@ describe('Error Handling', () => {
 		useBuilder.setState({
 			sidebarView: 'pages'
 		});
-		
+
 		expect(useBuilder.getState().sidebarView).toBe('pages');
-		
+
 		// Update with valid enum value
 		useBuilder.setState({
 			sidebarView: 'layers'
 		});
-		
+
 		expect(useBuilder.getState().sidebarView).toBe('layers');
 	});
 
@@ -135,12 +162,12 @@ describe('Error Handling', () => {
 			historyIndex: i,
 			currentPageId: `page${i}`
 		}));
-		
+
 		// Apply all updates rapidly
-		updates.forEach(update => {
+		updates.forEach((update) => {
 			useBuilder.setState(update);
 		});
-		
+
 		const store = useBuilder.getState();
 		expect(store.historyIndex).toBe(9);
 		expect(store.currentPageId).toBe('page9');
@@ -148,7 +175,7 @@ describe('Error Handling', () => {
 
 	it('should handle large state objects', () => {
 		// Test that the store can handle large state objects
-		const largeHistory = Array.from({ length: 100 }, (_, i) => 
+		const largeHistory = Array.from({ length: 100 }, (_, i) =>
 			Array.from({ length: 50 }, (_, j) => ({
 				id: `element${i}-${j}`,
 				type: 'layout',
@@ -158,11 +185,11 @@ describe('Error Handling', () => {
 				children: []
 			}))
 		);
-		
+
 		useBuilder.setState({
 			history: largeHistory
 		});
-		
+
 		const store = useBuilder.getState();
 		expect(store.history).toHaveLength(100);
 		expect(store.history[0]).toHaveLength(50);
@@ -182,7 +209,7 @@ describe('Error Handling', () => {
 					children: []
 				};
 			}
-			
+
 			return {
 				id,
 				type: 'layout',
@@ -192,13 +219,13 @@ describe('Error Handling', () => {
 				children: [createNestedElement(depth - 1, `${id}-child`)]
 			};
 		};
-		
+
 		const deepElement = createNestedElement(10, 'root');
-		
+
 		useBuilder.setState({
 			selectedElement: deepElement
 		});
-		
+
 		const store = useBuilder.getState();
 		expect(store.selectedElement?.id).toBe('root');
 		expect(store.selectedElement?.children[0]?.id).toBe('root-child');
@@ -207,12 +234,18 @@ describe('Error Handling', () => {
 	it('should handle Map operations with non-string keys', () => {
 		// Test that Map operations work correctly with different key types
 		const testPages = new Map();
-		testPages.set('string-key', { id: 'page1', name: 'Page 1', elements: [], createdAt: Date.now(), updatedAt: Date.now() });
-		
+		testPages.set('string-key', {
+			id: 'page1',
+			name: 'Page 1',
+			elements: [],
+			createdAt: Date.now(),
+			updatedAt: Date.now()
+		});
+
 		useBuilder.setState({
 			pages: testPages
 		});
-		
+
 		const store = useBuilder.getState();
 		expect(store.pages?.has('string-key')).toBe(true);
 		expect(store.pages?.get('string-key')?.name).toBe('Page 1');
@@ -228,7 +261,7 @@ describe('Error Handling', () => {
 			content: 'Element 1',
 			children: []
 		};
-		
+
 		const element2 = {
 			id: 'element2',
 			type: 'layout',
@@ -237,12 +270,12 @@ describe('Error Handling', () => {
 			content: 'Element 2',
 			children: [element1]
 		};
-		
+
 		// This should work without circular reference issues
 		useBuilder.setState({
 			selectedElement: element2
 		});
-		
+
 		const store = useBuilder.getState();
 		expect(store.selectedElement?.id).toBe('element2');
 		expect(store.selectedElement?.children[0]?.id).toBe('element1');
@@ -262,15 +295,15 @@ describe('Error Handling', () => {
 				}
 			});
 		}
-		
+
 		const finalStore = useBuilder.getState();
 		expect(finalStore.selectedElement?.id).toBe('element99');
-		
+
 		// Clean up
 		useBuilder.setState({
 			selectedElement: null
 		});
-		
+
 		expect(useBuilder.getState().selectedElement).toBeNull();
 	});
-}); 
+});

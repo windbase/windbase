@@ -290,7 +290,8 @@ export function useFilteredBlocks(
 		if (!blocks) return [];
 
 		return blocks.filter((block) => {
-			const matchesCategory = category === 'all' || block.categories.includes(category);
+			const matchesCategory =
+				category === 'all' || block.categories.includes(category);
 			const matchesSearch =
 				!searchTerm ||
 				block.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -308,4 +309,4 @@ export function useFilteredBlocks(
 		isError: !!error,
 		isSuccess: !isLoading && !error
 	};
-} 
+}

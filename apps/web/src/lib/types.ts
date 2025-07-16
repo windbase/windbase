@@ -29,7 +29,8 @@ export interface PaginatedApiResponse<T> {
 }
 
 export interface ApiBlocksResponse extends PaginatedApiResponse<ApiBlock> {}
-export interface ApiTemplatesResponse extends PaginatedApiResponse<ApiTemplateResponse> {}
+export interface ApiTemplatesResponse
+	extends PaginatedApiResponse<ApiTemplateResponse> {}
 
 export interface ApiCollection {
 	templates?: ApiTemplateResponse[];

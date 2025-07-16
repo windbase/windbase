@@ -10,4 +10,3 @@ export const createGlobalConfigSlice: StateCreator<
 	tailwindCSSConfig: '',
 	setTailwindCSSConfig: (config: string) => set({ tailwindCSSConfig: config })
 });
- 
