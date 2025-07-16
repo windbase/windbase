@@ -138,26 +138,38 @@ export const createManipulationSlice: StateCreator<
       elementId
     );
 
-    // Update parent reference
-    const updatedElement = { ...elementToMove, parent: newParentId };
+    // Handle root level moves separately
+    if (newParentId === 'root') {
+      // Update parent reference for root level
+      const updatedElement = { ...elementToMove, parent: undefined };
 
-    // Add to new position
-    const addToNewParent = (elements: EditorElement[]): EditorElement[] => {
-      return elements.map((el) => {
-        if (el.id === newParentId) {
-          const newChildren = [...el.children];
-          newChildren.splice(position, 0, updatedElement);
-          return { ...el, children: newChildren };
-        }
-        if (el.children.length > 0) {
-          return { ...el, children: addToNewParent(el.children) };
-        }
-        return el;
-      });
-    };
+      // Insert at the specified position in root elements
+      const updatedElements = [...elementsWithoutMoved];
+      updatedElements.splice(position, 0, updatedElement);
 
-    const updatedElements = addToNewParent(elementsWithoutMoved);
-    get().updatePage(currentPage.id, { elements: updatedElements });
+      get().updatePage(currentPage.id, { elements: updatedElements });
+    } else {
+      // Update parent reference
+      const updatedElement = { ...elementToMove, parent: newParentId };
+
+      // Add to new position
+      const addToNewParent = (elements: EditorElement[]): EditorElement[] => {
+        return elements.map((el) => {
+          if (el.id === newParentId) {
+            const newChildren = [...el.children];
+            newChildren.splice(position, 0, updatedElement);
+            return { ...el, children: newChildren };
+          }
+          if (el.children.length > 0) {
+            return { ...el, children: addToNewParent(el.children) };
+          }
+          return el;
+        });
+      };
+
+      const updatedElements = addToNewParent(elementsWithoutMoved);
+      get().updatePage(currentPage.id, { elements: updatedElements });
+    }
 
     // Save to history after moving
     setTimeout(() => get().saveToHistoryImmediate(), 0);
