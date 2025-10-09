@@ -1,5 +1,5 @@
-import VisualBuilder from '@/components/builder/visual-builder';
-import { useKeyboardShortcuts } from '@/lib/hooks/keyboard-shortcuts';
+import { VisualBuilder } from '@/features/visual-builder';
+import { useKeyboardShortcuts } from '@/shared/hooks/keyboard-shortcuts';
 
 function EditorPage() {
 	useKeyboardShortcuts();
