@@ -16,5 +16,3 @@ export * from './components/textarea';
 export * from './components/tooltip';
 // Utils
 export * from './lib/utils';
-// Theme providers
-export * from './providers/theme-provider';
