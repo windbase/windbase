@@ -131,10 +131,10 @@ const AdvancedPanel = memo(() => {
 			</div>
 
 			<CollapsibleContent className="px-2 mt-2">
-				<Label className="block text-xs uppercase font-medium mb-2">
+				<Label className="block text-xs font-medium mb-2">
 					Classes
 				</Label>
-				<div className="flex flex-wrap gap-1 mt-2">
+				<div className="flex flex-wrap gap-1 mb-2">
 					{classes.map((className) => (
 						<div
 							key={className}
@@ -178,13 +178,14 @@ const AdvancedPanel = memo(() => {
 					)}
 				</div>
 
-				<div className="flex items-center gap-2 mt-2">
+				<div className="flex items-center gap-2">
 					<Input
 						placeholder="Add class"
 						ref={classInputRef}
 						onKeyDown={handleKeyDown}
+						className="h-9"
 					/>
-					<Button onClick={handleAddClass}>Add</Button>
+					<Button onClick={handleAddClass} className="h-9">Add</Button>
 				</div>
 			</CollapsibleContent>
 		</Collapsible>

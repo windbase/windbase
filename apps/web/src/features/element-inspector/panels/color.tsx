@@ -394,19 +394,19 @@ const ColorPopover = memo(
 		);
 
 		return (
-			<div>
-				<div className="block text-[10px] uppercase font-medium mb-2">
+			<div className="flex items-center gap-3">
+				<div className="text-xs font-medium w-[100px]">
 					{label}
 				</div>
 				<Popover>
 					<PopoverTrigger asChild>
 						<Button
 							variant="outline"
-							className="justify-start text-xs px-3 h-8 text-ellipsis"
+							className="justify-start text-xs px-3 h-9 flex-1"
 							size="sm"
 						>
 							<div
-								className="h-4 w-4 rounded-full border"
+								className="h-4 w-4 rounded-sm border mr-2"
 								style={{ backgroundColor: displayInfo.color }}
 							/>
 							{displayInfo.label}
@@ -717,7 +717,7 @@ const ColorPanel = memo(() => {
 					))}
 				</div>
 
-				<div className="flex flex-wrap gap-3">
+				<div className="space-y-3">
 					{/* Color Properties */}
 					{Object.entries(PROPERTY_CONFIG).map(([property, config]) => (
 						<ColorPopover
@@ -732,29 +732,33 @@ const ColorPanel = memo(() => {
 					))}
 
 					{/* Shadow */}
-					<div>
-						<div className="block text-[10px] uppercase font-medium mb-2">
+					<div className="flex items-center gap-3">
+						<div className="text-xs font-medium w-[100px]">
 							Shadow
 						</div>
-						<Combobox
-							value={currentState.shadow}
-							onChange={handleShadowChange}
-							items={SHADOW_OPTIONS}
-							placeholder="Select shadow"
-						/>
+						<div className="flex-1">
+							<Combobox
+								value={currentState.shadow}
+								onChange={handleShadowChange}
+								items={SHADOW_OPTIONS}
+								placeholder="Select shadow"
+							/>
+						</div>
 					</div>
 
 					{/* Text Decoration */}
-					<div>
-						<div className="block text-[10px] uppercase font-medium mb-2">
+					<div className="flex items-center gap-3">
+						<div className="text-xs font-medium w-[100px]">
 							Text Decoration
 						</div>
-						<Combobox
-							value={currentState.textDecoration}
-							onChange={handleTextDecorationChange}
-							items={TEXT_DECORATION_OPTIONS}
-							placeholder="Select decoration"
-						/>
+						<div className="flex-1">
+							<Combobox
+								value={currentState.textDecoration}
+								onChange={handleTextDecorationChange}
+								items={TEXT_DECORATION_OPTIONS}
+								placeholder="Select decoration"
+							/>
+						</div>
 					</div>
 				</div>
 			</CollapsibleContent>

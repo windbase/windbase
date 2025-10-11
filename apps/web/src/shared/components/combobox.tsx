@@ -35,7 +35,7 @@ export function Combobox({
 				<Button
 					variant="outline"
 					aria-expanded={open}
-					className="justify-between text-xs px-2"
+					className="justify-between text-xs px-3 h-9 w-full"
 				>
 					{value
 						? items.find((item) => item.value === value)?.label

@@ -107,10 +107,10 @@ const BasicPanel = memo(() => {
 
 			if (type === 'select' && options) {
 				return (
-					<div key={attribute} className="mb-4">
+					<div key={attribute} className="flex items-center gap-3 mb-3">
 						<Label
 							htmlFor={inputId}
-							className="block text-xs uppercase font-medium mb-2"
+							className="text-xs font-medium w-[100px]"
 						>
 							{label || attribute}
 						</Label>
@@ -118,7 +118,7 @@ const BasicPanel = memo(() => {
 							defaultValue={value}
 							onValueChange={(value) => handleAttributeChange(attribute, value)}
 						>
-							<SelectTrigger className="w-full">
+							<SelectTrigger className="flex-1 h-9">
 								<SelectValue placeholder={`Select ${label || attribute}`} />
 							</SelectTrigger>
 							<SelectContent>
@@ -134,10 +134,10 @@ const BasicPanel = memo(() => {
 			}
 
 			return (
-				<div key={attribute} className="mb-4">
+				<div key={attribute} className="flex items-center gap-3 mb-3">
 					<Label
 						htmlFor={inputId}
-						className="block text-xs uppercase font-medium mb-2"
+						className="text-xs font-medium w-[100px]"
 					>
 						{label || attribute}
 					</Label>
@@ -147,6 +147,7 @@ const BasicPanel = memo(() => {
 						defaultValue={value}
 						onChange={(e) => handleAttributeChange(attribute, e.target.value)}
 						placeholder={`Enter ${label || attribute}`}
+						className="flex-1 h-9"
 					/>
 				</div>
 			);
@@ -191,10 +192,10 @@ const BasicPanel = memo(() => {
 			<CollapsibleContent className="px-2 mt-2">
 				{/* Only show textarea for content-editable elements */}
 				{isContentEditable && (
-					<div className="mb-4">
+					<div className="mb-3">
 						<Label
 							htmlFor={contentInputId}
-							className="block text-xs uppercase font-medium mb-2"
+							className="block text-xs font-medium mb-2"
 						>
 							Content
 						</Label>
@@ -202,7 +203,7 @@ const BasicPanel = memo(() => {
 							id={contentInputId}
 							key={selectedElement.id}
 							placeholder="Content"
-							className="resize-none"
+							className="resize-none w-full"
 							rows={3}
 							value={selectedElement.content || ''}
 							onChange={(e) => handleContentChange(e.target.value)}
@@ -210,7 +211,7 @@ const BasicPanel = memo(() => {
 					</div>
 				)}
 
-				{attributeInputs && <div className="space-y-2">{attributeInputs}</div>}
+				{attributeInputs && <div>{attributeInputs}</div>}
 
 				{!isContentEditable && !attributeInputs && (
 					<div className="text-sm text-muted-foreground h-20 flex items-center justify-center w-full">
