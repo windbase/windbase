@@ -2,7 +2,7 @@
 
 import { useBuilder } from '@windbase/engine';
 import { useEffect, useRef, useState } from 'react';
-import { useKeyboardShortcuts } from '@/shared/components/keyboard-shortcuts';
+import { useKeyboardShortcuts } from '@/shared/hooks/keyboard-shortcuts';
 import { LivePreviewArea } from '@/features/live-preview';
 import { Toolbar } from '@/features/toolbar';
 import Sidebar from './sidebar';
